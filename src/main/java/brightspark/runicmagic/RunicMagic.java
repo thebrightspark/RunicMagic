@@ -3,6 +3,7 @@ package brightspark.runicmagic;
 import brightspark.runicmagic.command.CommandExecuteSpell;
 import brightspark.runicmagic.init.*;
 import brightspark.runicmagic.item.RMItemSubBase;
+import brightspark.runicmagic.particle.ParticleProjectileBase;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.NetworkHandler;
 import net.minecraft.block.Block;
@@ -50,6 +51,9 @@ public class RunicMagic
 	{
 		NetworkHandler.init();
 		RMCapabilities.init();
+
+		if(event.getSide() == Side.CLIENT)
+			ParticleProjectileBase.registerTexture();
 	}
 
 	@Mod.EventHandler

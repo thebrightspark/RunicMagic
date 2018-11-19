@@ -10,7 +10,7 @@ public class ParticleAir extends ParticleProjectileBase
 	public ParticleAir(World worldIn, Vec3d position, Vec3d entityMotion, int bearing)
 	{
 		super(worldIn, position, entityMotion, new Color(250, 250, 240));
-		setParticleTextureIndex(128); //TODO: TEMP
+		//setParticleTextureIndex(128);
 		setMaxAge(20);
 		float velocity = 0.2F; //rand.nextFloat() * 0.2F;
 		//Some calculation I found online that will spawn the particles in a cone, but I don't know how to make it
