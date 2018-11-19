@@ -1,5 +1,6 @@
 package brightspark.runicmagic.enums;
 
+import java.awt.*;
 import java.util.Locale;
 
 public enum RuneType
@@ -7,10 +8,10 @@ public enum RuneType
 	NONE,
 
 	//Elemental
-	AIR,
-	WATER,
-	EARTH,
-	FIRE,
+	AIR(new Color(0xFAFAF0)),
+	WATER(new Color(0x6666FF)),
+	EARTH(new Color(0x964F0C)),
+	FIRE(new Color(0xDF2628)),
 
 	//Combination
 	MIST(AIR, WATER),
@@ -37,9 +38,15 @@ public enum RuneType
 	private static RuneType[] staffTypes;
 	public static String[] staffNames;
 
+	private Color colour = null;
 	private RuneType[] subTypes = null;
 
 	RuneType() {}
+
+	RuneType(Color colour)
+	{
+		this.colour = colour;
+	}
 
 	RuneType(RuneType... subTypes)
 	{
@@ -75,6 +82,11 @@ public enum RuneType
 		if(meta < 0 || meta >= values().length)
 			return null;
 		return values()[meta];
+	}
+
+	public Color getColour()
+	{
+		return colour;
 	}
 
 	public RuneType[] getSubTypes()

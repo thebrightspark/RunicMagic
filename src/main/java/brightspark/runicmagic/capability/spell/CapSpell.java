@@ -3,11 +3,15 @@ package brightspark.runicmagic.capability.spell;
 import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.capability.RMCapability;
 import brightspark.runicmagic.capability.RMCapabilityProvider;
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
+import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.CommonUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -27,6 +31,11 @@ public interface CapSpell extends RMCapability
 	{
 		return new RMCapabilityProvider<>(RMCapabilities.SPELL);
 	}
+
+	/**
+	 * Gets the current selected spell
+	 */
+	Spell getSelectedSpell();
 
 	/**
 	 * Sets the current selected spell to the given spell
@@ -53,12 +62,13 @@ public interface CapSpell extends RMCapability
 	 * Checks if the player can execute the given spell
 	 * If spell is null, then checks the current selected spell
 	 */
-	boolean canExecuteSpell(EntityPlayer player, Spell spell);
+	boolean canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell spell);
 
 	/**
 	 * Executes the currently selected spell if there is one
+	 * Things that call this should handle the removal of runes from the player's inventory
 	 */
-	boolean executeSpell(EntityPlayerMP player);
+	boolean executeSpell(EntityPlayerMP player, @Nullable Spell spell);
 
 	/**
 	 * Used by messages to sync a specific spell cooldown from the server
@@ -86,6 +96,12 @@ public interface CapSpell extends RMCapability
 		}
 
 		@Override
+		public Spell getSelectedSpell()
+		{
+			return selectedSpell;
+		}
+
+		@Override
 		public Integer getSpellCooldown()
 		{
 			return selectedSpell != null ? selectedSpell.getCooldown() : null;
@@ -103,33 +119,45 @@ public interface CapSpell extends RMCapability
 			return selectedSpell != null;
 		}
 
+		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean canExecuteSpell(EntityPlayer player, @Nullable Spell spell)
+		public boolean canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell nonSelectableSpell)
 		{
-			Spell toCheck = spell == null ? selectedSpell : spell;
-			if(toCheck == null || toCheck.isSelectable()) //Ignore selectables, as that's handled by the staff
+			Spell spell = nonSelectableSpell == null ? selectedSpell : nonSelectableSpell;
+			if(spell == null)
 				return false;
 			//Check cooldowns
-			Long cooldown = cooldowns.get(toCheck);
-			if(cooldown == null || player.world.getTotalWorldTime() < cooldown)
+			Long cooldown = cooldowns.get(spell);
+			if(cooldown != null)
 			{
-				if(cooldown != null)
-					cooldowns.remove(toCheck);
-				return true;
+				if(player.world.getTotalWorldTime() < cooldown)
+					cooldowns.remove(spell);
+				else
+					return false;
 			}
-			return false;
+
+			Map<RuneType, Short> spellCost = ItemStaff.calculateRuneCost(stack, spell);
+			//Check the player has enough runes to cast the spell
+			return spellCost.isEmpty() || CommonUtils.hasRunes(player.inventory.mainInventory, spell.getCost());
 		}
 
+		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean executeSpell(EntityPlayerMP player)
+		public boolean executeSpell(EntityPlayerMP player, @Nullable Spell spell)
 		{
-			if(!hasSpellSelected() || !canExecuteSpell(player, null))
+			if(!hasSpellSelected())
 				return false;
-			selectedSpell.execute(player);
-			long cooldown = selectedSpell.getCooldown();
-			if(cooldown > 0)
-				cooldowns.put(selectedSpell, player.world.getTotalWorldTime() + cooldown);
-			return true;
+			Spell spellToExecute = spell == null ? selectedSpell : spell;
+			if(spellToExecute == null)
+				return false;
+			boolean success = spellToExecute.execute(player);
+			if(success)
+			{
+				long cooldown = selectedSpell.getCooldown();
+				if(cooldown > 0)
+					cooldowns.put(selectedSpell, player.world.getTotalWorldTime() + cooldown);
+			}
+			return success;
 		}
 
 		@Override

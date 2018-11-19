@@ -7,6 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+// Turns all bones in player inventory into apples
 public class SpellBonesToApples extends Spell
 {
 	public SpellBonesToApples()

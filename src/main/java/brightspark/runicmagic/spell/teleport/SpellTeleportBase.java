@@ -20,12 +20,13 @@ public class SpellTeleportBase extends Spell
 	@Override
 	public boolean execute(EntityPlayer player)
 	{
-		if(player.world.isRemote)
-			return false;
 		int dim = getDestinationDimId(player);
 		if(player.dimension != dim)
 			player.changeDimension(dim);
-		Vec3d destPos = new Vec3d(getDestinationPos(player)).add(0.5D, 0, 0.5D);
+		BlockPos p = getDestinationPos(player, dim);
+		if(p == null)
+			return false;
+		Vec3d destPos = new Vec3d(p).add(0.5D, 0, 0.5D);
 
 		//Go up until position is clear to teleport player there
 		World world = player.world;
@@ -44,7 +45,7 @@ public class SpellTeleportBase extends Spell
 		return DimensionType.OVERWORLD.getId();
 	}
 
-	protected BlockPos getDestinationPos(EntityPlayer player)
+	protected BlockPos getDestinationPos(EntityPlayer player, int dimensionId)
 	{
 		return player.getPosition();
 	}

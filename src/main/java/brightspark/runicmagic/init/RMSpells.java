@@ -3,6 +3,8 @@ package brightspark.runicmagic.init;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.spell.projectile.elemental.SpellAirStrike;
 import brightspark.runicmagic.spell.self.SpellBonesToApples;
+import brightspark.runicmagic.spell.self.SpellEnchant;
+import brightspark.runicmagic.spell.teleport.SpellTeleportHome;
 import brightspark.runicmagic.spell.teleport.SpellTeleportSpawn;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -20,7 +22,11 @@ public class RMSpells
 	{
 		registry.registerAll(
 			new SpellTeleportSpawn(),
+			new SpellTeleportHome(),
+
 			new SpellAirStrike(),
+
+			new SpellEnchant(1),
 			new SpellBonesToApples()
 		);
 	}

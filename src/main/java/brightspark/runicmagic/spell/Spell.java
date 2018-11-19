@@ -31,6 +31,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 
 	/**
 	 * Executes this spell and returns true if successful
+	 * Called only server side
 	 */
 	public abstract boolean execute(EntityPlayer player);
 
