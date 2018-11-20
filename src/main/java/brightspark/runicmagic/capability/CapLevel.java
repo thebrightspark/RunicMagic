@@ -3,6 +3,8 @@ package brightspark.runicmagic.capability;
 import brightspark.runicmagic.LevelManager;
 import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.init.RMCapabilities;
+import brightspark.runicmagic.message.MessageSyncLevelCap;
+import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.RunicMagicException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +27,8 @@ public interface CapLevel extends RMCapability
 	int getExperience();
 
 	void setExperience(EntityPlayerMP player, int experience);
+
+	boolean setExperienceInternal(int experience);
 
 	int addExperience(EntityPlayerMP player, int amount);
 
@@ -59,13 +63,20 @@ public interface CapLevel extends RMCapability
 		@Override
 		public void setExperience(EntityPlayerMP player, int experience)
 		{
+			if(setExperienceInternal(experience))
+				dataChanged(player);
+		}
+
+		@Override
+		public boolean setExperienceInternal(int experience)
+		{
 			boolean changed = this.experience != experience;
 			if(changed)
 			{
 				this.experience = experience;
 				calcLevel(true);
-				dataChanged(player);
 			}
+			return changed;
 		}
 
 		@Override
@@ -107,7 +118,7 @@ public interface CapLevel extends RMCapability
 		@Override
 		public void dataChanged(EntityPlayerMP player)
 		{
-			//TODO: Send data sync packet to client player
+			NetworkHandler.network.sendTo(new MessageSyncLevelCap(experience), player);
 		}
 
 		@Override

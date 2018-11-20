@@ -5,8 +5,10 @@ import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemStaff;
+import brightspark.runicmagic.message.MessageSyncSpellsCap;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.CommonUtils;
+import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -178,7 +180,7 @@ public interface CapSpell extends RMCapability
 		@Override
 		public void dataChanged(EntityPlayerMP player)
 		{
-			//TODO: Send message to client to sync data
+			NetworkHandler.network.sendTo(new MessageSyncSpellsCap(cooldowns, false), player);
 		}
 
 		@SuppressWarnings("ConstantConditions")
