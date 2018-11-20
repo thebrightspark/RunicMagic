@@ -1,14 +1,13 @@
-package brightspark.runicmagic.capability.spell;
+package brightspark.runicmagic.capability;
 
 import brightspark.runicmagic.RunicMagic;
-import brightspark.runicmagic.capability.RMCapability;
-import brightspark.runicmagic.capability.RMCapabilityProvider;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.CommonUtils;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -68,7 +67,7 @@ public interface CapSpell extends RMCapability
 	 * Executes the currently selected spell if there is one
 	 * Things that call this should handle the removal of runes from the player's inventory
 	 */
-	boolean executeSpell(EntityPlayerMP player, @Nullable Spell spell);
+	boolean executeSpell(EntityPlayerMP player, int weaponLevel, @Nullable Spell spell);
 
 	/**
 	 * Used by messages to sync a specific spell cooldown from the server
@@ -126,6 +125,7 @@ public interface CapSpell extends RMCapability
 			Spell spell = nonSelectableSpell == null ? selectedSpell : nonSelectableSpell;
 			if(spell == null)
 				return false;
+			//TODO: Check player's magic level against level required for the spell
 			//Check cooldowns
 			Long cooldown = cooldowns.get(spell);
 			if(cooldown != null)
@@ -136,21 +136,21 @@ public interface CapSpell extends RMCapability
 					return false;
 			}
 
-			Map<RuneType, Short> spellCost = ItemStaff.calculateRuneCost(stack, spell);
 			//Check the player has enough runes to cast the spell
+			Map<RuneType, Short> spellCost = ItemStaff.calculateRuneCost(stack, spell);
 			return spellCost.isEmpty() || CommonUtils.hasRunes(player.inventory.mainInventory, spell.getCost());
 		}
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean executeSpell(EntityPlayerMP player, @Nullable Spell spell)
+		public boolean executeSpell(EntityPlayerMP player, int weaponLevel, @Nullable Spell spell)
 		{
 			if(!hasSpellSelected())
 				return false;
 			Spell spellToExecute = spell == null ? selectedSpell : spell;
 			if(spellToExecute == null)
 				return false;
-			boolean success = spellToExecute.execute(player);
+			boolean success = spellToExecute.execute(player, new SpellCastData(50, weaponLevel)); //TODO: Implement player magic level
 			if(success)
 			{
 				long cooldown = selectedSpell.getCooldown();

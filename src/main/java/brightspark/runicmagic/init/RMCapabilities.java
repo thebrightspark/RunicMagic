@@ -1,7 +1,7 @@
 package brightspark.runicmagic.init;
 
 import brightspark.runicmagic.capability.RMCapabilityStorage;
-import brightspark.runicmagic.capability.spell.CapSpell;
+import brightspark.runicmagic.capability.CapSpell;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;

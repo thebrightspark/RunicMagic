@@ -3,6 +3,7 @@ package brightspark.runicmagic.spell;
 import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -33,7 +34,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	 * Executes this spell and returns true if successful
 	 * Called only server side
 	 */
-	public abstract boolean execute(EntityPlayer player);
+	public abstract boolean execute(EntityPlayer player, SpellCastData data);
 
 	/**
 	 * Process updating the casting of this spell if it's not instant
@@ -59,9 +60,10 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	/**
 	 * Add a rune cost to the total cost to cast this spell
 	 */
-	protected void addRuneCost(RuneType type, int amount)
+	protected Spell addRuneCost(RuneType type, int amount)
 	{
 		cost.put(type, (short) amount);
+		return this;
 	}
 
 	/**

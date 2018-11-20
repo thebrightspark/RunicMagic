@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,16 +15,16 @@ import java.util.List;
 // Randomly enchants the held item like an enchantment table
 public class SpellEnchant extends Spell
 {
-	private short level;
+	private byte level;
 
 	public SpellEnchant(int level)
 	{
 		super("enchant");
-		this.level = (short) level;
+		this.level = (byte) level;
 	}
 
 	@Override
-	public boolean execute(EntityPlayer player)
+	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		ItemStack stack = player.getHeldItemMainhand();
 		if(stack.isItemEnchanted() || !stack.isItemEnchantable())

@@ -1,5 +1,7 @@
 package brightspark.runicmagic.util;
 
+import brightspark.runicmagic.RMConfig;
+import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMItems;
 import net.minecraft.item.ItemStack;
@@ -53,5 +55,27 @@ public class CommonUtils
 				}
 			}
 		}
+	}
+
+	/**
+	 * Calculates the accuracy as a percentage to hit the target with a spell
+	 * Mostly based on the hit chance logic in RuneScape
+	 * @param magicLevel The caster's magic level
+	 * @param weaponLevel The caster's weapon level
+	 * @param targetEntityArmour The target's total armour value
+	 * @return A number between 0 and 100 of the chance to hit
+	 */
+	// https://runescape.fandom.com/wiki/Hit_chance
+	public static int calculateAccuracy(int magicLevel, int weaponLevel, int targetEntityArmour)
+	{
+		if(!RMConfig.useAccuracyCalculation)
+			return Math.round((float) RMConfig.hitChanceMultiplier);
+
+		int levelAccuracy = (int) Math.round(Math.pow(0.0008D * (double) magicLevel, 3D) + (4 * magicLevel) + 40);
+		int baseAccuracy = (int) (levelAccuracy + (2.5F * weaponLevel));
+		double accuracy = 55D * ((double) baseAccuracy / ((double) targetEntityArmour * RMConfig.accuracyArmourMultiplier));
+		int result = Math.max((int) Math.round(accuracy * RMConfig.hitChanceMultiplier), 100);
+		RunicMagic.LOG.info("Calculated accuracy: {} from magicLevel: {}, weaponLevel: {}, targetArmour: {}", result, magicLevel, weaponLevel, targetEntityArmour);
+		return result;
 	}
 }

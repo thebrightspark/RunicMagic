@@ -1,7 +1,6 @@
 package brightspark.runicmagic.capability;
 
 import brightspark.runicmagic.util.NetworkHandler;
-import brightspark.runicmagic.capability.spell.CapSpell;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.message.MessageSyncSpellsCap;
 import net.minecraft.entity.Entity;

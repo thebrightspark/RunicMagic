@@ -2,6 +2,7 @@ package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public class SpellBonesToApples extends Spell
 	}
 
 	@Override
-	public boolean execute(EntityPlayer player)
+	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		boolean success = false;
 

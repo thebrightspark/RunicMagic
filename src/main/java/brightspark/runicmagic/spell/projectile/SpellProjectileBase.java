@@ -2,6 +2,7 @@ package brightspark.runicmagic.spell.projectile;
 
 import brightspark.runicmagic.entity.EntitySpellProjectile;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -19,7 +20,7 @@ public class SpellProjectileBase extends Spell
 	}
 
 	@Override
-	public boolean execute(EntityPlayer player)
+	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		if(player.world.isRemote)
 			return false;

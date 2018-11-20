@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.teleport;
 
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +19,7 @@ public class SpellTeleportBase extends Spell
 	}
 
 	@Override
-	public boolean execute(EntityPlayer player)
+	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		int dim = getDestinationDimId(player);
 		if(player.dimension != dim)

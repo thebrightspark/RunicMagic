@@ -18,6 +18,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid = RunicMagic.MOD_ID, name = RunicMagic.MOD_NAME, version = RunicMagic.VERSION)
 @Mod.EventBusSubscriber
@@ -45,6 +47,14 @@ public class RunicMagic
 
 	@Mod.Instance(MOD_ID)
 	public static RunicMagic instance;
+
+	public static Logger LOG;
+
+	@Mod.EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		LOG = event.getModLog();
+	}
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)

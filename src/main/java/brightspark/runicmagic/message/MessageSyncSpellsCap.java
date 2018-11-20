@@ -1,6 +1,6 @@
 package brightspark.runicmagic.message;
 
-import brightspark.runicmagic.capability.spell.CapSpell;
+import brightspark.runicmagic.capability.CapSpell;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.spell.Spell;
