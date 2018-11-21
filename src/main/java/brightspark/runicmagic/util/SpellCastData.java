@@ -2,12 +2,13 @@ package brightspark.runicmagic.util;
 
 public class SpellCastData
 {
-	private final int magicLevel, weaponLevel;
+	private final int magicLevel;
+	private final float attackBonus;
 
-	public SpellCastData(int magicLevel, int weaponLevel)
+	public SpellCastData(int magicLevel, float attackBonus)
 	{
 		this.magicLevel = magicLevel;
-		this.weaponLevel = weaponLevel;
+		this.attackBonus = attackBonus;
 	}
 
 	public int getMagicLevel()
@@ -15,8 +16,8 @@ public class SpellCastData
 		return magicLevel;
 	}
 
-	public int getWeaponLevel()
+	public float getAttackBonus()
 	{
-		return weaponLevel;
+		return attackBonus;
 	}
 }

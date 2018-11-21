@@ -23,7 +23,7 @@ public class ItemStaff extends RMItemSubBase
 
 	public ItemStaff(StaffType type)
 	{
-		super("staff_" + type, RuneType.staffNames());
+		super("staff_" + type, type.getTypeNames());
 		this.type = type;
 	}
 
@@ -42,18 +42,6 @@ public class ItemStaff extends RMItemSubBase
 		return cost;
 	}
 
-	public int getItemLevel()
-	{
-		switch(type)
-		{
-			case BASIC:		return 5;
-			case BATTLE:	return 30;
-			case MYSTIC:	return 40;
-			case LIMITLESS:	return 82;
-			default:		return -1;
-		}
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
 	{
@@ -64,7 +52,7 @@ public class ItemStaff extends RMItemSubBase
 			if(playerIn instanceof EntityPlayerMP)
 			{
 				//Only execute on server side
-				if(capSpell.executeSpell((EntityPlayerMP) playerIn, getItemLevel(), null))
+				if(capSpell.executeSpell((EntityPlayerMP) playerIn, type.getAttackBonus(), null))
 				{
 					//Remove runes from inventory
 					CommonUtils.removeRunes(playerIn.inventory.mainInventory, calculateRuneCost(stack, capSpell.getSelectedSpell()));

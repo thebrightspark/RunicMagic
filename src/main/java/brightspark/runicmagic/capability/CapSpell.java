@@ -69,7 +69,7 @@ public interface CapSpell extends RMCapability
 	 * Executes the currently selected spell if there is one
 	 * Things that call this should handle the removal of runes from the player's inventory
 	 */
-	boolean executeSpell(EntityPlayerMP player, int weaponLevel, @Nullable Spell spell);
+	boolean executeSpell(EntityPlayerMP player, float attackBonus, @Nullable Spell spell);
 
 	/**
 	 * Used by messages to sync a specific spell cooldown from the server
@@ -145,14 +145,14 @@ public interface CapSpell extends RMCapability
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean executeSpell(EntityPlayerMP player, int weaponLevel, @Nullable Spell spell)
+		public boolean executeSpell(EntityPlayerMP player, float attackBonus, @Nullable Spell spell)
 		{
 			if(!hasSpellSelected())
 				return false;
 			Spell spellToExecute = spell == null ? selectedSpell : spell;
 			if(spellToExecute == null)
 				return false;
-			boolean success = spellToExecute.execute(player, new SpellCastData(50, weaponLevel)); //TODO: Implement player magic level
+			boolean success = spellToExecute.execute(player, new SpellCastData(50, attackBonus)); //TODO: Implement player magic level
 			if(success)
 			{
 				long cooldown = selectedSpell.getCooldown();

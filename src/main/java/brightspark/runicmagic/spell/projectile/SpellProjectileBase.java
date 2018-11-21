@@ -19,12 +19,19 @@ public class SpellProjectileBase extends Spell
 		cooldown = 10; //0.5s
 	}
 
+	protected float getAttackDamage()
+	{
+		return 2f;
+	}
+
 	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		if(player.world.isRemote)
 			return false;
 		World world = player.world;
+		//TODO: Set projectile attack damage
+		float attackDamage = getAttackDamage() + data.getAttackBonus();
 		EntitySpellProjectile entity = entityFactory.apply(player);
 		return world.spawnEntity(entity);
 	}

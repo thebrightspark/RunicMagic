@@ -34,9 +34,7 @@ public enum RuneType
 	BLOOD,
 	SOUL;
 
-	private static String[] all;
-	private static RuneType[] staffTypes;
-	public static String[] staffNames;
+	private static final String[] all, staffNames, staffNames2;
 
 	private Color colour = null;
 	private RuneType[] subTypes = null;
@@ -55,16 +53,17 @@ public enum RuneType
 
 	static
 	{
-		RuneType[] values = values();
-		all = new String[values.length];
-		for(int i = 0; i < values.length; i++)
-			all[i] = values[i].name().toLowerCase(Locale.ROOT);
+		all = getNames(values());
+		staffNames = getNames(NONE, AIR, WATER, EARTH, FIRE);
+		staffNames2 = getNames(NONE, AIR, WATER, EARTH, FIRE, LAVA, MUD, STEAM);
+	}
 
-		staffTypes = new RuneType[] {NONE, AIR, WATER, EARTH, FIRE};
-
-		staffNames = new String[staffTypes.length];
-		for(int i = 0; i < staffTypes.length; i++)
-			staffNames[i] = staffTypes[i].toString();
+	private static String[] getNames(RuneType... runeTypes)
+	{
+		String[] names = new String[runeTypes.length];
+		for(int i = 0; i < runeTypes.length; i++)
+			names[i] = runeTypes[i].toString();
+		return names;
 	}
 
 	public static String[] allNames()
@@ -75,6 +74,11 @@ public enum RuneType
 	public static String[] staffNames()
 	{
 		return staffNames;
+	}
+
+	public static String[] staffNames2()
+	{
+		return staffNames2;
 	}
 
 	public static RuneType getFromMeta(int meta)
