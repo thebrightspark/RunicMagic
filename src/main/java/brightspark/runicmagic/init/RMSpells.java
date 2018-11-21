@@ -1,7 +1,8 @@
 package brightspark.runicmagic.init;
 
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.spell.Spell;
-import brightspark.runicmagic.spell.projectile.elemental.SpellAirStrike;
+import brightspark.runicmagic.spell.projectile.SpellProjectileBase;
 import brightspark.runicmagic.spell.self.SpellBonesToApples;
 import brightspark.runicmagic.spell.self.SpellEnchant;
 import brightspark.runicmagic.spell.teleport.SpellTeleportHome;
@@ -24,7 +25,10 @@ public class RMSpells
 			new SpellTeleportSpawn(),
 			new SpellTeleportHome(),
 
-			new SpellAirStrike(),
+			new SpellProjectileBase("air_strike", RuneType.AIR).addRuneCost(RuneType.AIR, 1),
+			new SpellProjectileBase("earth_strike", RuneType.EARTH).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.EARTH, 1),
+			new SpellProjectileBase("fire_strike", RuneType.FIRE).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.FIRE, 1),
+			new SpellProjectileBase("water_strike", RuneType.WATER).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.WATER, 1),
 
 			new SpellEnchant(1),
 			new SpellBonesToApples()

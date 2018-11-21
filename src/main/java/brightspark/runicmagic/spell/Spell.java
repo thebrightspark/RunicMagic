@@ -1,8 +1,8 @@
 package brightspark.runicmagic.spell;
 
 import brightspark.runicmagic.RunicMagic;
-import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -60,7 +60,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	/**
 	 * Add a rune cost to the total cost to cast this spell
 	 */
-	protected Spell addRuneCost(RuneType type, int amount)
+	public Spell addRuneCost(RuneType type, int amount)
 	{
 		cost.put(type, (short) amount);
 		return this;

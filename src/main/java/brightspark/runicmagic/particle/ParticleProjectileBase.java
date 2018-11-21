@@ -23,7 +23,7 @@ public class ParticleProjectileBase extends Particle
 
 	protected final Vec3d entityMotion;
 
-	protected ParticleProjectileBase(World worldIn, Vec3d position, Vec3d entityMotion, Color colour)
+	public ParticleProjectileBase(World worldIn, Vec3d position, Vec3d entityMotion, Color colour)
 	{
 		super(worldIn, position.x, position.y, position.z);
 		this.entityMotion = entityMotion;

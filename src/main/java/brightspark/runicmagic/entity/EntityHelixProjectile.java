@@ -1,28 +1,35 @@
 package brightspark.runicmagic.entity;
 
-import brightspark.runicmagic.particle.ParticleAir;
+import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.particle.ParticleBasic;
 import brightspark.runicmagic.util.ClientUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.awt.*;
+
 public class EntityHelixProjectile extends EntitySpellProjectile
 {
 	private int particleBearing;
+	private Color colour;
 
 	public EntityHelixProjectile(World worldIn)
 	{
 		super(worldIn);
 	}
 
-	public EntityHelixProjectile(EntityLivingBase shooter)
+	public EntityHelixProjectile(EntityLivingBase shooter, RuneType runeType)
 	{
 		super(shooter);
+		colour = runeType.getColour();
 	}
 
 	@Override
 	protected void spawnParticles(Vec3d centerPos)
 	{
+		ClientUtils.spawnParticle(new ParticleBasic(world, centerPos, colour));
+		/**
 		ClientUtils.spawnParticle(new ParticleAir(world, centerPos, new Vec3d(motionX, motionY, motionZ), particleBearing));
 		int bearing180 = particleBearing + 180;
 		if(bearing180 >= 360)
@@ -32,7 +39,7 @@ public class EntityHelixProjectile extends EntitySpellProjectile
 		particleBearing += 2;
 		if(particleBearing >= 360)
 			particleBearing -= 360;
-
+		*/
 		//world.spawnParticle(EnumParticleTypes.FLAME, centerPos.x, centerPos.y, centerPos.z, 0D, 0D, 0D);
 	}
 }
