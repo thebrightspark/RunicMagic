@@ -1,7 +1,9 @@
 package brightspark.runicmagic.init;
 
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.block.BlockObelisk;
 import brightspark.runicmagic.block.BlockRuneOre;
+import brightspark.runicmagic.enums.RuneType;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -18,6 +20,11 @@ public class RMBlocks
 
 	public static final Block rune_ore = null;
 
+	public static final Block obelisk_water = null;
+	public static final Block obelisk_earth = null;
+	public static final Block obelisk_fire = null;
+	public static final Block obelisk_air = null;
+
 	private static void add(Block block)
 	{
 		BLOCKS.add(block);
@@ -27,6 +34,11 @@ public class RMBlocks
 	private static void init()
 	{
 		add(new BlockRuneOre());
+
+		add(new BlockObelisk(RuneType.WATER));
+		add(new BlockObelisk(RuneType.EARTH));
+		add(new BlockObelisk(RuneType.FIRE));
+		add(new BlockObelisk(RuneType.AIR));
 	}
 
 	public static Block[] getBlocks()

@@ -2,8 +2,12 @@ package brightspark.runicmagic.init;
 
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.spell.Spell;
-import brightspark.runicmagic.spell.projectile.SpellProjectileBase;
+import brightspark.runicmagic.spell.projectile.SpellBolt;
+import brightspark.runicmagic.spell.projectile.SpellConfuse;
+import brightspark.runicmagic.spell.projectile.SpellStrike;
+import brightspark.runicmagic.spell.projectile.SpellWeaken;
 import brightspark.runicmagic.spell.self.SpellBonesToApples;
+import brightspark.runicmagic.spell.self.SpellChargeOrb;
 import brightspark.runicmagic.spell.self.SpellEnchant;
 import brightspark.runicmagic.spell.teleport.SpellTeleportHome;
 import brightspark.runicmagic.spell.teleport.SpellTeleportSpawn;
@@ -22,16 +26,34 @@ public class RMSpells
 	public static void register(IForgeRegistry<Spell> registry)
 	{
 		registry.registerAll(
+			//Teleport Spells
 			new SpellTeleportSpawn(),
 			new SpellTeleportHome(),
-
-			new SpellProjectileBase("air_strike", RuneType.AIR).addRuneCost(RuneType.AIR, 1),
-			new SpellProjectileBase("earth_strike", RuneType.EARTH).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.EARTH, 1),
-			new SpellProjectileBase("fire_strike", RuneType.FIRE).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.FIRE, 1),
-			new SpellProjectileBase("water_strike", RuneType.WATER).addRuneCost(RuneType.AIR, 1).addRuneCost(RuneType.WATER, 1),
-
-			new SpellEnchant(1),
-			new SpellBonesToApples()
+			//Projectile Attack Spells
+			new SpellStrike(RuneType.AIR),
+			new SpellStrike(RuneType.EARTH),
+			new SpellStrike(RuneType.FIRE),
+			new SpellStrike(RuneType.WATER),
+			new SpellBolt(RuneType.AIR),
+			new SpellBolt(RuneType.EARTH),
+			new SpellBolt(RuneType.FIRE),
+			new SpellBolt(RuneType.WATER),
+			//Projectile Effect Spells
+			new SpellWeaken(),
+			new SpellConfuse(),
+			//Self Spells
+			new SpellEnchant(1).addRuneCost(RuneType.WATER, 1),
+			new SpellEnchant(2).addRuneCost(RuneType.AIR, 3),
+			new SpellEnchant(3).addRuneCost(RuneType.FIRE, 5),
+			new SpellEnchant(4).addRuneCost(RuneType.EARTH, 10),
+			new SpellEnchant(5).addRuneCost(RuneType.EARTH, 15).addRuneCost(RuneType.WATER, 15),
+			new SpellEnchant(6).addRuneCost(RuneType.FIRE, 20).addRuneCost(RuneType.EARTH, 20),
+			new SpellBonesToApples(),
+			//Charge Orb
+			new SpellChargeOrb(RuneType.AIR),
+			new SpellChargeOrb(RuneType.EARTH),
+			new SpellChargeOrb(RuneType.FIRE),
+			new SpellChargeOrb(RuneType.WATER)
 		);
 	}
 

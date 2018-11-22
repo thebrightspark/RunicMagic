@@ -7,7 +7,7 @@ public class SpellTeleportHome extends SpellTeleportBase
 {
 	public SpellTeleportHome()
 	{
-		super("teleport_home");
+		super("home");
 	}
 
 	@Override

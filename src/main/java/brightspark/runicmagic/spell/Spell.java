@@ -21,6 +21,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	protected boolean selectable = true;
 	protected boolean instantCast = true;
 	protected int cooldown = 0;
+	protected int castTime = 0;
 
 	private Map<RuneType, Short> cost = new HashMap<>();
 
@@ -42,7 +43,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	 * @param progress The current progress in ticks since the spell was executed
 	 * @return false if the spell should be cancelled
 	 */
-	public boolean updateCasting(World world, int progress)
+	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
 		if(instantCast)
 			throw new RunicMagicException("Instant casting spell %s does not override Spell#updateCasting!");
@@ -88,6 +89,14 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public int getCooldown()
 	{
 		return cooldown;
+	}
+
+	/**
+	 * Time for this spell to cast in ticks
+	 */
+	public int getCastTime()
+	{
+		return castTime;
 	}
 
 	public String getUnlocName()

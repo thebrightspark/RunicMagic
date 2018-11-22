@@ -1,5 +1,6 @@
 package brightspark.runicmagic.spell;
 
+import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,18 +22,25 @@ public class SpellHandler
 
 		Set<UUID> toRemove = new HashSet<>();
 		CASTS.forEach((uuid, spellCasting) -> {
-			if(!spellCasting.update(event.world))
+			EntityPlayer player = event.world.getPlayerEntityByUUID(uuid);
+			SpellCasting.UpdateResult result = spellCasting.update(event.world, player);
+			switch(result)
 			{
-				toRemove.add(uuid);
-				EntityPlayer player = event.world.getPlayerEntityByUUID(uuid);
-				if(player != null)
-					spellCasting.getSpell().onCastCancel(player);
+				case CANCEL:
+					if(player != null)
+						spellCasting.getSpell().onCastCancel(player);
+				case COMPLETE:
+					toRemove.add(uuid);
+					break;
+				case PASS:
+				default:
+					//Do nothing
 			}
 		});
 		toRemove.forEach(CASTS::remove);
 	}
 
-	public static void addSpellCast(EntityPlayer player, Spell spell)
+	public static void addSpellCast(EntityPlayer player, Spell spell, SpellCastData data)
 	{
 		UUID uuid = player.getUniqueID();
 		SpellCasting spellCasting = CASTS.get(uuid);
@@ -40,6 +48,6 @@ public class SpellHandler
 		if(spellCasting != null)
 			spellCasting.getSpell().onCastCancel(player);
 		//Start new spell cast
-		CASTS.put(uuid, new SpellCasting(spell));
+		CASTS.put(uuid, new SpellCasting(spell, data));
 	}
 }

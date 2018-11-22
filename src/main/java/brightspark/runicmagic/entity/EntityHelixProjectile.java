@@ -1,7 +1,7 @@
 package brightspark.runicmagic.entity;
 
-import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.particle.ParticleBasic;
+import brightspark.runicmagic.spell.projectile.SpellProjectileBase;
 import brightspark.runicmagic.util.ClientUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
@@ -19,10 +19,10 @@ public class EntityHelixProjectile extends EntitySpellProjectile
 		super(worldIn);
 	}
 
-	public EntityHelixProjectile(EntityLivingBase shooter, RuneType runeType)
+	public EntityHelixProjectile(EntityLivingBase shooter, SpellProjectileBase spell, Color colour)
 	{
-		super(shooter);
-		colour = runeType.getColour();
+		super(shooter, spell);
+		this.colour = colour == null ? new Color(1F, 1F, 1F) : colour;
 	}
 
 	@Override

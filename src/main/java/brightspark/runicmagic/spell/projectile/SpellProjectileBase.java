@@ -5,19 +5,32 @@ import brightspark.runicmagic.entity.EntitySpellProjectile;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.SpellCastData;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.function.Function;
 
 public class SpellProjectileBase extends Spell
 {
 	private final Function<EntityPlayer, EntitySpellProjectile> entityFactory;
+	protected float attackDamage = 2F;
+
+	public SpellProjectileBase(String name)
+	{
+		this(name, new Color(1F, 1F, 1F));
+	}
 
 	public SpellProjectileBase(String name, RuneType runeType)
 	{
+		this(name, runeType.getColour());
+	}
+
+	public SpellProjectileBase(String name, Color colour)
+	{
 		super(name);
-		entityFactory = player -> new EntityHelixProjectile(player, runeType);
+		entityFactory = player -> new EntityHelixProjectile(player, this, colour);
 		cooldown = 10;
 	}
 
@@ -28,10 +41,7 @@ public class SpellProjectileBase extends Spell
 		cooldown = 10; //0.5s
 	}
 
-	protected float getAttackDamage()
-	{
-		return 2f;
-	}
+	public void applyEffects(EntityLivingBase entityHit) {}
 
 	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
@@ -39,9 +49,8 @@ public class SpellProjectileBase extends Spell
 		if(player.world.isRemote)
 			return false;
 		World world = player.world;
-		//TODO: Set projectile attack damage
-		float attackDamage = getAttackDamage() + data.getAttackBonus();
 		EntitySpellProjectile entity = entityFactory.apply(player);
+		entity.setAttackDamage(attackDamage + data.getAttackBonus());
 		return world.spawnEntity(entity);
 	}
 }

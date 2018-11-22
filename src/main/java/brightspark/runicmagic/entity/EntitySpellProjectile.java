@@ -1,6 +1,7 @@
 package brightspark.runicmagic.entity;
 
 import brightspark.runicmagic.spell.projectile.DamageSourceSpellProjectile;
+import brightspark.runicmagic.spell.projectile.SpellProjectileBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,6 +29,7 @@ public abstract class EntitySpellProjectile extends Entity implements IProjectil
 	private static final Predicate<Entity> TARGETS = ((Predicate<Entity>) EntitySelectors.NOT_SPECTATING::apply).and(EntitySelectors.IS_ALIVE::apply).and(Entity::canBeCollidedWith);
 
 	private EntityLivingBase shooter;
+	private SpellProjectileBase spell;
 	private float damage = 4F;
 	private int knockback = 1;
 
@@ -37,12 +39,18 @@ public abstract class EntitySpellProjectile extends Entity implements IProjectil
 		setSize(0.5F, 0.5F);
 	}
 
-	public EntitySpellProjectile(EntityLivingBase shooter)
+	public EntitySpellProjectile(EntityLivingBase shooter, SpellProjectileBase spell)
 	{
 		this(shooter.world);
 		setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.1D, shooter.posZ);
 		setHeadingFromShooter(shooter, 0F, 0.25F); //TODO: Speed this up later after
 		this.shooter = shooter;
+		this.spell = spell;
+	}
+
+	public void setAttackDamage(float damage)
+	{
+		this.damage = damage;
 	}
 
 	@Override
@@ -200,7 +208,11 @@ public abstract class EntitySpellProjectile extends Entity implements IProjectil
 	/**
 	 * Do something when this projectile hits an entity
 	 */
-	protected void onEntityHit(EntityLivingBase entity) {}
+	protected void onEntityHit(EntityLivingBase entity)
+	{
+		entity.attackEntityFrom(new DamageSourceSpellProjectile(this, shooter), damage);
+		spell.applyEffects(entity);
+	}
 
 	public Vec3d getCenter(AxisAlignedBB box)
 	{

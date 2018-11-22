@@ -13,7 +13,7 @@ public class SpellTeleportBase extends Spell
 {
 	public SpellTeleportBase(String name)
 	{
-		super(name);
+		super("teleport_" + name);
 		selectable = false;
 		cooldown = 600; //30s
 	}

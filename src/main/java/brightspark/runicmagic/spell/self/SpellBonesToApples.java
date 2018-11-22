@@ -1,7 +1,6 @@
 package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.enums.RuneType;
-import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -9,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 // Turns all bones in player inventory into apples
-public class SpellBonesToApples extends Spell
+public class SpellBonesToApples extends SpellSelfBase
 {
 	public SpellBonesToApples()
 	{

@@ -1,6 +1,6 @@
 package brightspark.runicmagic.spell.self;
 
-import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -13,14 +13,15 @@ import net.minecraft.util.EnumHand;
 import java.util.List;
 
 // Randomly enchants the held item like an enchantment table
-public class SpellEnchant extends Spell
+public class SpellEnchant extends SpellSelfBase
 {
 	private byte level;
 
 	public SpellEnchant(int level)
 	{
-		super("enchant");
-		this.level = (byte) level;
+		super("enchant_" + level);
+		this.level = (byte) (level * 5);
+		addRuneCost(RuneType.COSMIC, 1);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ public class SpellTeleportSpawn extends SpellTeleportBase
 {
 	public SpellTeleportSpawn()
 	{
-		super("teleport_spawn");
+		super("spawn");
 	}
 
 	@Override
