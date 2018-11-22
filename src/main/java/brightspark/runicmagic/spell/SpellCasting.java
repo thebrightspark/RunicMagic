@@ -1,5 +1,7 @@
 package brightspark.runicmagic.spell;
 
+import brightspark.runicmagic.message.MessageRemoveSpellCasting;
+import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -17,15 +19,17 @@ public class SpellCasting
 		progress = 0;
 	}
 
-	public UpdateResult update(World world, EntityPlayer player)
+	public boolean update(World world, EntityPlayer player)
 	{
 		boolean shouldCancel = spell.updateCasting(world, player, progress++);
-		if(!shouldCancel && progress >= spell.getCastTime())
-		{
+		boolean result = shouldCancel;
+		if(shouldCancel)
+			spell.onCastCancel(player);
+		else if(result = progress >= spell.getCastTime())
 			spell.execute(player, data);
-			return UpdateResult.COMPLETE;
-		}
-		return shouldCancel ? UpdateResult.CANCEL : UpdateResult.PASS;
+		if(result && !world.isRemote)
+			NetworkHandler.network.sendToAll(new MessageRemoveSpellCasting(player));
+		return result;
 	}
 
 	public Spell getSpell()
@@ -33,10 +37,8 @@ public class SpellCasting
 		return spell;
 	}
 
-	public enum UpdateResult
+	public SpellCastData getData()
 	{
-		PASS,
-		CANCEL,
-		COMPLETE
+		return data;
 	}
 }

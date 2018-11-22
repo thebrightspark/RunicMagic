@@ -29,6 +29,7 @@ public class RMSpells
 			//Teleport Spells
 			new SpellTeleportSpawn(),
 			new SpellTeleportHome(),
+
 			//Projectile Attack Spells
 			new SpellStrike(RuneType.AIR),
 			new SpellStrike(RuneType.EARTH),
@@ -38,9 +39,11 @@ public class RMSpells
 			new SpellBolt(RuneType.EARTH),
 			new SpellBolt(RuneType.FIRE),
 			new SpellBolt(RuneType.WATER),
+
 			//Projectile Effect Spells
 			new SpellWeaken(),
 			new SpellConfuse(),
+
 			//Self Spells
 			new SpellEnchant(1).addRuneCost(RuneType.WATER, 1),
 			new SpellEnchant(2).addRuneCost(RuneType.AIR, 3),
@@ -49,6 +52,7 @@ public class RMSpells
 			new SpellEnchant(5).addRuneCost(RuneType.EARTH, 15).addRuneCost(RuneType.WATER, 15),
 			new SpellEnchant(6).addRuneCost(RuneType.FIRE, 20).addRuneCost(RuneType.EARTH, 20),
 			new SpellBonesToApples(),
+
 			//Charge Orb
 			new SpellChargeOrb(RuneType.AIR),
 			new SpellChargeOrb(RuneType.EARTH),

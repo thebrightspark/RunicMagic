@@ -33,7 +33,7 @@ public class SpellChargeOrb extends SpellSelfBase
 	@Override
 	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
-		return findHeldItem(player, UNPOWERED_ORB) != null && isBlockLookingAtValid(player);
+		return findHeldItem(player, UNPOWERED_ORB) == null || !isBlockLookingAtValid(player);
 	}
 
 	@Override

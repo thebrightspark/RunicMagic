@@ -33,7 +33,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 
 	/**
 	 * Executes this spell and returns true if successful
-	 * Called only server side
+	 * Will be called instantly for instant spells, or at the end of casting
 	 */
 	public abstract boolean execute(EntityPlayer player, SpellCastData data);
 
@@ -41,13 +41,13 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	 * Process updating the casting of this spell if it's not instant
 	 * @param world The world
 	 * @param progress The current progress in ticks since the spell was executed
-	 * @return false if the spell should be cancelled
+	 * @return true if the spell should be cancelled
 	 */
 	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
-		if(instantCast)
-			throw new RunicMagicException("Instant casting spell %s does not override Spell#updateCasting!");
-		return true;
+		if(!instantCast)
+			throw new RunicMagicException("Non-instant casting spell %s does not override Spell#updateCasting!");
+		return false;
 	}
 
 	/**

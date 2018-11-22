@@ -1,5 +1,6 @@
 package brightspark.runicmagic.capability;
 
+import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.init.RMCapabilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = RunicMagic.MOD_ID)
 public class CapabilityHandler
 {
 	@SubscribeEvent
