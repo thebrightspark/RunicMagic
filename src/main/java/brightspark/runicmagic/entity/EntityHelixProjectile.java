@@ -1,6 +1,6 @@
 package brightspark.runicmagic.entity;
 
-import brightspark.runicmagic.particle.ParticleBasic;
+import brightspark.runicmagic.particle.ParticleStatic;
 import brightspark.runicmagic.spell.projectile.SpellProjectileBase;
 import brightspark.runicmagic.util.ClientUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +28,7 @@ public class EntityHelixProjectile extends EntitySpellProjectile
 	@Override
 	protected void spawnParticles(Vec3d centerPos)
 	{
-		ClientUtils.spawnParticle(new ParticleBasic(world, centerPos, colour));
+		ClientUtils.spawnParticle(new ParticleStatic(world, centerPos, colour, ClientUtils.textureCloudy));
 		/**
 		ClientUtils.spawnParticle(new ParticleAir(world, centerPos, new Vec3d(motionX, motionY, motionZ), particleBearing));
 		int bearing180 = particleBearing + 180;

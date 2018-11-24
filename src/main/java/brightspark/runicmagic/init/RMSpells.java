@@ -9,6 +9,7 @@ import brightspark.runicmagic.spell.projectile.SpellWeaken;
 import brightspark.runicmagic.spell.self.SpellBonesToApples;
 import brightspark.runicmagic.spell.self.SpellChargeOrb;
 import brightspark.runicmagic.spell.self.SpellEnchant;
+import brightspark.runicmagic.spell.self.SpellHumidify;
 import brightspark.runicmagic.spell.teleport.SpellTeleportHome;
 import brightspark.runicmagic.spell.teleport.SpellTeleportSpawn;
 import net.minecraft.util.ResourceLocation;
@@ -52,6 +53,7 @@ public class RMSpells
 			new SpellEnchant(5).addRuneCost(RuneType.EARTH, 15).addRuneCost(RuneType.WATER, 15),
 			new SpellEnchant(6).addRuneCost(RuneType.FIRE, 20).addRuneCost(RuneType.EARTH, 20),
 			new SpellBonesToApples(),
+			new SpellHumidify(),
 
 			//Charge Orb
 			new SpellChargeOrb(RuneType.AIR),

@@ -140,7 +140,9 @@ public interface CapSpell extends RMCapability
 
 			//Check the player has enough runes to cast the spell
 			Map<RuneType, Short> spellCost = ItemStaff.calculateRuneCost(stack, spell);
-			return spellCost.isEmpty() || CommonUtils.hasRunes(player.inventory.mainInventory, spell.getCost());
+			boolean hasRunes = spellCost.isEmpty() || CommonUtils.hasRunes(player.inventory.mainInventory, spell.getCost());
+			//Check spell requirements
+			return hasRunes && spell.canCast(player);
 		}
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)

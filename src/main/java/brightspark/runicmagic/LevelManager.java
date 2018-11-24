@@ -22,8 +22,8 @@ public class LevelManager
 	private static int experienceForLevel(int level)
 	{
 		double L1_8 = 0.125D * (double) level;
-		double d1 = Math.pow(2, (double) (level - 1) / 7D) - 1;
-		double d2 = 1D - Math.pow(2, -(1 / 7));
+		double d1 = Math.pow(2D, (double) (level - 1) / 7D) - 1D;
+		double d2 = 1D - Math.pow(2D, -(1D / 7D));
 		double xp = (((double) level * L1_8) - L1_8) + (75D * (d1 / d2));
 		double truncation = 0.109D * (double) level;
 		return (int) Math.round(xp - truncation);
@@ -52,9 +52,9 @@ public class LevelManager
 		for(int i = 0; i < list.size(); i++)
 		{
 			Map.Entry<Short, Integer> entry = list.get(i);
-			if(xp > entry.getValue() && xp < list.get(i + 1).getValue())
+			if(xp >= entry.getValue() && xp < list.get(i + 1).getValue())
 				return entry.getKey();
 		}
-		return -1;
+		return list.get(list.size() - 1).getKey();
 	}
 }

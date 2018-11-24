@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class SpellSelfBase extends Spell
@@ -35,5 +36,13 @@ public abstract class SpellSelfBase extends Spell
 		Vec3d end = eyePos.add(look.scale(player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue()));
 		RayTraceResult result = player.world.rayTraceBlocks(eyePos, end, false, false, true);
 		return result.typeOfHit == RayTraceResult.Type.BLOCK ? player.world.getBlockState(result.getBlockPos()) : null;
+	}
+
+	protected boolean playerHasStack(EntityPlayer player, ItemStack stack, boolean strict)
+	{
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++)
+			if(OreDictionary.itemMatches(stack, player.inventory.getStackInSlot(i), strict))
+				return true;
+		return false;
 	}
 }

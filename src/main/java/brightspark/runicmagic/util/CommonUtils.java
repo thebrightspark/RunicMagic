@@ -3,7 +3,9 @@ package brightspark.runicmagic.util;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMItems;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Map;
 
@@ -53,5 +55,11 @@ public class CommonUtils
 				}
 			}
 		}
+	}
+
+	public static boolean isIntegratedServer()
+	{
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		return server != null && !server.isDedicatedServer();
 	}
 }

@@ -25,6 +25,13 @@ public class SpellEnchant extends SpellSelfBase
 	}
 
 	@Override
+	public boolean canCast(EntityPlayer player)
+	{
+		ItemStack stack = player.getHeldItemMainhand();
+		return stack.isItemEnchanted() || !stack.isItemEnchantable();
+	}
+
+	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		ItemStack stack = player.getHeldItemMainhand();

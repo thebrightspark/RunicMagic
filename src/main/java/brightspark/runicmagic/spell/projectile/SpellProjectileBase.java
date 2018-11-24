@@ -22,6 +22,12 @@ public class SpellProjectileBase extends Spell
 		this(name, new Color(1F, 1F, 1F));
 	}
 
+	@Override
+	public boolean canCast(EntityPlayer player)
+	{
+		return true;
+	}
+
 	public SpellProjectileBase(String name, RuneType runeType)
 	{
 		this(name, runeType.getColour());

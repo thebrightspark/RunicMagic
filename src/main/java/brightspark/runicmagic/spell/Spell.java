@@ -19,7 +19,6 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	//If true, then is a selectable spell for use with a staff
 	//If false, then is an instant click spell (e.g. teleport spell)
 	protected boolean selectable = true;
-	protected boolean instantCast = true;
 	protected int cooldown = 0;
 	protected int castTime = 0;
 
@@ -32,10 +31,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	}
 
 	/**
-	 * Executes this spell and returns true if successful
-	 * Will be called instantly for instant spells, or at the end of casting
+	 * Checks if the player meets the spell's requirements to start casting
+	 * @param player The player
+	 * @return Whether the spell can be cast
 	 */
-	public abstract boolean execute(EntityPlayer player, SpellCastData data);
+	public abstract boolean canCast(EntityPlayer player);
 
 	/**
 	 * Process updating the casting of this spell if it's not instant
@@ -45,10 +45,16 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	 */
 	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
-		if(!instantCast)
+		if(castTime > 0)
 			throw new RunicMagicException("Non-instant casting spell %s does not override Spell#updateCasting!");
 		return false;
 	}
+
+	/**
+	 * Executes this spell and returns true if successful
+	 * Will be called instantly for instant spells, or at the end of casting
+	 */
+	public abstract boolean execute(EntityPlayer player, SpellCastData data);
 
 	/**
 	 * Called when a spell cast is cancelled

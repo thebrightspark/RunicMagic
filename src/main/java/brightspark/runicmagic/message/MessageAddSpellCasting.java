@@ -56,8 +56,8 @@ public class MessageAddSpellCasting implements IMessage
         @Override
         public IMessage onMessage(MessageAddSpellCasting message, MessageContext ctx)
         {
-            SpellCasting spellCasting = message.spellCasting;
-            SpellHandler.addSpellCast(Minecraft.getMinecraft().player, spellCasting.getSpell(), spellCasting.getData());
+            Minecraft.getMinecraft().addScheduledTask(() ->
+                SpellHandler.addSpellCast(Minecraft.getMinecraft().player, message.spellCasting.getSpell(), message.spellCasting.getData()));
             return null;
         }
     }

@@ -19,6 +19,12 @@ public class SpellTeleportBase extends Spell
 	}
 
 	@Override
+	public boolean canCast(EntityPlayer player)
+	{
+		return true;
+	}
+
+	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
 		int dim = getDestinationDimId(player);
