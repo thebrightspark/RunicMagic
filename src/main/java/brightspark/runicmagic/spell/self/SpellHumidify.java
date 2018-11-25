@@ -58,7 +58,7 @@ public class SpellHumidify extends SpellSelfBase
 		{
 			Vec3d playerPos = player.getPositionVector().add(0, 3D, 0);
 			//Clouds
-			for(int i = 0; i < 6; i++)
+			for(int i = 0; i < 5; i++)
 				ClientUtils.spawnParticle(new ParticleCloud(world, posOffset(world, playerPos, 1.5D, 0.3D, 1.5D)));
 
 			if(progress >= 20)

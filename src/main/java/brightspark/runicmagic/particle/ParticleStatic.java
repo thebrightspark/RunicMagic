@@ -39,18 +39,55 @@ public class ParticleStatic extends Particle
 	{
 		super(worldIn, position.x, position.y, position.z);
 		//Set colour with slight variance
-		setRBGColorF(
-			randColourVary(colour.getRed()),
-			randColourVary(colour.getGreen()),
-			randColourVary(colour.getBlue())
-		);
+		float[] colourParts;
+		switch(getColourVariance())
+		{
+			case BRIGHTNESS:
+				colourParts = randColourVary1(colour);
+				break;
+			case COLOUR:
+				colourParts = randColourVary2(colour);
+				break;
+			case NONE:
+			default:
+				colourParts = colour.getRGBColorComponents(null);
+				break;
+		}
+		setRBGColorF(colourParts[0], colourParts[1], colourParts[2]);
 	}
 
-	private float randColourVary(int colourComponent)
+	private float colourIntToFloat(int colour)
 	{
-		int maxChange = Math.min(colourComponent / 20, 20);
+		return MathHelper.clamp((float) colour / 255F, 0F, 1F);
+	}
+
+	private float[] randColourVary1(Color colour)
+	{
+		int randChange = rand.nextInt(20) - 10;
+		return new float[] {
+			colourIntToFloat(colour.getRed() + randChange),
+			colourIntToFloat(colour.getGreen() + randChange),
+			colourIntToFloat(colour.getBlue() + randChange)};
+	}
+
+	private float[] randColourVary2(Color colour)
+	{
+		return new float[] {
+			randColourPartVary(colour.getRed()),
+			randColourPartVary(colour.getGreen()),
+			randColourPartVary(colour.getBlue())};
+	}
+
+	private float randColourPartVary(int colourComponent)
+	{
+		int maxChange = Math.min(colourComponent / 8, 20);
 		int randChange = rand.nextInt(maxChange) - (maxChange / 2);
-		return (float) MathHelper.clamp(colourComponent + randChange, 0, 255) / 255F;
+		return colourIntToFloat(colourComponent + randChange);
+	}
+
+	protected ColourVariance getColourVariance()
+	{
+		return ColourVariance.BRIGHTNESS;
 	}
 
 	@Override
@@ -109,5 +146,12 @@ public class ParticleStatic extends Particle
 		//If collided with a block, then die
 		if(origY != y || origX != x || origZ != z)
 			setExpired();
+	}
+
+	protected enum ColourVariance
+	{
+		NONE,
+		BRIGHTNESS,
+		COLOUR
 	}
 }
