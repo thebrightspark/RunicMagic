@@ -29,16 +29,6 @@ public class SpellHumidify extends SpellSelfBase
 		castTime = 80;
 	}
 
-	private static double getRandOffset(World world, double variance)
-	{
-		return variance == 0D ? 0D : (world.rand.nextDouble() * variance) - (variance / 2);
-	}
-
-	private static Vec3d posOffset(World world, Vec3d playerPos, double xVary, double yVary, double zVary)
-	{
-		return playerPos.add(getRandOffset(world, xVary), getRandOffset(world, yVary), getRandOffset(world, zVary));
-	}
-
 	private static ItemStack createWaterBucket()
 	{
 		return FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));

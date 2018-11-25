@@ -6,6 +6,7 @@ import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -115,6 +116,18 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public TextComponentTranslation getUnlocNameTextComponent()
 	{
 		return new TextComponentTranslation(getUnlocName());
+	}
+
+	// <<<<<<<< Util methods >>>>>>>>
+
+	protected static double getRandOffset(World world, double variance)
+	{
+		return variance == 0D ? 0D : (world.rand.nextDouble() * variance) - (variance / 2);
+	}
+
+	protected static Vec3d posOffset(World world, Vec3d pos, double xVary, double yVary, double zVary)
+	{
+		return pos.add(getRandOffset(world, xVary), getRandOffset(world, yVary), getRandOffset(world, zVary));
 	}
 
 	protected boolean hasPlayerMoved(EntityPlayer player)

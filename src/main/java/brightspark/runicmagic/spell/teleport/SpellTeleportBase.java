@@ -1,6 +1,8 @@
 package brightspark.runicmagic.spell.teleport;
 
+import brightspark.runicmagic.particle.ParticleRising;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.ClientUtils;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -9,6 +11,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
+import java.awt.*;
+
 public class SpellTeleportBase extends Spell
 {
 	public SpellTeleportBase(String name)
@@ -16,12 +20,26 @@ public class SpellTeleportBase extends Spell
 		super("teleport_" + name);
 		selectable = false;
 		cooldown = 600; //30s
+		castTime = 200;
 	}
 
 	@Override
 	public boolean canCast(EntityPlayer player)
 	{
-		return true;
+		return hasPlayerMoved(player);
+	}
+
+	@Override
+	public boolean updateCasting(World world, EntityPlayer player, int progress)
+	{
+		if(world.isRemote)
+		{
+			Vec3d playerPos = player.getPositionVector();
+			int particles = progress / 10;
+			for(int i = 0; i < particles; i++)
+				ClientUtils.spawnParticle(new ParticleRising(world, posOffset(world, playerPos, 1D, 0D, 1D), new Color(0x2c1863)));
+		}
+		return hasPlayerMoved(player);
 	}
 
 	@Override
