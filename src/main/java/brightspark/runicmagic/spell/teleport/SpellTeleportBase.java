@@ -1,5 +1,6 @@
 package brightspark.runicmagic.spell.teleport;
 
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.particle.ParticleRising;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.ClientUtils;
@@ -15,9 +16,9 @@ import java.awt.*;
 
 public class SpellTeleportBase extends Spell
 {
-	public SpellTeleportBase(String name)
+	public SpellTeleportBase(String name, SpellType spellType, int level)
 	{
-		super("teleport_" + name);
+		super("teleport_" + name, spellType, level);
 		selectable = false;
 		cooldown = 600; //30s
 		castTime = 200;

@@ -1,5 +1,6 @@
 package brightspark.runicmagic.spell.self;
 
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.spell.Spell;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,9 +13,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class SpellSelfBase extends Spell
 {
-	public SpellSelfBase(String name)
+	public SpellSelfBase(String name, SpellType spellType, int level)
 	{
-		super(name);
+		super(name, spellType, level);
 		selectable = false;
 	}
 

@@ -2,6 +2,7 @@ package brightspark.runicmagic.spell;
 
 import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,8 @@ import java.util.Map;
 public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 {
 	private final String unlocName;
+	private final SpellType spellType;
+	private final int level;
 	//If true, then is a selectable spell for use with a staff
 	//If false, then is an instant click spell (e.g. teleport spell)
 	protected boolean selectable = true;
@@ -27,10 +30,30 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 
 	private Map<RuneType, Short> cost = new HashMap<>();
 
-	public Spell(String name)
+	public Spell(String name, SpellType spellType, int level)
 	{
 		setRegistryName(name);
+		this.spellType = spellType;
+		this.level = level;
 		unlocName = RunicMagic.MOD_ID + ".spell." + name + ".name";
+	}
+
+	/**
+	 * Gets the spell type of this spell
+	 * @return The spell type
+	 */
+	public SpellType getSpellType()
+	{
+		return spellType;
+	}
+
+	/**
+	 * The magic level required to use this spell
+	 * @return Magic level requirement
+	 */
+	public int getLevel()
+	{
+		return level;
 	}
 
 	/**

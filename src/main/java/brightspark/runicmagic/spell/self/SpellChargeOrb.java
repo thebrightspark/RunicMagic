@@ -2,6 +2,7 @@ package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.block.BlockObelisk;
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.block.state.IBlockState;
@@ -16,9 +17,9 @@ public class SpellChargeOrb extends SpellSelfBase
 	private static final ItemStack UNPOWERED_ORB = new ItemStack(RMItems.orb, 1, 0);
 	private final RuneType runeType;
 
-	public SpellChargeOrb(RuneType runeType)
+	public SpellChargeOrb(RuneType runeType, int level)
 	{
-		super("charge_orb_" + runeType);
+		super("charge_orb_" + runeType, SpellType.ENCHANTMENT, level);
 		this.runeType = runeType;
 		addRuneCost(RuneType.COSMIC, 3);
 		addRuneCost(runeType, 30);

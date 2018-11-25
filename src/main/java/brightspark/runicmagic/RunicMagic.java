@@ -1,6 +1,7 @@
 package brightspark.runicmagic;
 
 import brightspark.runicmagic.command.CommandExecuteSpell;
+import brightspark.runicmagic.gui.GuiHandler;
 import brightspark.runicmagic.init.*;
 import brightspark.runicmagic.item.RMItemSubBase;
 import brightspark.runicmagic.spell.Spell;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,6 +61,7 @@ public class RunicMagic
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		NetworkHandler.init();
 		RMCapabilities.init();
 

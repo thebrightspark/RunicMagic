@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,7 +16,7 @@ public class SpellBonesToApples extends SpellSelfBase
 
 	public SpellBonesToApples()
 	{
-		super("bones_to_apples");
+		super("bones_to_apples", SpellType.ALCHEMY, 15);
 		cooldown = 1200; //60 secs
 		addRuneCost(RuneType.NATURE, 1);
 		addRuneCost(RuneType.EARTH, 2);

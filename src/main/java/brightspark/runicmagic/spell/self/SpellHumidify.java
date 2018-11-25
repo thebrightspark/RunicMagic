@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.particle.ParticleCloud;
 import brightspark.runicmagic.particle.ParticleRain;
 import brightspark.runicmagic.util.ClientUtils;
@@ -22,7 +23,7 @@ public class SpellHumidify extends SpellSelfBase
 
 	public SpellHumidify()
 	{
-		super("humidify");
+		super("humidify", SpellType.ALCHEMY, 68);
 		addRuneCost(RuneType.ASTRAL, 1);
 		addRuneCost(RuneType.FIRE, 1);
 		addRuneCost(RuneType.WATER, 3);

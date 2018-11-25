@@ -1,5 +1,6 @@
 package brightspark.runicmagic.spell.teleport;
 
+import brightspark.runicmagic.enums.SpellType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
@@ -7,7 +8,7 @@ public class SpellTeleportHome extends SpellTeleportBase
 {
 	public SpellTeleportHome()
 	{
-		super("home");
+		super("home", SpellType.TELESELF, 40);
 	}
 
 	@Override

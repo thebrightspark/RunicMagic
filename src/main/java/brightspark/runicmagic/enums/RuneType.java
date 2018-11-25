@@ -26,11 +26,11 @@ public enum RuneType
 	BODY,
 	COSMIC,
 	CHAOS,
-	ASTRAL,
 	NATURE,
 	LAW,
 	DEATH,
-	ARMADYL,
+
+	ASTRAL,
 	BLOOD,
 	SOUL;
 

@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.projectile;
 
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -9,7 +10,7 @@ public class SpellWeaken extends SpellProjectileBase
 {
 	public SpellWeaken()
 	{
-		super("weaken");
+		super("weaken", SpellType.CURSES, 11);
 		addRuneCost(RuneType.BODY, 1);
 	}
 

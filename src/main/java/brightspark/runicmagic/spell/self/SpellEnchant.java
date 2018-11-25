@@ -1,6 +1,7 @@
 package brightspark.runicmagic.spell.self;
 
 import brightspark.runicmagic.enums.RuneType;
+import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -17,10 +18,10 @@ public class SpellEnchant extends SpellSelfBase
 {
 	private byte level;
 
-	public SpellEnchant(int level)
+	public SpellEnchant(int enchantLevel, int level)
 	{
-		super("enchant_" + level);
-		this.level = (byte) (level * 5);
+		super("enchant_" + enchantLevel, SpellType.ENCHANTMENT, level);
+		this.level = (byte) (enchantLevel * 5);
 		addRuneCost(RuneType.COSMIC, 1);
 	}
 
