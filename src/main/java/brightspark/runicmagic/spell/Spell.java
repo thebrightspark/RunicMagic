@@ -5,9 +5,11 @@ import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.HashMap;
@@ -113,5 +115,22 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public TextComponentTranslation getUnlocNameTextComponent()
 	{
 		return new TextComponentTranslation(getUnlocName());
+	}
+
+	protected boolean hasPlayerMoved(EntityPlayer player)
+	{
+		return player.prevPosX != player.posX || player.prevPosY != player.posY || player.prevPosZ != player.posZ;
+	}
+
+	protected int countItems(EntityPlayer player, ItemStack stack)
+	{
+		int count = 0;
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++)
+		{
+			ItemStack invStack = player.inventory.getStackInSlot(i);
+			if(OreDictionary.itemMatches(stack, invStack, false))
+				count += invStack.getCount();
+		}
+		return count;
 	}
 }

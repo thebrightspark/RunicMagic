@@ -18,6 +18,8 @@ import net.minecraftforge.fluids.FluidUtil;
 
 public class SpellHumidify extends SpellSelfBase
 {
+	private static final ItemStack BUCKET = new ItemStack(Items.BUCKET);
+
 	public SpellHumidify()
 	{
 		super("humidify");
@@ -45,6 +47,8 @@ public class SpellHumidify extends SpellSelfBase
 	@Override
 	public boolean canCast(EntityPlayer player)
 	{
+		if(hasPlayerMoved(player))
+			return false;
 		for(int i = 0; i < player.inventory.getSizeInventory(); i++)
 			if(player.inventory.getStackInSlot(i).getItem() == Items.BUCKET)
 				return true;
@@ -54,19 +58,22 @@ public class SpellHumidify extends SpellSelfBase
 	@Override
 	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
-		if(world.isRemote && progress >= 0)
+		if(world.isRemote)
 		{
 			Vec3d playerPos = player.getPositionVector().add(0, 3D, 0);
 			//Clouds
 			for(int i = 0; i < 5; i++)
-				ClientUtils.spawnParticle(new ParticleCloud(world, posOffset(world, playerPos, 1.5D, 0.3D, 1.5D)));
+				ClientUtils.spawnParticle(new ParticleCloud(world, posOffset(world, playerPos, 1.5D, 0.5D, 1.5D)));
 
 			if(progress >= 20)
+			{
 				//Rain
-				for(int i = 0; i < 10; i++)
-					ClientUtils.spawnParticle(new ParticleRain(world, posOffset(world, playerPos, 1.2D, 0D, 1.2D)));
+				int particles = Math.min(10 + (countItems(player, BUCKET) * 2), 200);
+				for(int i = 0; i < particles; i++)
+					ClientUtils.spawnParticle(new ParticleRain(world, posOffset(world, playerPos, 1.2D, 0.3D, 1.2D)));
+			}
 		}
-		return false;
+		return hasPlayerMoved(player);
 	}
 
 	@Override
