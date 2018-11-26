@@ -11,7 +11,7 @@ public class ItemTalisman extends RMItemSubBase
 {
 	public ItemTalisman()
 	{
-		super("talisman", RuneType.allNames());
+		super("talisman", RuneType.talismanNames());
 		setMaxStackSize(1);
 	}
 

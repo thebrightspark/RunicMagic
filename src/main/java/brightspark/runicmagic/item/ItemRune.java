@@ -7,6 +7,6 @@ public class ItemRune extends RMItemSubBase
 {
 	public ItemRune()
 	{
-		super("rune", RuneType.allNames());
+		super("rune", RuneType.runeNames());
 	}
 }

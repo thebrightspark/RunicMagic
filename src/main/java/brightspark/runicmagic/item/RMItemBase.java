@@ -22,5 +22,8 @@ public class RMItemBase extends Item
 			getSubItems(items);
 	}
 
-	protected void getSubItems(NonNullList<ItemStack> items) {}
+	protected void getSubItems(NonNullList<ItemStack> items)
+	{
+		items.add(new ItemStack(this));
+	}
 }

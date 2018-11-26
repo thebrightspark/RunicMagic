@@ -21,7 +21,7 @@ public class RMItemSubBase extends RMItemBase
 			for(int i = 0; i < subNames.length; i++)
 				items.add(new ItemStack(this, 1, i));
 		else
-			items.add(new ItemStack(this));
+			super.getSubItems(items);
 	}
 
 	@Override

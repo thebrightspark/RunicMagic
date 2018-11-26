@@ -1,6 +1,8 @@
 package brightspark.runicmagic.enums;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public enum RuneType
@@ -34,7 +36,7 @@ public enum RuneType
 	BLOOD,
 	SOUL;
 
-	private static final String[] all, staffNames, staffNames2;
+	private static final String[] runeNames, talismanNames, staffNames, staffNames2;
 
 	private Color colour = null;
 	private RuneType[] subTypes = null;
@@ -53,9 +55,19 @@ public enum RuneType
 
 	static
 	{
-		all = getNames(values());
+		runeNames = getRuneNames();
+		talismanNames = getNames(AIR, WATER, EARTH, FIRE, MIND, BODY, COSMIC, CHAOS, NATURE, LAW, DEATH, BLOOD, SOUL);
 		staffNames = getNames(NONE, AIR, WATER, EARTH, FIRE);
 		staffNames2 = getNames(NONE, AIR, WATER, EARTH, FIRE, LAVA, MUD, STEAM);
+	}
+
+	private static String[] getRuneNames()
+	{
+		List<String> names = new LinkedList<>();
+		for(RuneType runeType : values())
+			if(runeType != NONE)
+				names.add(runeType.toString());
+		return names.toArray(new String[0]);
 	}
 
 	private static String[] getNames(RuneType... runeTypes)
@@ -66,9 +78,14 @@ public enum RuneType
 		return names;
 	}
 
-	public static String[] allNames()
+	public static String[] runeNames()
 	{
-		return all;
+		return runeNames;
+	}
+
+	public static String[] talismanNames()
+	{
+		return talismanNames;
 	}
 
 	public static String[] staffNames()
@@ -91,6 +108,11 @@ public enum RuneType
 	public Color getColour()
 	{
 		return colour;
+	}
+
+	public boolean hasSubTypes()
+	{
+		return subTypes != null;
 	}
 
 	public RuneType[] getSubTypes()

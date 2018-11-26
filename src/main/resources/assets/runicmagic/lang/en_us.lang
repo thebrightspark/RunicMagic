@@ -1,0 +1,103 @@
+itemGroup.runicmagic=Runic Magic
+
+# Items
+
+item.rune_essence.name=Rune Essence
+item.pure_essence.name=Pure Essence
+
+item.rune.air.name=Air Rune
+item.rune.water.name=Water Rune
+item.rune.earth.name=Earth Rune
+item.rune.fire.name=Fire Rune
+item.rune.mist.name=Mist Rune
+item.rune.dust.name=Dust Rune
+item.rune.smoke.name=Smoke Rune
+item.rune.steam.name=Steam Rune
+item.rune.lava.name=Lava Rune
+item.rune.mind.name=Mind Rune
+item.rune.body.name=Body Rune
+item.rune.cosmic.name=Cosmic Rune
+item.rune.chaos.name=Chaos Rune
+item.rune.nature.name=Nature Rune
+item.rune.law.name=Law Rune
+item.rune.death.name=Death Rune
+item.rune.astral.name=Astral Rune
+item.rune.blood.name=Blood Rune
+item.rune.soul.name=Soul Rune
+
+item.orb.unpowered.name=Unpowered Orb
+item.orb.air.name=Air Orb
+item.orb.water.name=Water Orb
+item.orb.earth.name=Earth Orb
+item.orb.fire.name=Fire Orb
+
+# Blocks
+
+tile.rune_ore.name=Rune Essence Ore
+
+tile.obelisk_air.name=Air Obelisk
+tile.obelisk_water.name=Water Obelisk
+tile.obelisk_earth.name=Earth Obelisk
+tile.obelisk_fire.name=Fire Obelisk
+
+#Spells
+
+spell.strike.air.name=Air Strike
+spell.strike.water.name=Water Strike
+spell.strike.earth.name=Earth Strike
+spell.strike.fire.name=Fire Strike
+spell.bolt.air.name=Air Bolt
+spell.bolt.water.name=Water Bolt
+spell.bolt.earth.name=Earth Bolt
+spell.bolt.fire.name=Fire Bolt
+spell.blast.air.name=Air Blast
+spell.blast.water.name=Water Blast
+spell.blast.earth.name=Earth Blast
+spell.blast.fire.name=Fire Blast
+spell.wave.air.name=Air Wave
+spell.wave.water.name=Water Wave
+spell.wave.earth.name=Earth Wave
+spell.wave.fire.name=Fire Wave
+spell.surge.air.name=Air Surge
+spell.surge.water.name=Water Surge
+spell.surge.earth.name=Earth Surge
+spell.surge.fire.name=Fire Surge
+
+spell.rush.smoke.name=Smoke Rush
+spell.rush.shadow.name=Shadow Rush
+spell.rush.blood.name=Blood Rush
+spell.rush.ice.name=Ice Rush
+spell.burst.smoke.name=Smoke Burst
+spell.burst.shadow.name=Shadow Burst
+spell.burst.blood.name=Blood Burst
+spell.burst.ice.name=Ice Burst
+spell.blitz.smoke.name=Smoke Blitz
+spell.blitz.shadow.name=Shadow Blitz
+spell.blitz.blood.name=Blood Blitz
+spell.blitz.ice.name=Ice Blitz
+spell.barrage.smoke.name=Smoke Barrage
+spell.barrage.shadow.name=Shadow Barrage
+spell.barrage.blood.name=Blood Barrage
+spell.barrage.ice.name=Ice Barrage
+
+spell.weaken.name=Weaken
+spell.confuse.name=Confuse
+
+spell.enchant1.name=Lvl 1 Enchant
+spell.enchant2.name=Lvl 2 Enchant
+spell.enchant3.name=Lvl 3 Enchant
+spell.enchant4.name=Lvl 4 Enchant
+spell.enchant5.name=Lvl 5 Enchant
+spell.enchant6.name=Lvl 6 Enchant
+spell.enchant7.name=Lvl 7 Enchant
+
+spell.chargeorb.water.name=Charge Water Orb
+spell.chargeorb.earth.name=Charge Earth Orb
+spell.chargeorb.fire.name=Charge Fire Orb
+spell.chargeorb.air.name=Charge Air Orb
+
+spell.bonestoapples.name=Bones To Apples
+spell.humidify.name=Humidify
+
+spell.teleport.spawn.name=Teleport Spawn
+spell.teleport.home.name=Teleport Home
