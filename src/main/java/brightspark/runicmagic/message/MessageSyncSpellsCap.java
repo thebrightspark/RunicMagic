@@ -1,11 +1,13 @@
 package brightspark.runicmagic.message;
 
 import brightspark.runicmagic.capability.CapSpell;
+import brightspark.runicmagic.gui.GuiSpellSelect;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.spell.Spell;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -21,13 +23,15 @@ public class MessageSyncSpellsCap implements IMessage
 	//If false then the whole map will be replaced in the client
 	private boolean changed;
 	private Map<Spell, Long> cooldowns;
+	private Spell selectedSpell;
 
 	public MessageSyncSpellsCap() {}
 
-	public MessageSyncSpellsCap(Map<Spell, Long> cooldowns, boolean changed)
+	public MessageSyncSpellsCap(Map<Spell, Long> cooldowns, boolean changed, Spell selectedSpell)
 	{
 		this.changed = changed;
 		this.cooldowns = cooldowns;
+		this.selectedSpell = selectedSpell;
 	}
 
 	@Override
@@ -42,6 +46,8 @@ public class MessageSyncSpellsCap implements IMessage
 			long cooldown = buf.readLong();
 			cooldowns.put(spell, cooldown);
 		}
+		String selected = ByteBufUtils.readUTF8String(buf);
+		selectedSpell = selected.isEmpty() ? null : RMSpells.getSpell(selected);
 	}
 
 	@Override
@@ -54,6 +60,7 @@ public class MessageSyncSpellsCap implements IMessage
 			ByteBufUtils.writeUTF8String(buf, cooldown.getKey().getRegistryName().toString());
 			buf.writeLong(cooldown.getValue());
 		}
+		ByteBufUtils.writeUTF8String(buf, selectedSpell == null ? "" : selectedSpell.getRegistryName().toString());
 	}
 
 	public static class Handler implements IMessageHandler<MessageSyncSpellsCap, IMessage>
@@ -69,6 +76,11 @@ public class MessageSyncSpellsCap implements IMessage
 				message.cooldowns.forEach(spells::updateCooldown);
 			else
 				spells.setCooldowns(message.cooldowns);
+			spells.setSpell(player, message.selectedSpell);
+			//Update open GUI
+			GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+			if(gui instanceof GuiSpellSelect)
+				((GuiSpellSelect) gui).onSpellCapChange();
 			return null;
 		}
 	}

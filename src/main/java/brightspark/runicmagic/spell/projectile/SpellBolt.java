@@ -7,7 +7,7 @@ public class SpellBolt extends SpellProjectileBase
 {
 	public SpellBolt(RuneType runeType, int level)
 	{
-		super(runeType + "_bolt", runeType, SpellType.ELEMENTAl, level);
+		super("bolt_" + runeType, runeType, SpellType.ELEMENTAl, level);
 		addRuneCost(RuneType.AIR, 2);
 		addRuneCost(runeType, 2);
 	}

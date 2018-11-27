@@ -7,7 +7,7 @@ public class SpellStrike extends SpellProjectileBase
 {
 	public SpellStrike(RuneType runeType, int level)
 	{
-		super(runeType + "_strike", runeType, SpellType.ELEMENTAl, level);
+		super("strike_" + runeType, runeType, SpellType.ELEMENTAl, level);
 		addRuneCost(RuneType.AIR, 1);
 		addRuneCost(runeType, 1);
 	}

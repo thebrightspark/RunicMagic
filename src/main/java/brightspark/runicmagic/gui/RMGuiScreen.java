@@ -10,14 +10,14 @@ import java.util.List;
 
 public class RMGuiScreen extends GuiScreen
 {
-    private final ResourceLocation guiImage;
-    protected int xSize = 176;
-    protected int ySize = 168;
-    protected int guiLeft, guiTop;
+    protected final ResourceLocation guiImage;
+    protected int xSize, ySize, guiLeft, guiTop;
 
-    public RMGuiScreen(String guiImageName)
+    public RMGuiScreen(String guiImageName, int guiWidth, int guiHeight)
     {
         guiImage = new ResourceLocation(RunicMagic.MOD_ID, "textures/gui/" + guiImageName + ".png");
+        xSize = guiWidth;
+        ySize = guiHeight;
     }
 
     @Override

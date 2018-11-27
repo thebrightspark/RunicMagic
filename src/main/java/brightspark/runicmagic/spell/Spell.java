@@ -7,6 +7,7 @@ import brightspark.runicmagic.util.RunicMagicException;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -20,6 +21,7 @@ import java.util.Map;
 public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 {
 	private final String unlocName;
+	private final ResourceLocation iconRL;
 	private final SpellType spellType;
 	private final int level;
 	//If true, then is a selectable spell for use with a staff
@@ -33,9 +35,19 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public Spell(String name, SpellType spellType, int level)
 	{
 		setRegistryName(name);
+		iconRL = new ResourceLocation(RunicMagic.MOD_ID, "textures/spells/" + name + ".png");
 		this.spellType = spellType;
 		this.level = level;
 		unlocName = RunicMagic.MOD_ID + ".spell." + name + ".name";
+	}
+
+	/**
+	 * Gets the ResourceLocation of this spell's icon
+	 * @return Icon ResourceLocation
+	 */
+	public ResourceLocation getIconRL()
+	{
+		return iconRL;
 	}
 
 	/**
@@ -139,6 +151,12 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public TextComponentTranslation getUnlocNameTextComponent()
 	{
 		return new TextComponentTranslation(getUnlocName());
+	}
+
+	@Override
+	public String toString()
+	{
+		return getRegistryName().toString();
 	}
 
 	// <<<<<<<< Util methods >>>>>>>>

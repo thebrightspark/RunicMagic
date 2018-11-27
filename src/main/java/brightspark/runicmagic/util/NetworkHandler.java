@@ -1,10 +1,7 @@
 package brightspark.runicmagic.util;
 
 import brightspark.runicmagic.RunicMagic;
-import brightspark.runicmagic.message.MessageAddSpellCasting;
-import brightspark.runicmagic.message.MessageRemoveSpellCasting;
-import brightspark.runicmagic.message.MessageSyncLevelCap;
-import brightspark.runicmagic.message.MessageSyncSpellsCap;
+import brightspark.runicmagic.message.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -28,5 +25,7 @@ public class NetworkHandler
 		regMessage(MessageSyncLevelCap.Handler.class, MessageSyncLevelCap.class, Side.CLIENT);
 		regMessage(MessageAddSpellCasting.Handler.class, MessageAddSpellCasting.class, Side.CLIENT);
 		regMessage(MessageRemoveSpellCasting.Handler.class, MessageRemoveSpellCasting.class, Side.CLIENT);
+		regMessage(MessageOpenSpellGui.Handler.class, MessageOpenSpellGui.class, Side.CLIENT);
+		regMessage(MessageSetSelectedSpell.Handler.class, MessageSetSelectedSpell.class, Side.SERVER);
 	}
 }

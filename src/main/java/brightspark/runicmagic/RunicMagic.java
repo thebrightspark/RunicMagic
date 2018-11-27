@@ -1,6 +1,7 @@
 package brightspark.runicmagic;
 
 import brightspark.runicmagic.command.CommandExecuteSpell;
+import brightspark.runicmagic.command.CommandSpellGui;
 import brightspark.runicmagic.gui.GuiHandler;
 import brightspark.runicmagic.init.*;
 import brightspark.runicmagic.item.RMItemSubBase;
@@ -73,6 +74,7 @@ public class RunicMagic
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandExecuteSpell());
+		event.registerServerCommand(new CommandSpellGui());
 	}
 
 	private static <T extends IForgeRegistryEntry<T>> IForgeRegistry<T> createRegistry(Class<T> type, String name)

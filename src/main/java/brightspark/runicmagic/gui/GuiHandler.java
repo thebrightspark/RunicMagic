@@ -19,6 +19,12 @@ public class GuiHandler implements IGuiHandler
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        return null;
+        switch(ID)
+        {
+            case 0:
+                return new GuiSpellSelect(player);
+            default:
+                return null;
+        }
     }
 }

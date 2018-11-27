@@ -42,7 +42,7 @@ public interface CapSpell extends RMCapability
 	 * Sets the current selected spell to the given spell
 	 * Returns false if it's the current spell or the spell is not selectable
 	 */
-	boolean setSpell(EntityPlayerMP player, Spell spell);
+	boolean setSpell(EntityPlayer player, Spell spell);
 
 	/**
 	 * Gets the current selected spell cooldown
@@ -53,11 +53,6 @@ public interface CapSpell extends RMCapability
 	 * Gets a copy of all spell cooldowns
 	 */
 	Map<Spell, Long> getCooldowns();
-
-	/**
-	 * Checks if a spell is currently selected
-	 */
-	boolean hasSpellSelected();
 
 	/**
 	 * Checks if the player can execute the given spell
@@ -87,12 +82,14 @@ public interface CapSpell extends RMCapability
 		private Map<Spell, Long> cooldowns = new HashMap<>();
 
 		@Override
-		public boolean setSpell(EntityPlayerMP player, Spell spell)
+		public boolean setSpell(EntityPlayer player, Spell spell)
 		{
+			RunicMagic.LOG.info("Setting spell: {} -> {}", selectedSpell, spell);
 			if(selectedSpell == spell || !spell.isSelectable())
 				return false;
 			selectedSpell = spell;
-			dataChanged(player);
+			if(player instanceof EntityPlayerMP)
+				dataChanged((EntityPlayerMP) player);
 			return true;
 		}
 
@@ -112,12 +109,6 @@ public interface CapSpell extends RMCapability
 		public Map<Spell, Long> getCooldowns()
 		{
 			return new HashMap<>(cooldowns);
-		}
-
-		@Override
-		public boolean hasSpellSelected()
-		{
-			return selectedSpell != null;
 		}
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)
@@ -149,11 +140,9 @@ public interface CapSpell extends RMCapability
 		@Override
 		public boolean executeSpell(EntityPlayerMP player, float attackBonus, @Nullable Spell spell)
 		{
-			if(!hasSpellSelected())
+			if(spell == null && selectedSpell == null)
 				return false;
 			Spell spellToExecute = spell == null ? selectedSpell : spell;
-			if(spellToExecute == null)
-				return false;
 			boolean success = spellToExecute.execute(player, new SpellCastData(50, attackBonus)); //TODO: Implement player magic level
 			if(success)
 			{
@@ -182,7 +171,8 @@ public interface CapSpell extends RMCapability
 		@Override
 		public void dataChanged(EntityPlayerMP player)
 		{
-			NetworkHandler.network.sendTo(new MessageSyncSpellsCap(cooldowns, false), player);
+			//TODO: Try make this more efficient?
+			NetworkHandler.network.sendTo(new MessageSyncSpellsCap(cooldowns, false, selectedSpell), player);
 		}
 
 		@SuppressWarnings("ConstantConditions")
