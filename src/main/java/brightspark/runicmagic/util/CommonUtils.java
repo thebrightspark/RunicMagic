@@ -2,6 +2,7 @@ package brightspark.runicmagic.util;
 
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMItems;
+import brightspark.runicmagic.item.ItemRune;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.NonNullList;
@@ -17,7 +18,7 @@ public class CommonUtils
 		{
 			if(stack.getItem() == RMItems.rune)
 			{
-				RuneType runeType = RuneType.getFromMeta(stack.getMetadata());
+				RuneType runeType = ItemRune.getRuneType(stack.getMetadata());
 				if(runeType != null)
 				{
 					runeCost.computeIfPresent(runeType, (type, cost) -> {
@@ -39,7 +40,7 @@ public class CommonUtils
 			ItemStack stack = inventory.get(i);
 			if(stack.getItem() == RMItems.rune)
 			{
-				RuneType runeType = RuneType.getFromMeta(stack.getMetadata());
+				RuneType runeType = ItemRune.getRuneType(stack.getMetadata());
 				if(runeType != null)
 				{
 					runeCost.computeIfPresent(runeType, (type, cost) -> {

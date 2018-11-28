@@ -29,8 +29,11 @@ public class ItemStaff extends RMItemSubBase
 
 	public static RuneType getRuneType(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemStaff && stack.getMetadata() >= 0 && stack.getMetadata() < RuneType.staffNames().length ?
-			RuneType.getFromMeta(stack.getMetadata()) : null;
+		if(!(stack.getItem() instanceof ItemStaff))
+			return null;
+		RuneType[] runeTypes = ((ItemStaff) stack.getItem()).type.getRuneTypes();
+		return stack.getMetadata() >= 0 && stack.getMetadata() < runeTypes.length ?
+			runeTypes[stack.getMetadata()] : null;
 	}
 
 	public static Map<RuneType, Short> calculateRuneCost(ItemStack stack, Spell spell)

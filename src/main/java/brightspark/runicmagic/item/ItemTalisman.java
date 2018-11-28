@@ -11,8 +11,13 @@ public class ItemTalisman extends RMItemSubBase
 {
 	public ItemTalisman()
 	{
-		super("talisman", RuneType.talismanNames());
+		super("talisman", RuneType.getNames(ItemRune.runeTypes));
 		setMaxStackSize(1);
+	}
+
+	public static RuneType getRuneType(int meta)
+	{
+		return ItemRune.getRuneType(meta);
 	}
 
 	@Override
