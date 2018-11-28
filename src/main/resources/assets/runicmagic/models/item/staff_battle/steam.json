@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "runicmagic:item/staff_base",
     "textures": {
         "layer0": "runicmagic:items/staff_battle/steam_battlestaff"
     }

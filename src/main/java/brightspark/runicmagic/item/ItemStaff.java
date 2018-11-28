@@ -24,6 +24,7 @@ public class ItemStaff extends RMItemSubBase
 	public ItemStaff(StaffType type)
 	{
 		super("staff_" + type, type.getTypeNames());
+		setFull3D();
 		this.type = type;
 	}
 
