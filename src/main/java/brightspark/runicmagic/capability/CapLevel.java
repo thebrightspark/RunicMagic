@@ -2,9 +2,9 @@ package brightspark.runicmagic.capability;
 
 import brightspark.runicmagic.LevelManager;
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.message.MessageSyncLevelCap;
-import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.RunicMagicException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;

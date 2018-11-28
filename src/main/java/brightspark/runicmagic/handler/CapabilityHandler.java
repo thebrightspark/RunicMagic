@@ -1,6 +1,8 @@
-package brightspark.runicmagic.capability;
+package brightspark.runicmagic.handler;
 
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.capability.CapLevel;
+import brightspark.runicmagic.capability.CapSpell;
 import brightspark.runicmagic.init.RMCapabilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

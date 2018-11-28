@@ -1,5 +1,7 @@
 package brightspark.runicmagic.enums;
 
+import net.minecraft.client.resources.I18n;
+
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,51 +12,69 @@ public enum RuneType
 	NONE,
 
 	//Elemental
-	AIR(new Color(0xFAFAF0)),
-	WATER(new Color(0x6666FF)),
-	EARTH(new Color(0x964F0C)),
-	FIRE(new Color(0xDF2628)),
+	AIR(0, new Color(0xFAFAF0)),
+	WATER(1, new Color(0x6666FF)),
+	EARTH(2, new Color(0x964F0C)),
+	FIRE(3, new Color(0xDF2628)),
 
 	//Combination
-	MIST(AIR, WATER),
-	DUST(AIR, EARTH),
-	MUD(WATER, EARTH),
-	SMOKE(AIR, FIRE),
-	STEAM(WATER, FIRE),
-	LAVA(EARTH, FIRE),
+	MIST(4, AIR, WATER),
+	DUST(5, AIR, EARTH),
+	MUD(6, WATER, EARTH),
+	SMOKE(7, AIR, FIRE),
+	STEAM(8, WATER, FIRE),
+	LAVA(9, EARTH, FIRE),
 
 	//Catalytic
-	MIND,
-	BODY,
-	COSMIC,
-	CHAOS,
-	NATURE,
-	LAW,
-	DEATH,
+	MIND(10),
+	BODY(11),
+	COSMIC(12),
+	CHAOS(13),
+	NATURE(14),
+	LAW(15),
+	DEATH(16),
 
-	ASTRAL,
-	BLOOD,
-	SOUL;
+	ASTRAL(17),
+	BLOOD(18),
+	SOUL(19);
 
+	private static final List<RuneType> typeByMeta;
 	private static final String[] runeNames, talismanNames, staffNames, staffNames2;
 
+	private int meta;
 	private Color colour = null;
 	private RuneType[] subTypes = null;
+	private final String unlocName;
 
-	RuneType() {}
-
-	RuneType(Color colour)
+	RuneType()
 	{
+		unlocName = "runetype." + name().toLowerCase(Locale.ROOT) + ".name";
+	}
+
+	RuneType(int meta)
+	{
+		this();
+		this.meta = meta;
+	}
+
+	RuneType(int meta, Color colour)
+	{
+		this(meta);
 		this.colour = colour;
 	}
 
-	RuneType(RuneType... subTypes)
+	RuneType(int meta, RuneType... subTypes)
 	{
+		this(meta);
 		this.subTypes = subTypes;
 	}
 
 	static
 	{
+		typeByMeta = new LinkedList<>();
+		for(RuneType type : values())
+			if(type.meta >= 0)
+				typeByMeta.set(type.meta, type);
 		runeNames = getRuneNames();
 		talismanNames = getNames(AIR, WATER, EARTH, FIRE, MIND, BODY, COSMIC, CHAOS, NATURE, LAW, DEATH, BLOOD, SOUL);
 		staffNames = getNames(NONE, AIR, WATER, EARTH, FIRE);
@@ -64,9 +84,8 @@ public enum RuneType
 	private static String[] getRuneNames()
 	{
 		List<String> names = new LinkedList<>();
-		for(RuneType runeType : values())
-			if(runeType != NONE)
-				names.add(runeType.toString());
+		for(RuneType runeType : typeByMeta)
+			names.add(runeType.toString());
 		return names.toArray(new String[0]);
 	}
 
@@ -100,9 +119,12 @@ public enum RuneType
 
 	public static RuneType getFromMeta(int meta)
 	{
-		if(meta < 0 || meta >= values().length)
-			return null;
-		return values()[meta];
+		return typeByMeta.get(meta);
+	}
+
+	public int getMeta()
+	{
+		return meta;
 	}
 
 	public Color getColour()
@@ -118,6 +140,11 @@ public enum RuneType
 	public RuneType[] getSubTypes()
 	{
 		return subTypes;
+	}
+
+	public String getTranslation()
+	{
+		return I18n.format(unlocName);
 	}
 
 	@Override

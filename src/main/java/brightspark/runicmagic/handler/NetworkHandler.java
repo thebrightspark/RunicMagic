@@ -1,4 +1,4 @@
-package brightspark.runicmagic.util;
+package brightspark.runicmagic.handler;
 
 import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.message.*;

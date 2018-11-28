@@ -1,13 +1,12 @@
 package brightspark.runicmagic;
 
 import brightspark.runicmagic.command.CommandExecuteSpell;
-import brightspark.runicmagic.command.CommandSpellGui;
-import brightspark.runicmagic.gui.GuiHandler;
+import brightspark.runicmagic.handler.GuiHandler;
+import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.init.*;
 import brightspark.runicmagic.item.RMItemSubBase;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.ClientUtils;
-import brightspark.runicmagic.util.NetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -74,7 +73,6 @@ public class RunicMagic
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandExecuteSpell());
-		event.registerServerCommand(new CommandSpellGui());
 	}
 
 	private static <T extends IForgeRegistryEntry<T>> IForgeRegistry<T> createRegistry(Class<T> type, String name)

@@ -1,9 +1,9 @@
 package brightspark.runicmagic.spell;
 
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.message.MessageAddSpellCasting;
 import brightspark.runicmagic.util.CommonUtils;
-import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

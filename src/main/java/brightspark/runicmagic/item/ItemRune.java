@@ -9,4 +9,9 @@ public class ItemRune extends RMItemSubBase
 	{
 		super("rune", RuneType.runeNames());
 	}
+
+	public static RuneType getRuneType(int meta)
+	{
+		return RuneType.getFromMeta(meta);
+	}
 }

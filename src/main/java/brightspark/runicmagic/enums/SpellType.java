@@ -1,5 +1,10 @@
 package brightspark.runicmagic.enums;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.Locale;
+
 import static brightspark.runicmagic.enums.SpellType.MagicType.*;
 
 public enum SpellType
@@ -17,10 +22,12 @@ public enum SpellType
     OTHER(SKILLING);
 
     private final MagicType magicType;
+    private final String unlocName;
 
     SpellType(MagicType magicType)
     {
         this.magicType = magicType;
+        unlocName = "spelltype." + name().toLowerCase(Locale.ROOT) + ".name";
     }
 
     public MagicType getMagicType()
@@ -28,10 +35,27 @@ public enum SpellType
         return magicType;
     }
 
+    public String getTranslation()
+    {
+        return I18n.format(unlocName);
+    }
+
     public enum MagicType
     {
-        COMBAT,
-        TELEPORT,
-        SKILLING
+        COMBAT(TextFormatting.RED),
+        TELEPORT(TextFormatting.BLUE),
+        SKILLING(TextFormatting.GOLD);
+
+        private final TextFormatting textColour;
+
+        MagicType(TextFormatting textColour)
+        {
+            this.textColour = textColour;
+        }
+
+        public TextFormatting getTextColour()
+        {
+            return textColour;
+        }
     }
 }

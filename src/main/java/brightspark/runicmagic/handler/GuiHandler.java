@@ -1,5 +1,6 @@
-package brightspark.runicmagic.gui;
+package brightspark.runicmagic.handler;
 
+import brightspark.runicmagic.gui.GuiSpellSelect;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;

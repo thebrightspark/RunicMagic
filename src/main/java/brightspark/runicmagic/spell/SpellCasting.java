@@ -1,7 +1,7 @@
 package brightspark.runicmagic.spell;
 
+import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.message.MessageRemoveSpellCasting;
-import brightspark.runicmagic.util.NetworkHandler;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

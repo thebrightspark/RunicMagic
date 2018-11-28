@@ -40,7 +40,7 @@ tile.obelisk_water.name=Water Obelisk
 tile.obelisk_earth.name=Earth Obelisk
 tile.obelisk_fire.name=Fire Obelisk
 
-#Spells
+# Spells
 
 spell.strike.air.name=Air Strike
 spell.strike.water.name=Water Strike
@@ -101,3 +101,22 @@ spell.humidify.name=Humidify
 
 spell.teleport.spawn.name=Teleport Spawn
 spell.teleport.home.name=Teleport Home
+
+# Spell Types
+
+spelltype.elemental.name=Elemental
+spelltype.curses.name=Curses
+spelltype.support.name=Support
+
+spelltype.teleself.name=Tele-self
+spelltype.teleother.name=Tele-other
+spelltype.telegroup.name=Tele-group
+
+spelltype.enchantment.name=Enchantment
+spelltype.alchemy.name=Alchemy
+spelltype.other.name=Other
+
+# Misc
+
+key.runicmagic.category=Runic Magic
+key.runicmagic.spellselect=Spell Selection GUI
