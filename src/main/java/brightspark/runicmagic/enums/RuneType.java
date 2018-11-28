@@ -42,7 +42,8 @@ public enum RuneType
 
 	RuneType()
 	{
-		unlocName = "runetype." + name().toLowerCase(Locale.ROOT) + ".name";
+		//Just use the item localisations
+		unlocName = "item.rune." + name().toLowerCase(Locale.ROOT) + ".name";
 	}
 
 	RuneType(Color colour)

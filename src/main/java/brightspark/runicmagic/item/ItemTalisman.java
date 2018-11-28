@@ -1,23 +1,17 @@
 package brightspark.runicmagic.item;
 
-import brightspark.runicmagic.enums.RuneType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemTalisman extends RMItemSubBase
+public class ItemTalisman extends ItemRuneTypeBase
 {
 	public ItemTalisman()
 	{
-		super("talisman", RuneType.getNames(ItemRune.runeTypes));
+		super("talisman");
 		setMaxStackSize(1);
-	}
-
-	public static RuneType getRuneType(int meta)
-	{
-		return ItemRune.getRuneType(meta);
 	}
 
 	@Override

@@ -1,8 +1,12 @@
 package brightspark.runicmagic.init;
 
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.enums.StaffType;
-import brightspark.runicmagic.item.*;
+import brightspark.runicmagic.item.ItemRuneTypeBase;
+import brightspark.runicmagic.item.ItemStaff;
+import brightspark.runicmagic.item.ItemTalisman;
+import brightspark.runicmagic.item.RMItemBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -36,9 +40,9 @@ public class RMItems
 	{
 		add(new RMItemBase("rune_essence"));
 		add(new RMItemBase("pure_essence"));
-		add(new ItemRune());
+		add(new ItemRuneTypeBase("rune"));
         add(new ItemTalisman());
-		add(new RMItemSubBase("orb", "unpowered", "air", "water", "earth", "fire").setMaxStackSize(1));
+		add(new ItemRuneTypeBase("orb", RuneType.NONE, RuneType.AIR, RuneType.WATER, RuneType.EARTH, RuneType.FIRE).setMaxStackSize(1));
 
 		for(StaffType type : StaffType.values())
 			add(new ItemStaff(type));

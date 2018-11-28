@@ -5,8 +5,9 @@ import brightspark.runicmagic.capability.CapSpell;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.init.RMCapabilities;
+import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.init.RMSpells;
-import brightspark.runicmagic.item.ItemRune;
+import brightspark.runicmagic.item.ItemRuneTypeBase;
 import brightspark.runicmagic.message.MessageSetSelectedSpell;
 import brightspark.runicmagic.spell.Spell;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ public class GuiSpellSelect extends RMGuiScreen
     private static final int buttonSpacing = buttonSize + 4;
     private static final int buttonStartPos = 12;
     private static final int buttonGridSize = 8;
+    private static final String TAB = "  ";
     private EntityPlayer player;
     private CapSpell capSpell;
 
@@ -78,9 +80,9 @@ public class GuiSpellSelect extends RMGuiScreen
         for(int i = 0; i < player.inventory.getSizeInventory(); i++)
         {
             ItemStack stack = player.inventory.getStackInSlot(i);
-            if(stack.getItem() instanceof ItemRune)
+            if(stack.getItem() == RMItems.rune)
             {
-                RuneType type = ItemRune.getRuneType(stack.getMetadata());
+                RuneType type = ((ItemRuneTypeBase) stack.getItem()).getRuneType(stack.getMetadata());
                 if(type == null || runeTypes.contains(type))
                     continue;
                 int count = stack.getCount();
@@ -106,7 +108,7 @@ public class GuiSpellSelect extends RMGuiScreen
             tooltip.add("Cost:");
             Map<RuneType, Short> cost = spell.getCost();
             if(cost.isEmpty())
-                tooltip.add("\tNone");
+                tooltip.add(TAB + "None");
             else
             {
                 Map<RuneType, Integer> numInInv = getNumInInventory(cost.keySet());

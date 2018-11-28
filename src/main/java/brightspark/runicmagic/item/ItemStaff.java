@@ -17,30 +17,23 @@ import net.minecraft.world.World;
 import java.util.Map;
 
 // https://runescape.fandom.com/wiki/Staff_(weapon_type)
-public class ItemStaff extends RMItemSubBase
+public class ItemStaff extends ItemRuneTypeBase
 {
 	private final StaffType type;
 
 	public ItemStaff(StaffType type)
 	{
-		super("staff_" + type, type.getTypeNames());
-		setFull3D();
+		super("staff_" + type, type.getRuneTypes());
 		this.type = type;
-	}
-
-	public static RuneType getRuneType(ItemStack stack)
-	{
-		if(!(stack.getItem() instanceof ItemStaff))
-			return null;
-		RuneType[] runeTypes = ((ItemStaff) stack.getItem()).type.getRuneTypes();
-		return stack.getMetadata() >= 0 && stack.getMetadata() < runeTypes.length ?
-			runeTypes[stack.getMetadata()] : null;
+		setFull3D();
 	}
 
 	public static Map<RuneType, Short> calculateRuneCost(ItemStack stack, Spell spell)
 	{
+		if(!(stack.getItem() instanceof ItemStaff))
+			return null;
 		Map<RuneType, Short> cost = spell.getCost();
-		RuneType runeType = getRuneType(stack);
+		RuneType runeType = ((ItemStaff) stack.getItem()).getRuneType(stack.getMetadata());
 		if(runeType != null)
 			cost.remove(runeType);
 		return cost;

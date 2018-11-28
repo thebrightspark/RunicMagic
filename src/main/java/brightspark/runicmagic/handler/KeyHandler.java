@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -13,7 +14,12 @@ import org.lwjgl.input.Keyboard;
 @Mod.EventBusSubscriber(modid = RunicMagic.MOD_ID)
 public class KeyHandler
 {
-	public static KeyBinding keySpellSelect = new KeyBinding("key.runicmagic.spellselect", Keyboard.KEY_L, "key.runicmagic.category");
+	public static KeyBinding keySpellSelect = new KeyBinding("key.runicmagic.spellselect", Keyboard.KEY_M, "key.runicmagic.category");
+
+	public static void regKeyBindings()
+	{
+		ClientRegistry.registerKeyBinding(keySpellSelect);
+	}
 
 	@SubscribeEvent
 	public static void onKey(KeyInputEvent event)

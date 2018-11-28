@@ -2,6 +2,7 @@ package brightspark.runicmagic;
 
 import brightspark.runicmagic.command.CommandExecuteSpell;
 import brightspark.runicmagic.handler.GuiHandler;
+import brightspark.runicmagic.handler.KeyHandler;
 import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.init.*;
 import brightspark.runicmagic.item.RMItemSubBase;
@@ -66,7 +67,10 @@ public class RunicMagic
 		RMCapabilities.init();
 
 		if(event.getSide() == Side.CLIENT)
+		{
 			ClientUtils.initTextures();
+			KeyHandler.regKeyBindings();
+		}
 	}
 
 	@Mod.EventHandler

@@ -13,25 +13,16 @@ public enum StaffType
 
 	private final float attackBonus;
 	private final RuneType[] runeTypes;
-	private final String[] runeTypeNames;
 
 	StaffType(float attackBonus, RuneType... runeTypes)
 	{
 		this.attackBonus = attackBonus;
 		this.runeTypes = runeTypes;
-		runeTypeNames = new String[runeTypes.length];
-		for(int i = 0; i < runeTypes.length; i++)
-			runeTypeNames[i] = runeTypes[i].toString();
 	}
 
 	public RuneType[] getRuneTypes()
 	{
 		return runeTypes;
-	}
-
-	public String[] getTypeNames()
-	{
-		return runeTypeNames;
 	}
 
 	public float getAttackBonus()
