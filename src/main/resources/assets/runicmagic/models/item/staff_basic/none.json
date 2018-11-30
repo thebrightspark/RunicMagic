@@ -1,6 +1,6 @@
 {
     "parent": "runicmagic:item/staff_base",
     "textures": {
-        "layer0": "runicmagic:items/staff_basic/staff"
+        "layer0": "runicmagic:items/staff_basic/staff32"
     }
 }
