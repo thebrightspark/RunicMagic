@@ -165,6 +165,7 @@ public interface CapSpell extends RMCapability
 			if(spell == null && selectedSpell == null)
 				return CanCastResult.NO_SPELL;
 			Spell spellToExecute = spell == null ? selectedSpell : spell;
+			RunicMagic.LOG.info("Executing {}", spellToExecute);
 
 			int level = RMCapabilities.getLevel(player).getLevel();
 			float attackBonus = ItemStaff.getAttackBonus(heldStack);
@@ -179,6 +180,7 @@ public interface CapSpell extends RMCapability
 				return CanCastResult.RUNES;
 			if(!spellToExecute.execute(player, data))
 				return CanCastResult.SPELL_REQ;
+			RunicMagic.LOG.info("Successfully instantly executed spell {}", spellToExecute);
 			return CanCastResult.SUCCESS;
 		}
 

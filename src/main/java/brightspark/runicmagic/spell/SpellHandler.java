@@ -29,11 +29,11 @@ public class SpellHandler
 			return;
 
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if(server == null || !server.isDedicatedServer()) //A single player world share this class on both sides
+		if(server == null)
 			return;
 		CASTS.entrySet().removeIf(entry -> {
 			EntityPlayer player = server.getPlayerList().getPlayerByUUID(entry.getKey());
-			return player == null || entry.getValue().update(player.world, player);
+			return player == null || entry.getValue().update(player.world, player, false);
 		});
 	}
 
@@ -44,14 +44,16 @@ public class SpellHandler
 			return;
 
 		Minecraft mc = Minecraft.getMinecraft();
+		boolean isSinglePlayer = mc.isSingleplayer();
 		CASTS.entrySet().removeIf(entry -> {
 			EntityPlayer player = mc.world.getPlayerEntityByUUID(entry.getKey());
-			return player == null || entry.getValue().update(mc.world, player);
+			return player == null || entry.getValue().update(mc.world, player, isSinglePlayer);
 		});
 	}
 
 	public static void addSpellCast(EntityPlayer player, Spell spell, SpellCastData data)
 	{
+		RunicMagic.LOG.info("Adding spell cast for spell {}", spell);
 		SpellCasting casting = CASTS.compute(player.getUniqueID(), (uuid, spellCasting) -> {
 			if(spellCasting != null)
 				//Cancel existing spell casting
