@@ -8,6 +8,7 @@ import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemRuneTypeBase;
+import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.message.MessageGuiSpellClick;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.CommonUtils;
@@ -17,7 +18,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +92,10 @@ public class GuiSpellSelect extends RMGuiScreen
                 counts.compute(type, (runeType, num) -> num == null ? count : num + count);
             }
         }
+        Pair<ItemStack, EnumHand> held = CommonUtils.findHeldStaff(player);
+        RuneType runeType = ItemStaff.getRuneType(held.getKey());
+        if(runeType != null)
+            counts.put(runeType, -1);
         return counts;
     }
 
@@ -115,8 +122,9 @@ public class GuiSpellSelect extends RMGuiScreen
                 Map<RuneType, Integer> numInInv = getNumInInventory(cost.keySet());
                 cost.forEach(((runeType, num) -> {
                     int typeInInv = numInInv.getOrDefault(runeType, 0);
-                    TextFormatting colour = typeInInv >= num ? TextFormatting.GREEN : TextFormatting.RED;
-                    tooltip.add(colour + String.format("%s/%s %s", typeInInv, num, runeType.getTranslation()));
+                    String typeInInvText = typeInInv < 0 ? "∞" : Integer.toString(typeInInv);
+                    TextFormatting colour = typeInInv < 0 || typeInInv >= num ? TextFormatting.GREEN : TextFormatting.RED;
+                    tooltip.add(colour + String.format("%s/%s %s", typeInInvText, num, runeType.getTranslation()));
                 }));
             }
         }

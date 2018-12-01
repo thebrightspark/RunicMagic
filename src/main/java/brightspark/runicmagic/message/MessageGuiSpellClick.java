@@ -3,7 +3,6 @@ package brightspark.runicmagic.message;
 import brightspark.runicmagic.capability.CapSpell;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
-import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.util.CommonUtils;
 import io.netty.buffer.ByteBuf;
@@ -52,7 +51,7 @@ public class MessageGuiSpellClick implements IMessage
                 capSpell.setSpell(player, message.spell); //This will trigger a sync back to the client
             else
             {
-                Pair<ItemStack, EnumHand> held = CommonUtils.findHeldItem(player, heldStack -> heldStack.getItem() instanceof ItemStaff);
+                Pair<ItemStack, EnumHand> held = CommonUtils.findHeldStaff(player);
                 capSpell.executeSpell(player, held == null ? null : held.getKey(), message.spell);
             }
             return null;

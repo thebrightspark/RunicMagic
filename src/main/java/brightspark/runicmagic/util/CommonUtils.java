@@ -3,6 +3,7 @@ package brightspark.runicmagic.util;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.item.ItemRuneTypeBase;
+import brightspark.runicmagic.item.ItemStaff;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -73,6 +74,11 @@ public class CommonUtils
 	public static Pair<ItemStack, EnumHand> findHeldItem(EntityPlayer player, ItemStack stack)
 	{
 		return findHeldItem(player, heldStack -> OreDictionary.itemMatches(stack, heldStack, false));
+	}
+
+	public static Pair<ItemStack, EnumHand> findHeldStaff(EntityPlayer player)
+	{
+		return findHeldItem(player, heldStack -> heldStack.getItem() instanceof ItemStaff);
 	}
 
 	public static Pair<ItemStack, EnumHand> findHeldItem(EntityPlayer player, Predicate<ItemStack> predicate)

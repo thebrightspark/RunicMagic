@@ -50,7 +50,7 @@ public class CommandExecuteSpell extends CommandBase
 			throw new CommandException("Spell %s does not exist!", args[0]);
 
 		EntityPlayerMP player = (EntityPlayerMP) sender;
-		Pair<ItemStack, EnumHand> held = CommonUtils.findHeldItem(player, heldStack -> heldStack.getItem() instanceof ItemStaff);
+		Pair<ItemStack, EnumHand> held = CommonUtils.findHeldStaff(player);
 		RuneType runeType = held == null ? null : ItemStaff.getRuneType(held.getKey());
 		SpellCastData data = new SpellCastData(99, 0F, runeType);
 
