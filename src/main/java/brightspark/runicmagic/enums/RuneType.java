@@ -58,6 +58,11 @@ public enum RuneType
 		this.subTypes = subTypes;
 	}
 
+	public static RuneType getById(int id)
+	{
+		return id < 0 || id >= values().length ? null : values()[id];
+	}
+
 	public static String[] getNames(RuneType... runeTypes)
 	{
 		String[] names = new String[runeTypes.length];

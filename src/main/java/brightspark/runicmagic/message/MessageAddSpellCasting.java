@@ -1,5 +1,6 @@
 package brightspark.runicmagic.message;
 
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.spell.SpellCasting;
@@ -37,7 +38,8 @@ public class MessageAddSpellCasting implements IMessage
         Spell spell = RMSpells.getSpell(ByteBufUtils.readUTF8String(buf));
         int magicLevel = buf.readInt();
         float attackBonus = buf.readFloat();
-        SpellCastData data = new SpellCastData(magicLevel, attackBonus);
+        RuneType runeType = RuneType.getById(buf.readShort());
+        SpellCastData data = new SpellCastData(magicLevel, attackBonus, runeType);
         spellCasting = new SpellCasting(spell, data);
     }
 
@@ -49,6 +51,7 @@ public class MessageAddSpellCasting implements IMessage
         ByteBufUtils.writeUTF8String(buf, spellCasting.getSpell().getRegistryName().toString());
         buf.writeInt(spellCasting.getData().getMagicLevel());
         buf.writeFloat(spellCasting.getData().getAttackBonus());
+        buf.writeShort(spellCasting.getData().getRuneCostReduction().ordinal());
     }
 
     public static class Handler implements IMessageHandler<MessageAddSpellCasting, IMessage>

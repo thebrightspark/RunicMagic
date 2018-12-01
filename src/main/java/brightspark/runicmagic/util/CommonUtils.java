@@ -3,12 +3,18 @@ package brightspark.runicmagic.util;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.item.ItemRuneTypeBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class CommonUtils
 {
@@ -62,5 +68,33 @@ public class CommonUtils
 	{
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		return server != null && !server.isDedicatedServer();
+	}
+
+	public static Pair<ItemStack, EnumHand> findHeldItem(EntityPlayer player, ItemStack stack)
+	{
+		return findHeldItem(player, heldStack -> OreDictionary.itemMatches(stack, heldStack, false));
+	}
+
+	public static Pair<ItemStack, EnumHand> findHeldItem(EntityPlayer player, Predicate<ItemStack> predicate)
+	{
+		for(EnumHand hand : EnumHand.values())
+		{
+			ItemStack heldStack = player.getHeldItem(hand);
+			if(predicate.test(heldStack))
+				return Pair.of(heldStack, hand);
+		}
+		return null;
+	}
+
+	public static String ticksToSecsString(long ticks)
+	{
+		long millis = ticks * 50;
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+		millis -= TimeUnit.SECONDS.toMillis(seconds);
+		if(millis == 0)
+			return seconds + "s";
+		else
+		    //TODO: Improve this...
+			return seconds + "." + millis + "s";
 	}
 }

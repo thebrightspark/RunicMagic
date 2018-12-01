@@ -1,17 +1,18 @@
 package brightspark.runicmagic.item;
 
 import brightspark.runicmagic.capability.CapSpell;
+import brightspark.runicmagic.enums.CanCastResult;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.enums.StaffType;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.spell.Spell;
-import brightspark.runicmagic.util.CommonUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -30,13 +31,23 @@ public class ItemStaff extends ItemRuneTypeBase
 
 	public static Map<RuneType, Short> calculateRuneCost(ItemStack stack, Spell spell)
 	{
-		if(!(stack.getItem() instanceof ItemStaff))
-			return null;
 		Map<RuneType, Short> cost = spell.getCost();
+		if(stack == null || !(stack.getItem() instanceof ItemStaff))
+			return cost;
 		RuneType runeType = ((ItemStaff) stack.getItem()).getRuneType(stack.getMetadata());
 		if(runeType != null)
 			cost.remove(runeType);
 		return cost;
+	}
+
+	public static float getAttackBonus(ItemStack stack)
+	{
+		return stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).type.getAttackBonus() : 0F;
+	}
+
+	public static RuneType getRuneType(ItemStack stack)
+	{
+		return stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).getRuneType(stack.getMetadata()) : null;
 	}
 
 	@Override
@@ -44,27 +55,19 @@ public class ItemStaff extends ItemRuneTypeBase
 	{
 		ItemStack stack = playerIn.getHeldItem(handIn);
 		CapSpell capSpell = playerIn.getCapability(RMCapabilities.SPELL, null);
-		if(capSpell != null && capSpell.canExecuteSpell(playerIn, stack, null))
+		if(playerIn instanceof EntityPlayerMP)
 		{
-			if(playerIn instanceof EntityPlayerMP)
-			{
-				//Only execute on server side
-				if(capSpell.executeSpell((EntityPlayerMP) playerIn, type.getAttackBonus(), null))
-				{
-					//Remove runes from inventory
-					CommonUtils.removeRunes(playerIn.inventory.mainInventory, calculateRuneCost(stack, capSpell.getSelectedSpell()));
-				}
-			}
+			CanCastResult result = capSpell.canExecuteSpell(playerIn, stack, null);
 
-			if(!playerIn.isCreative())
+			if(result == CanCastResult.SUCCESS)
+				result = capSpell.executeSpell((EntityPlayerMP) playerIn, stack, null);
+
+			if(result != CanCastResult.SUCCESS)
 			{
-				//Set cooldown if not in creative
-				Integer cooldown = capSpell.getSpellCooldown();
-				if(cooldown != null)
-					playerIn.getCooldownTracker().setCooldown(this, cooldown);
+				playerIn.sendMessage(new TextComponentTranslation(result.getFailLang()));
+				return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 			}
-			return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 		}
-		return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+		return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 	}
 }

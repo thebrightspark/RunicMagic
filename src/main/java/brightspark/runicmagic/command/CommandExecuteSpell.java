@@ -1,17 +1,23 @@
 package brightspark.runicmagic.command;
 
+import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.init.RMSpells;
+import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.spell.SpellHandler;
+import brightspark.runicmagic.util.CommonUtils;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,17 +49,22 @@ public class CommandExecuteSpell extends CommandBase
 		if(spell == null)
 			throw new CommandException("Spell %s does not exist!", args[0]);
 
+		EntityPlayerMP player = (EntityPlayerMP) sender;
+		Pair<ItemStack, EnumHand> held = CommonUtils.findHeldItem(player, heldStack -> heldStack.getItem() instanceof ItemStaff);
+		RuneType runeType = held == null ? null : ItemStaff.getRuneType(held.getKey());
+		SpellCastData data = new SpellCastData(99, 0F, runeType);
+
 		if(cast)
 		{
-			SpellHandler.addSpellCast((EntityPlayerMP) sender, spell, new SpellCastData(99, 0));
-			sender.sendMessage(new TextComponentString("Started casting spell " + args[0]));
+			SpellHandler.addSpellCast(player, spell, data);
+			player.sendMessage(new TextComponentString("Started casting spell " + args[0]));
 		}
 		else
 		{
-			if(spell.execute((EntityPlayerMP) sender, new SpellCastData(99, 0)))
-				sender.sendMessage(new TextComponentString("Executed spell " + args[0]));
+			if(spell.execute(player, data))
+				player.sendMessage(new TextComponentString("Executed spell " + args[0]));
 			else
-				sender.sendMessage(new TextComponentString("Failed to execute spell " + args[0]));
+				player.sendMessage(new TextComponentString("Failed to execute spell " + args[0]));
 		}
 	}
 

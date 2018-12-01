@@ -42,65 +42,65 @@ tile.obelisk_fire.name=Fire Obelisk
 
 # Spells
 
-spell.strike.air.name=Air Strike
-spell.strike.water.name=Water Strike
-spell.strike.earth.name=Earth Strike
-spell.strike.fire.name=Fire Strike
-spell.bolt.air.name=Air Bolt
-spell.bolt.water.name=Water Bolt
-spell.bolt.earth.name=Earth Bolt
-spell.bolt.fire.name=Fire Bolt
-spell.blast.air.name=Air Blast
-spell.blast.water.name=Water Blast
-spell.blast.earth.name=Earth Blast
-spell.blast.fire.name=Fire Blast
-spell.wave.air.name=Air Wave
-spell.wave.water.name=Water Wave
-spell.wave.earth.name=Earth Wave
-spell.wave.fire.name=Fire Wave
-spell.surge.air.name=Air Surge
-spell.surge.water.name=Water Surge
-spell.surge.earth.name=Earth Surge
-spell.surge.fire.name=Fire Surge
+runicmagic.spell.strike_air.name=Air Strike
+runicmagic.spell.strike_water.name=Water Strike
+runicmagic.spell.strike_earth.name=Earth Strike
+runicmagic.spell.strike_fire.name=Fire Strike
+runicmagic.spell.bolt_air.name=Air Bolt
+runicmagic.spell.bolt_water.name=Water Bolt
+runicmagic.spell.bolt_earth.name=Earth Bolt
+runicmagic.spell.bolt_fire.name=Fire Bolt
+runicmagic.spell.blast_air.name=Air Blast
+runicmagic.spell.blast_water.name=Water Blast
+runicmagic.spell.blast_earth.name=Earth Blast
+runicmagic.spell.blast_fire.name=Fire Blast
+runicmagic.spell.wave_air.name=Air Wave
+runicmagic.spell.wave_water.name=Water Wave
+runicmagic.spell.wave_earth.name=Earth Wave
+runicmagic.spell.wave_fire.name=Fire Wave
+runicmagic.spell.surge_air.name=Air Surge
+runicmagic.spell.surge_water.name=Water Surge
+runicmagic.spell.surge_earth.name=Earth Surge
+runicmagic.spell.surge_fire.name=Fire Surge
 
-spell.rush.smoke.name=Smoke Rush
-spell.rush.shadow.name=Shadow Rush
-spell.rush.blood.name=Blood Rush
-spell.rush.ice.name=Ice Rush
-spell.burst.smoke.name=Smoke Burst
-spell.burst.shadow.name=Shadow Burst
-spell.burst.blood.name=Blood Burst
-spell.burst.ice.name=Ice Burst
-spell.blitz.smoke.name=Smoke Blitz
-spell.blitz.shadow.name=Shadow Blitz
-spell.blitz.blood.name=Blood Blitz
-spell.blitz.ice.name=Ice Blitz
-spell.barrage.smoke.name=Smoke Barrage
-spell.barrage.shadow.name=Shadow Barrage
-spell.barrage.blood.name=Blood Barrage
-spell.barrage.ice.name=Ice Barrage
+runicmagic.spell.rush_smoke.name=Smoke Rush
+runicmagic.spell.rush_shadow.name=Shadow Rush
+runicmagic.spell.rush_blood.name=Blood Rush
+runicmagic.spell.rush_ice.name=Ice Rush
+runicmagic.spell.burst_smoke.name=Smoke Burst
+runicmagic.spell.burst_shadow.name=Shadow Burst
+runicmagic.spell.burst_blood.name=Blood Burst
+runicmagic.spell.burst_ice.name=Ice Burst
+runicmagic.spell.blitz_smoke.name=Smoke Blitz
+runicmagic.spell.blitz_shadow.name=Shadow Blitz
+runicmagic.spell.blitz_blood.name=Blood Blitz
+runicmagic.spell.blitz_ice.name=Ice Blitz
+runicmagic.spell.barrage_smoke.name=Smoke Barrage
+runicmagic.spell.barrage_shadow.name=Shadow Barrage
+runicmagic.spell.barrage_blood.name=Blood Barrage
+runicmagic.spell.barrage_ice.name=Ice Barrage
 
-spell.weaken.name=Weaken
-spell.confuse.name=Confuse
+runicmagic.spell.weaken.name=Weaken
+runicmagic.spell.confuse.name=Confuse
 
-spell.enchant1.name=Lvl 1 Enchant
-spell.enchant2.name=Lvl 2 Enchant
-spell.enchant3.name=Lvl 3 Enchant
-spell.enchant4.name=Lvl 4 Enchant
-spell.enchant5.name=Lvl 5 Enchant
-spell.enchant6.name=Lvl 6 Enchant
-spell.enchant7.name=Lvl 7 Enchant
+runicmagic.spell.enchant_1.name=Lvl 1 Enchant
+runicmagic.spell.enchant_2.name=Lvl 2 Enchant
+runicmagic.spell.enchant_3.name=Lvl 3 Enchant
+runicmagic.spell.enchant_4.name=Lvl 4 Enchant
+runicmagic.spell.enchant_5.name=Lvl 5 Enchant
+runicmagic.spell.enchant_6.name=Lvl 6 Enchant
+runicmagic.spell.enchant_7.name=Lvl 7 Enchant
 
-spell.chargeorb.water.name=Charge Water Orb
-spell.chargeorb.earth.name=Charge Earth Orb
-spell.chargeorb.fire.name=Charge Fire Orb
-spell.chargeorb.air.name=Charge Air Orb
+runicmagic.spell.charge_orb_water.name=Charge Water Orb
+runicmagic.spell.charge_orb_earth.name=Charge Earth Orb
+runicmagic.spell.charge_orb_fire.name=Charge Fire Orb
+runicmagic.spell.charge_orb_air.name=Charge Air Orb
 
-spell.bonestoapples.name=Bones To Apples
-spell.humidify.name=Humidify
+runicmagic.spell.bones_to_apples.name=Bones To Apples
+runicmagic.spell.humidify.name=Humidify
 
-spell.teleport.spawn.name=Teleport Spawn
-spell.teleport.home.name=Teleport Home
+runicmagic.spell.teleport_spawn.name=Teleport Spawn
+runicmagic.spell.teleport_home.name=Teleport Home
 
 # Spell Types
 
@@ -115,6 +115,14 @@ spelltype.telegroup.name=Tele-group
 spelltype.enchantment.name=Enchantment
 spelltype.alchemy.name=Alchemy
 spelltype.other.name=Other
+
+# Chat Messages
+
+runicmagic.message.castfail.nospell=You have no spell selected to cast!
+runicmagic.message.castfail.cooldown=This spell is still cooling down!
+runicmagic.message.castfail.level=You do not have the level required for this spell!
+runicmagic.message.castfail.runes=You do not have the runes required for this spell!
+runicmagic.message.castfail.spellreq=You do not meet the requirements for this spell!
 
 # Misc
 

@@ -1,6 +1,7 @@
 package brightspark.runicmagic.capability;
 
 import brightspark.runicmagic.RunicMagic;
+import brightspark.runicmagic.enums.CanCastResult;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.handler.NetworkHandler;
 import brightspark.runicmagic.init.RMCapabilities;
@@ -8,6 +9,7 @@ import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemStaff;
 import brightspark.runicmagic.message.MessageSyncSpellsCap;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.spell.SpellHandler;
 import brightspark.runicmagic.util.CommonUtils;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +19,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
@@ -52,19 +55,30 @@ public interface CapSpell extends RMCapability
 	/**
 	 * Gets a copy of all spell cooldowns
 	 */
-	Map<Spell, Long> getCooldowns();
+	Map<Spell, Long> getCooldowns(World world);
 
 	/**
 	 * Checks if the player can execute the given spell
 	 * If spell is null, then checks the current selected spell
 	 */
-	boolean canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell spell);
+	CanCastResult canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell spell);
 
 	/**
 	 * Executes the currently selected spell if there is one
-	 * Things that call this should handle the removal of runes from the player's inventory
+	 * It's expected that canExecuteSpell has already been called before this!
 	 */
-	boolean executeSpell(EntityPlayerMP player, float attackBonus, @Nullable Spell spell);
+	CanCastResult executeSpell(EntityPlayerMP player, ItemStack heldStack, @Nullable Spell spell);
+
+	/**
+	 * Called when a spell is about to be executed to do any final checks and processing
+	 * Spell should be cancelled if this returns false
+	 */
+	boolean onSpellExecuted(EntityPlayerMP player, Spell spell, SpellCastData data);
+
+	/**
+	 * Starts a cooldown for the given spell
+	 */
+	void addCooldown(EntityPlayer player, Spell spell);
 
 	/**
 	 * Used by messages to sync a specific spell cooldown from the server
@@ -106,51 +120,94 @@ public interface CapSpell extends RMCapability
 		}
 
 		@Override
-		public Map<Spell, Long> getCooldowns()
+		public Map<Spell, Long> getCooldowns(World world)
 		{
+			long worldTime = world.getTotalWorldTime();
+			cooldowns.entrySet().removeIf(entry -> entry.getValue() <= worldTime);
 			return new HashMap<>(cooldowns);
 		}
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell nonSelectableSpell)
+		public CanCastResult canExecuteSpell(EntityPlayer player, @Nullable ItemStack stack, @Nullable Spell nonSelectableSpell)
 		{
 			Spell spell = nonSelectableSpell == null ? selectedSpell : nonSelectableSpell;
 			if(spell == null)
-				return false;
-			//TODO: Check player's magic level against level required for the spell
+				return CanCastResult.NO_SPELL;
+			if(player.isCreative())
+				return CanCastResult.SUCCESS;
+			//Check player level
+			int level = RMCapabilities.getLevel(player).getLevel();
+			if(level < spell.getLevel())
+				return CanCastResult.LEVEL;
 			//Check cooldowns
 			Long cooldown = cooldowns.get(spell);
 			if(cooldown != null)
 			{
-				if(player.world.getTotalWorldTime() < cooldown)
+				if(cooldown <= player.world.getTotalWorldTime())
 					cooldowns.remove(spell);
 				else
-					return false;
+					return CanCastResult.COOLDOWN;
 			}
-
-			//Check the player has enough runes to cast the spell
-			Map<RuneType, Short> spellCost = ItemStaff.calculateRuneCost(stack, spell);
-			boolean hasRunes = spellCost.isEmpty() || CommonUtils.hasRunes(player.inventory.mainInventory, spell.getCost());
 			//Check spell requirements
-			return hasRunes && spell.canCast(player);
+			if(!spell.canCast(player))
+				return CanCastResult.SPELL_REQ;
+			//Check the player has enough runes to cast the spell
+			if(!CommonUtils.hasRunes(player.inventory.mainInventory, ItemStaff.calculateRuneCost(stack, spell)))
+				return CanCastResult.RUNES;
+			return CanCastResult.SUCCESS;
 		}
 
 		// Spell parameter is used to specify a non-selectable spell (like a teleport)
 		@Override
-		public boolean executeSpell(EntityPlayerMP player, float attackBonus, @Nullable Spell spell)
+		public CanCastResult executeSpell(EntityPlayerMP player, ItemStack heldStack, @Nullable Spell spell)
 		{
 			if(spell == null && selectedSpell == null)
-				return false;
+				return CanCastResult.NO_SPELL;
 			Spell spellToExecute = spell == null ? selectedSpell : spell;
-			boolean success = spellToExecute.execute(player, new SpellCastData(50, attackBonus)); //TODO: Implement player magic level
-			if(success)
+
+			int level = RMCapabilities.getLevel(player).getLevel();
+			float attackBonus = ItemStaff.getAttackBonus(heldStack);
+			RuneType runeType = ItemStaff.getRuneType(heldStack);
+			SpellCastData data = new SpellCastData(level, attackBonus, runeType);
+			if(spellToExecute.getCastTime() > 0)
 			{
-				long cooldown = selectedSpell.getCooldown();
-				if(cooldown > 0)
-					cooldowns.put(selectedSpell, player.world.getTotalWorldTime() + cooldown);
+				SpellHandler.addSpellCast(player, spellToExecute, data);
+				return CanCastResult.SUCCESS;
 			}
-			return success;
+			if(!onSpellExecuted(player, spell, data))
+				return CanCastResult.RUNES;
+			if(!spellToExecute.execute(player, data))
+				return CanCastResult.SPELL_REQ;
+			return CanCastResult.SUCCESS;
+		}
+
+		@Override
+		public boolean onSpellExecuted(EntityPlayerMP player, Spell spell, SpellCastData data)
+		{
+			if(player.isCreative())
+				return true;
+			//Remove runes for cost
+			Map<RuneType, Short> cost = spell.getCost();
+			RuneType typeToRemove = data.getRuneCostReduction();
+			if(typeToRemove != null)
+				cost.remove(typeToRemove);
+			if(!CommonUtils.hasRunes(player.inventory.mainInventory, cost))
+				return false;
+			CommonUtils.removeRunes(player.inventory.mainInventory, cost);
+			//Add cooldown
+			addCooldown(player, spell);
+			return true;
+		}
+
+		@Override
+		public void addCooldown(EntityPlayer player, Spell spell)
+		{
+			if(player.isCreative())
+				return;
+			long cooldown = selectedSpell.getCooldown();
+			if(cooldown > 0)
+				cooldowns.put(selectedSpell, player.world.getTotalWorldTime() + cooldown);
 		}
 
 		@Override

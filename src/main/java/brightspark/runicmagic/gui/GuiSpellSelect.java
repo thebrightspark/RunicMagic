@@ -8,8 +8,9 @@ import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMItems;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemRuneTypeBase;
-import brightspark.runicmagic.message.MessageSetSelectedSpell;
+import brightspark.runicmagic.message.MessageGuiSpellClick;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.CommonUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class GuiSpellSelect extends RMGuiScreen
 {
@@ -45,7 +45,7 @@ public class GuiSpellSelect extends RMGuiScreen
     {
         RunicMagic.LOG.info("Spell cap changed!");
         Spell selectedSpell = capSpell.getSelectedSpell();
-        Map<Spell, Long> cooldowns = capSpell.getCooldowns();
+        Map<Spell, Long> cooldowns = capSpell.getCooldowns(mc.world);
         buttonList.forEach(button -> {
             if(button instanceof ButtonSpell)
             {
@@ -62,7 +62,7 @@ public class GuiSpellSelect extends RMGuiScreen
         super.initGui();
         //Add buttons
         List<Spell> spells = RMSpells.getSortedSpells();
-        Map<Spell, Long> cooldowns = capSpell.getCooldowns();
+        Map<Spell, Long> cooldowns = capSpell.getCooldowns(mc.world);
         Spell selectedSpell = capSpell.getSelectedSpell();
         for(int i = 0; i < spells.size(); i++)
         {
@@ -83,7 +83,7 @@ public class GuiSpellSelect extends RMGuiScreen
             if(stack.getItem() == RMItems.rune)
             {
                 RuneType type = ((ItemRuneTypeBase) stack.getItem()).getRuneType(stack.getMetadata());
-                if(type == null || runeTypes.contains(type))
+                if(type == null || !runeTypes.contains(type))
                     continue;
                 int count = stack.getCount();
                 counts.compute(type, (runeType, num) -> num == null ? count : num + count);
@@ -100,11 +100,12 @@ public class GuiSpellSelect extends RMGuiScreen
         {
             Spell spell = buttonSpell.spell;
             tooltip.add(spell.getSpellType().getMagicType().getTextColour() + I18n.format(spell.getUnlocName()));
-            tooltip.add(spell.getSpellType().getTranslation());
+            tooltip.add(TextFormatting.GRAY + spell.getSpellType().getTranslation());
             if(!spell.isSelectable())
                 tooltip.add("Will cast on click");
+            tooltip.add("");
             if(spell.getCooldown() > 0)
-                tooltip.add("Cooldown: " + TimeUnit.MILLISECONDS.toSeconds(spell.getCooldown()) + "s");
+                tooltip.add("Cooldown: " + CommonUtils.ticksToSecsString(spell.getCooldown()));
             tooltip.add("Cost:");
             Map<RuneType, Short> cost = spell.getCost();
             if(cost.isEmpty())
@@ -125,7 +126,12 @@ public class GuiSpellSelect extends RMGuiScreen
     protected void actionPerformed(GuiButton button)
     {
         if(button instanceof ButtonSpell)
-            NetworkHandler.network.sendToServer(new MessageSetSelectedSpell(((ButtonSpell) button).spell));
+        {
+            Spell spell = ((ButtonSpell) button).spell;
+            NetworkHandler.network.sendToServer(new MessageGuiSpellClick(spell));
+            if(!spell.isSelectable())
+                mc.player.closeScreen();
+        }
     }
 
     private class ButtonSpell extends GuiButton
@@ -146,18 +152,14 @@ public class GuiSpellSelect extends RMGuiScreen
         public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
         {
             GlStateManager.color(1F, 1F, 1F);
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             //Draw button background
             hovered = mouseX >= x && mouseY >= y && mouseX < x + buttonSize && mouseY < y + buttonSize;
             int textureNum = selected ? 3 : !enabled ? 0 : hovered ? 2 : 1;
             mc.getTextureManager().bindTexture(guiImage);
             drawTexturedModalRect(x, y, textureNum * 18, 238, width, height);
             //Draw spell icon
-            //TODO: Fix icon rendering!
             mc.getTextureManager().bindTexture(spell.getIconRL());
-            drawTexturedModalRect(x + 1, y + 1, 0, 0, 16, 16);
+            drawModalRectWithCustomSizedTexture(x + 1, y + 1, 0, 0, 16, 16, 16, 16);
         }
     }
 }

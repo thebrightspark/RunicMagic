@@ -4,6 +4,7 @@ import brightspark.runicmagic.block.BlockObelisk;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.init.RMItems;
+import brightspark.runicmagic.util.CommonUtils;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +35,7 @@ public class SpellChargeOrb extends SpellSelfBase
 	@Override
 	public boolean canCast(EntityPlayer player)
 	{
-		return findHeldItem(player, UNPOWERED_ORB) == null || !isBlockLookingAtValid(player);
+		return CommonUtils.findHeldItem(player, UNPOWERED_ORB) == null || !isBlockLookingAtValid(player);
 	}
 
 	@Override
@@ -46,12 +47,11 @@ public class SpellChargeOrb extends SpellSelfBase
 	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
-		Pair<ItemStack, EnumHand> heldOrb = findHeldItem(player, UNPOWERED_ORB);
+		Pair<ItemStack, EnumHand> heldOrb = CommonUtils.findHeldItem(player, UNPOWERED_ORB);
 		if(heldOrb == null)
 			return false;
 		if(!isBlockLookingAtValid(player))
 			return false;
-		//TODO: Should probably make the orb it's own item class to convert meta reliably...
 		player.setHeldItem(heldOrb.getValue(), new ItemStack(RMItems.orb, runeType.ordinal()));
 		return true;
 	}

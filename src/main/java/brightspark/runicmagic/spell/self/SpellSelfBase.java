@@ -5,11 +5,9 @@ import brightspark.runicmagic.spell.Spell;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class SpellSelfBase extends Spell
 {
@@ -17,17 +15,6 @@ public abstract class SpellSelfBase extends Spell
 	{
 		super(name, spellType, level);
 		selectable = false;
-	}
-
-	protected Pair<ItemStack, EnumHand> findHeldItem(EntityPlayer player, ItemStack stack)
-	{
-		for(EnumHand hand : EnumHand.values())
-		{
-			ItemStack heldStack = player.getHeldItem(hand);
-			if(heldStack.isItemEqual(stack))
-				return Pair.of(heldStack, hand);
-		}
-		return null;
 	}
 
 	protected IBlockState getBlockLookingAt(EntityPlayer player)

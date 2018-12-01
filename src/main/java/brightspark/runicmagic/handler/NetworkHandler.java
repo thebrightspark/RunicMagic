@@ -26,6 +26,6 @@ public class NetworkHandler
 		regMessage(MessageAddSpellCasting.Handler.class, MessageAddSpellCasting.class, Side.CLIENT);
 		regMessage(MessageRemoveSpellCasting.Handler.class, MessageRemoveSpellCasting.class, Side.CLIENT);
 		regMessage(MessageOpenSpellGui.Handler.class, MessageOpenSpellGui.class, Side.CLIENT);
-		regMessage(MessageSetSelectedSpell.Handler.class, MessageSetSelectedSpell.class, Side.SERVER);
+		regMessage(MessageGuiSpellClick.Handler.class, MessageGuiSpellClick.class, Side.SERVER);
 	}
 }
