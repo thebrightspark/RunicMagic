@@ -42,12 +42,12 @@ public class ItemStaff extends ItemRuneTypeBase
 
 	public static float getAttackBonus(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).type.getAttackBonus() : 0F;
+		return stack != null && stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).type.getAttackBonus() : 0F;
 	}
 
 	public static RuneType getRuneType(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).getRuneType(stack.getMetadata()) : null;
+		return stack != null && stack.getItem() instanceof ItemStaff ? ((ItemStaff) stack.getItem()).getRuneType(stack.getMetadata()) : null;
 	}
 
 	@Override

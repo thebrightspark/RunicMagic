@@ -10,8 +10,8 @@ public class ParticleRising extends ParticleStatic
     public ParticleRising(World worldIn, Vec3d position, Color colour)
     {
         super(worldIn, position, colour, 0);
-        motionY = 0.05F;
-        setMaxAge(60);
+        motionY = (worldIn.rand.nextFloat() * 0.02F) + 0.04F;
+        setMaxAge(80);
     }
 
     @Override
@@ -19,9 +19,9 @@ public class ParticleRising extends ParticleStatic
     {
         super.onUpdate();
         move(motionX, motionY, motionZ);
-        motionX *= 0.95F;
-        motionY *= 0.95F;
-        motionZ *= 0.95F;
+        motionX *= 0.98F;
+        motionY *= 0.98F;
+        motionZ *= 0.98F;
         setAlphaF(1F - ((float) particleAge / (float) particleMaxAge));
     }
 }
