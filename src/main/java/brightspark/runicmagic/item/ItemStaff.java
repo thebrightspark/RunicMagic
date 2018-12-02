@@ -58,14 +58,20 @@ public class ItemStaff extends ItemRuneTypeBase
 		if(playerIn instanceof EntityPlayerMP)
 		{
 			CanCastResult result = capSpell.canExecuteSpell(playerIn, stack, null);
-
 			if(result == CanCastResult.SUCCESS)
 				result = capSpell.executeSpell((EntityPlayerMP) playerIn, stack, null);
-
-			if(result != CanCastResult.SUCCESS)
+			switch(result)
 			{
-				playerIn.sendMessage(new TextComponentTranslation(result.getFailLang()));
-				return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+				case SUCCESS:
+					//Do nothing
+					break;
+				case SPELL_REQ:
+					//Do nothing - the spell should message the player with what went wrong!
+					return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+				default:
+					//Something went wrong - message the player
+					playerIn.sendMessage(new TextComponentTranslation(result.getFailLang()));
+					return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 			}
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));

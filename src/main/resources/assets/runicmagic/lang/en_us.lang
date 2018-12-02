@@ -40,6 +40,8 @@ tile.obelisk_water.name=Water Obelisk
 tile.obelisk_earth.name=Earth Obelisk
 tile.obelisk_fire.name=Fire Obelisk
 
+tile.gatestone.name=Gatestone
+
 # Spells
 
 runicmagic.spell.strike_air.name=Air Strike
@@ -98,9 +100,11 @@ runicmagic.spell.charge_orb_air.name=Charge Air Orb
 
 runicmagic.spell.bones_to_apples.name=Bones To Apples
 runicmagic.spell.humidify.name=Humidify
+runicmagic.spell.gatestone_create.name=Create Gatestone
 
 runicmagic.spell.teleport_spawn.name=Teleport Spawn
 runicmagic.spell.teleport_home.name=Teleport Home
+runicmagic.spell.gatestone_teleport.name=Gatestone Teleport
 
 # Spell Types
 

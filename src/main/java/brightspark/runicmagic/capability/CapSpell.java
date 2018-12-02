@@ -4,6 +4,7 @@ import brightspark.runicmagic.RunicMagic;
 import brightspark.runicmagic.enums.CanCastResult;
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.handler.NetworkHandler;
+import brightspark.runicmagic.init.RMBlocks;
 import brightspark.runicmagic.init.RMCapabilities;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.item.ItemStaff;
@@ -11,16 +12,20 @@ import brightspark.runicmagic.message.MessageSyncSpellsCap;
 import brightspark.runicmagic.spell.Spell;
 import brightspark.runicmagic.spell.SpellHandler;
 import brightspark.runicmagic.util.CommonUtils;
+import brightspark.runicmagic.util.Location;
 import brightspark.runicmagic.util.SpellCastData;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -90,10 +95,21 @@ public interface CapSpell extends RMCapability
 	 */
 	void setCooldowns(Map<Spell, Long> cooldowns);
 
+	/**
+	 * Gets the location of the player's gatestone if they have one placed
+	 */
+	Location getGatestone();
+
+	/**
+	 * Sets the location of the player's gatestone
+	 */
+	void setGatestone(@Nullable Location location);
+
 	class Impl implements CapSpell
 	{
 		private Spell selectedSpell = null;
 		private Map<Spell, Long> cooldowns = new HashMap<>();
+		private Location gatestoneLocation = null;
 
 		@Override
 		public boolean setSpell(EntityPlayer player, Spell spell)
@@ -225,6 +241,30 @@ public interface CapSpell extends RMCapability
 		public void setCooldowns(Map<Spell, Long> cooldowns)
 		{
 			this.cooldowns = cooldowns;
+		}
+
+		@Override
+		public Location getGatestone()
+		{
+			if(gatestoneLocation != null)
+			{
+				//Make sure the location still has a gatestone there
+				MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+				if(server != null)
+				{
+					World world = server.getWorld(gatestoneLocation.getDimension());
+					IBlockState state = world.getBlockState(gatestoneLocation.getPosition());
+					if(state.getBlock() != RMBlocks.gatestone)
+						gatestoneLocation = null;
+				}
+			}
+			return gatestoneLocation;
+		}
+
+		@Override
+		public void setGatestone(@Nullable Location location)
+		{
+			gatestoneLocation = location;
 		}
 
 		@Override

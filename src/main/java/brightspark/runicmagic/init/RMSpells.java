@@ -6,10 +6,7 @@ import brightspark.runicmagic.spell.projectile.SpellBolt;
 import brightspark.runicmagic.spell.projectile.SpellConfuse;
 import brightspark.runicmagic.spell.projectile.SpellStrike;
 import brightspark.runicmagic.spell.projectile.SpellWeaken;
-import brightspark.runicmagic.spell.self.SpellBonesToApples;
-import brightspark.runicmagic.spell.self.SpellChargeOrb;
-import brightspark.runicmagic.spell.self.SpellEnchant;
-import brightspark.runicmagic.spell.self.SpellHumidify;
+import brightspark.runicmagic.spell.self.*;
 import brightspark.runicmagic.spell.teleport.SpellTeleportHome;
 import brightspark.runicmagic.spell.teleport.SpellTeleportSpawn;
 import net.minecraft.util.ResourceLocation;
@@ -31,6 +28,7 @@ public class RMSpells
 				//Teleport Spells
 				new SpellTeleportSpawn(),
 				new SpellTeleportHome(),
+				new SpellGatestoneCreate(),
 
 				//Projectile Attack Spells
 				new SpellStrike(RuneType.AIR, 1),
