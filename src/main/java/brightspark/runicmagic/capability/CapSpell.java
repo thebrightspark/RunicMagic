@@ -291,15 +291,16 @@ public interface CapSpell extends RMCapability
 			});
 			nbt.setTag("cooldowns", list);
 
+			if(gatestoneLocation != null)
+				nbt.setTag("gatestone", gatestoneLocation.serializeNBT());
+
 			return nbt;
 		}
 
 		@Override
 		public void deserializeNBT(NBTTagCompound nbt)
 		{
-			String spellName = nbt.getString("spell");
-			if(!spellName.isEmpty())
-				selectedSpell = RMSpells.getSpell(spellName);
+			selectedSpell = nbt.hasKey("spell") ? RMSpells.getSpell(nbt.getString("spell")) : null;
 
 			cooldowns.clear();
 			NBTTagList list = nbt.getTagList("cooldowns", Constants.NBT.TAG_COMPOUND);
@@ -311,6 +312,8 @@ public interface CapSpell extends RMCapability
 					continue;
 				cooldowns.put(spell, compound.getLong("cooldown"));
 			}
+
+			gatestoneLocation = nbt.hasKey("gatestone") ? new Location(nbt.getCompoundTag("gatestone")) : null;
 		}
 	}
 }

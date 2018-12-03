@@ -15,10 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -44,6 +44,23 @@ public class BlockGatestone extends RMBlockContainerBase<TileGatestone>
     }
 
     @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if(worldIn.isRemote)
+            return true;
+        TileGatestone te = getTileEntity(worldIn, pos);
+        if(te.validateGatestone())
+        {
+            EntityPlayer owner = worldIn.getMinecraftServer().getPlayerList().getPlayerByUUID(te.getPlayerUuid());
+            String name = playerIn.equals(owner) ? "you" : owner.getDisplayNameString();
+            playerIn.sendMessage(new TextComponentString("This Gatestone belongs to " + name));
+        }
+        else
+            worldIn.destroyBlock(pos, false);
+        return true;
+    }
+
+    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         if(placer instanceof EntityPlayer)
@@ -57,19 +74,6 @@ public class BlockGatestone extends RMBlockContainerBase<TileGatestone>
     }
 
     @Override
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
-    {
-        onGatestoneBroken(world, pos);
-        super.onBlockExploded(world, pos, explosion);
-    }
-
-    @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-    {
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         onGatestoneBroken(worldIn, pos);
@@ -79,20 +83,11 @@ public class BlockGatestone extends RMBlockContainerBase<TileGatestone>
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if(!canPlaceBlockAt(worldIn, pos) || !hasPlayerData(worldIn, pos))
+        if(!canPlaceBlockAt(worldIn, pos) || !getTileEntity(worldIn, pos).validateGatestone())
         {
             onGatestoneBroken(worldIn, pos);
             worldIn.destroyBlock(pos, false);
         }
-    }
-
-    /**
-     * Checks if a UUID has been set in the tile entity
-     */
-    private boolean hasPlayerData(World world, BlockPos pos)
-    {
-        TileGatestone te = getTileEntity(world, pos);
-        return te.getPlayerUuid() != null;
     }
 
     /**

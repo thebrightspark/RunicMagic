@@ -46,7 +46,9 @@ public class SpellTeleportBase extends Spell
 	@Override
 	public boolean execute(EntityPlayer player, SpellCastData data)
 	{
-		int dim = getDestinationDimId(player);
+		Integer dim = getDestinationDimId(player);
+		if(dim == null)
+			return false;
 		if(player.dimension != dim)
 			player.changeDimension(dim);
 		BlockPos p = getDestinationPos(player, dim);
@@ -66,7 +68,7 @@ public class SpellTeleportBase extends Spell
 		return player.attemptTeleport(destPos.x, destPos.y, destPos.z);
 	}
 
-	protected int getDestinationDimId(EntityPlayer player)
+	protected Integer getDestinationDimId(EntityPlayer player)
 	{
 		return DimensionType.OVERWORLD.getId();
 	}

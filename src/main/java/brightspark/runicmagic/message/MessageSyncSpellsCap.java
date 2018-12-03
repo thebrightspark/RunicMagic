@@ -1,14 +1,10 @@
 package brightspark.runicmagic.message;
 
-import brightspark.runicmagic.capability.CapSpell;
-import brightspark.runicmagic.gui.GuiSpellSelect;
-import brightspark.runicmagic.init.RMCapabilities;
+import brightspark.runicmagic.handler.CapabilitySyncHandler;
 import brightspark.runicmagic.init.RMSpells;
 import brightspark.runicmagic.spell.Spell;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -21,9 +17,9 @@ public class MessageSyncSpellsCap implements IMessage
 {
 	//If true then each cooldown in the map will be updated in the client
 	//If false then the whole map will be replaced in the client
-	private boolean changed;
-	private Map<Spell, Long> cooldowns;
-	private Spell selectedSpell;
+	public boolean changed;
+	public Map<Spell, Long> cooldowns;
+	public Spell selectedSpell;
 
 	public MessageSyncSpellsCap() {}
 
@@ -68,19 +64,7 @@ public class MessageSyncSpellsCap implements IMessage
 		@Override
 		public IMessage onMessage(MessageSyncSpellsCap message, MessageContext ctx)
 		{
-			EntityPlayer player = Minecraft.getMinecraft().player;
-			CapSpell spells = RMCapabilities.getSpells(player);
-			if(spells == null)
-				return null;
-			if(message.changed)
-				message.cooldowns.forEach(spells::updateCooldown);
-			else
-				spells.setCooldowns(message.cooldowns);
-			spells.setSpell(player, message.selectedSpell);
-			//Update open GUI
-			GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-			if(gui instanceof GuiSpellSelect)
-				((GuiSpellSelect) gui).onSpellCapChange();
+			CapabilitySyncHandler.handleUpdate(Minecraft.getMinecraft().player, message);
 			return null;
 		}
 	}

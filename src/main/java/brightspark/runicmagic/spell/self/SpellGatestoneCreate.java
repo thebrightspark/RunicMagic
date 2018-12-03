@@ -1,12 +1,16 @@
 package brightspark.runicmagic.spell.self;
 
+import brightspark.runicmagic.block.tileentity.TileGatestone;
 import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.init.RMBlocks;
 import brightspark.runicmagic.init.RMCapabilities;
+import brightspark.runicmagic.util.Location;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SpellGatestoneCreate extends SpellSelfBase
@@ -40,6 +44,20 @@ public class SpellGatestoneCreate extends SpellSelfBase
     {
         if(!canCast(player))
             return false;
-        return player.world.setBlockState(player.getPosition(), RMBlocks.gatestone.getDefaultState());
+
+        BlockPos pos = player.getPosition();
+        if(player.world.setBlockState(pos, RMBlocks.gatestone.getDefaultState()))
+        {
+            TileEntity te = player.world.getTileEntity(pos);
+            if(te instanceof TileGatestone)
+            {
+                ((TileGatestone) te).setPlayerUuid(player.world.getBlockState(pos), player.getUniqueID());
+                RMCapabilities.getSpells(player).setGatestone(new Location(player.dimension, pos));
+                return true;
+            }
+            else
+                player.world.destroyBlock(pos, false);
+        }
+        return false;
     }
 }
