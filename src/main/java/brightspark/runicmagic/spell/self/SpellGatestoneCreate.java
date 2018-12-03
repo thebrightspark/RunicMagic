@@ -39,11 +39,9 @@ public class SpellGatestoneCreate extends SpellSelfBase
                 !hasPlayerMoved(player);
     }
 
-    // https://gist.github.com/andrewbolster/10274979
     private static Vec3d createRandVector(Random random)
     {
-        //TODO: This only works for a semi-circle!?
-        double phi = random.nextDouble() * Math.PI;
+        double phi = random.nextDouble() * 2 * Math.PI;
         double theta = Math.acos((random.nextDouble() * 2D) - 1D);
         double x = Math.sin(theta) * Math.cos(phi);
         double y = Math.sin(theta) * Math.sin(phi);
@@ -54,7 +52,6 @@ public class SpellGatestoneCreate extends SpellSelfBase
     @Override
     public boolean updateCasting(World world, EntityPlayer player, int progress)
     {
-        //TODO: Particles
         if(world.isRemote)
         {
             //Taken calculations from EntityPlayer#getLook
@@ -64,8 +61,9 @@ public class SpellGatestoneCreate extends SpellSelfBase
             for(int i = 0; i < 5; i++)
             {
                 Vec3d offset = createRandVector(world.rand).scale(0.2D);
-                ParticleMoving particle = new ParticleMoving(world, pos.add(offset), new Color(0xFFA500), 0);
-                particle.setMotion(offset.scale(-0.1D));
+                ParticleMoving particle = new ParticleMoving(world, pos.add(offset), Color.ORANGE, 0)
+                    .setMotion(offset.scale(-0.1D))
+                    .setSecondColour(Color.WHITE);
                 particle.setMaxAge(10);
                 ClientUtils.spawnParticle(particle);
             }
