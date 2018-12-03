@@ -84,7 +84,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 	public boolean updateCasting(World world, EntityPlayer player, int progress)
 	{
 		if(castTime > 0)
-			throw new RunicMagicException("Non-instant casting spell %s does not override Spell#updateCasting!");
+			throw new RunicMagicException("Non-instant casting spell %s does not override Spell#updateCasting!", this);
 		return false;
 	}
 

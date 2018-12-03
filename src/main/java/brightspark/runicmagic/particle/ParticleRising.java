@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 
 import java.awt.*;
 
-public class ParticleRising extends ParticleStatic
+public class ParticleRising extends ParticleMoving
 {
     public ParticleRising(World worldIn, Vec3d position, Color colour)
     {
@@ -18,7 +18,6 @@ public class ParticleRising extends ParticleStatic
     public void onUpdate()
     {
         super.onUpdate();
-        move(motionX, motionY, motionZ);
         motionX *= 0.98F;
         motionY *= 0.98F;
         motionZ *= 0.98F;
