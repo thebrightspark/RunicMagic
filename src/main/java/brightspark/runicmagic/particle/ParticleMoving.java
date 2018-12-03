@@ -9,6 +9,7 @@ import java.awt.*;
 public class ParticleMoving extends ParticleStatic
 {
     private float[] colour2 = null;
+    private boolean fadeOut = false;
 
     public ParticleMoving(World worldIn, Vec3d position, Color colour, int particleIconIndex)
     {
@@ -39,20 +40,28 @@ public class ParticleMoving extends ParticleStatic
         return this;
     }
 
+    public ParticleMoving setFadeOut()
+    {
+        fadeOut = true;
+        return this;
+    }
+
     @Override
     public void onUpdate()
     {
         super.onUpdate();
         move(motionX, motionY, motionZ);
 
-        if(colour2 != null)
+        if(colour2 != null && particleAge < particleMaxAge)
         {
             //Change the colour towards colour2
             int ageLeft = particleMaxAge - particleAge;
-            float red = (getRedColorF() - colour2[0]) / ageLeft;
-            float green = (getGreenColorF() - colour2[1]) / ageLeft;
-            float blue = (getBlueColorF() - colour2[2]) / ageLeft;
+            float red = (colour2[0] - getRedColorF()) / ageLeft;
+            float green = (colour2[1] - getGreenColorF()) / ageLeft;
+            float blue = (colour2[2] - getBlueColorF()) / ageLeft;
             setRBGColorF(getRedColorF() + red, getGreenColorF() + green, getBlueColorF() + blue);
         }
+        if(fadeOut)
+            setAlphaF(1F - ((float) particleAge / (float) particleMaxAge));
     }
 }

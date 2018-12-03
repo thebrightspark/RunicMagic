@@ -60,12 +60,25 @@ public class SpellGatestoneCreate extends SpellSelfBase
             Vec3d pos = player.getPositionVector().add(lookX, player.getEyeHeight() - 0.25F, lookZ);
             for(int i = 0; i < 5; i++)
             {
-                Vec3d offset = createRandVector(world.rand).scale(0.2D);
+                Vec3d offset = createRandVector(world.rand).scale(0.3D);
                 ParticleMoving particle = new ParticleMoving(world, pos.add(offset), Color.ORANGE, 0)
-                    .setMotion(offset.scale(-0.1D))
+                    .setMotion(offset.scale(-0.05D))
                     .setSecondColour(Color.WHITE);
-                particle.setMaxAge(10);
+                particle.setMaxAge(20);
                 ClientUtils.spawnParticle(particle);
+            }
+            if(progress == castTime)
+            {
+                for(int i = 0; i < 100; i++)
+                {
+                    Vec3d dir = createRandVector(world.rand).scale(world.rand.nextDouble() * 0.05D);
+                    ParticleMoving particle = new ParticleMoving(world, pos, Color.ORANGE, 0)
+                            .setMotion(dir)
+                            .setFadeOut()
+                            .setSecondColour(Color.RED);
+                    particle.setMaxAge(20);
+                    ClientUtils.spawnParticle(particle);
+                }
             }
         }
         return hasPlayerMoved(player);
