@@ -17,6 +17,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 {
@@ -186,5 +187,15 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 				count += invStack.getCount();
 		}
 		return count;
+	}
+
+	protected static Vec3d createRandVector(Random random)
+	{
+		double phi = random.nextDouble() * 2 * Math.PI;
+		double theta = Math.acos((random.nextDouble() * 2D) - 1D);
+		double x = Math.sin(theta) * Math.cos(phi);
+		double y = Math.sin(theta) * Math.sin(phi);
+		double z = Math.cos(theta);
+		return new Vec3d(x, y, z);
 	}
 }

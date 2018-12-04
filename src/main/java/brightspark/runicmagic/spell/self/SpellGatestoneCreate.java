@@ -18,7 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.awt.*;
-import java.util.Random;
 
 public class SpellGatestoneCreate extends SpellSelfBase
 {
@@ -39,16 +38,6 @@ public class SpellGatestoneCreate extends SpellSelfBase
                 !hasPlayerMoved(player);
     }
 
-    private static Vec3d createRandVector(Random random)
-    {
-        double phi = random.nextDouble() * 2 * Math.PI;
-        double theta = Math.acos((random.nextDouble() * 2D) - 1D);
-        double x = Math.sin(theta) * Math.cos(phi);
-        double y = Math.sin(theta) * Math.sin(phi);
-        double z = Math.cos(theta);
-        return new Vec3d(x, y, z);
-    }
-
     @Override
     public boolean updateCasting(World world, EntityPlayer player, int progress)
     {
@@ -57,7 +46,7 @@ public class SpellGatestoneCreate extends SpellSelfBase
             //Taken calculations from EntityPlayer#getLook
             float lookX = MathHelper.cos((player.rotationYawHead - 90) * 0.017453292F - (float) Math.PI);
             float lookZ = MathHelper.sin((player.rotationYawHead - 90) * 0.017453292F - (float) Math.PI);
-            Vec3d pos = player.getPositionVector().add(lookX, player.getEyeHeight() - 0.25F, lookZ);
+            Vec3d pos = player.getPositionVector().add(lookX, player.getEyeHeight() * 0.85F, lookZ);
             for(int i = 0; i < 5; i++)
             {
                 Vec3d offset = createRandVector(world.rand).scale(0.3D);
