@@ -2,6 +2,7 @@ package brightspark.runicmagic.init;
 
 import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.spell.other.SpellTelekineticGrab;
 import brightspark.runicmagic.spell.projectile.SpellBolt;
 import brightspark.runicmagic.spell.projectile.SpellConfuse;
 import brightspark.runicmagic.spell.projectile.SpellStrike;
@@ -31,6 +32,8 @@ public class RMSpells
 				new SpellTeleportHome(),
 				new SpellGatestoneCreate(),
 				new SpellTeleportGatestone(),
+
+				new SpellTelekineticGrab(),
 
 				//Projectile Attack Spells
 				new SpellStrike(RuneType.AIR, 1),

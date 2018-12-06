@@ -6,6 +6,7 @@ import brightspark.runicmagic.item.ItemRuneTypeBase;
 import brightspark.runicmagic.item.ItemStaff;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 
 public class CommonUtils
 {
+	private static final Vec3d ITEM_ENTITY_BOX_GROW = new Vec3d(0.15D, 0.5D, 0.15D);
+
 	public static boolean hasRunes(NonNullList<ItemStack> inventory, Map<RuneType, Short> runeCost)
 	{
 		for(ItemStack stack : inventory)
@@ -113,9 +116,18 @@ public class CommonUtils
 			return seconds + "." + millis + "s";
 	}
 
+	private static AxisAlignedBB getBox(Entity entity)
+	{
+		AxisAlignedBB box = entity.getEntityBoundingBox();
+		//We have to expand the box because the EntityItem box is only 0.25 x 0.25 x 0.25 (which is much smaller than the render)
+		if(entity instanceof EntityItem)
+			box = box.expand(ITEM_ENTITY_BOX_GROW.x, ITEM_ENTITY_BOX_GROW.y, ITEM_ENTITY_BOX_GROW.z);
+		return box;
+	}
+
 	public static Set<Entity> getEntitiesInArea(AxisAlignedBB area, List<Entity> entities)
 	{
-		return entities.stream().filter(entity -> entity.getEntityBoundingBox().intersects(area)).collect(Collectors.toSet());
+		return entities.stream().filter(entity -> getBox(entity).intersects(area)).collect(Collectors.toSet());
 	}
 
 	public static Entity rayTraceEntities(World world, Vec3d start, Vec3d end, @Nullable Predicate<? super Entity> predicate)
@@ -135,16 +147,16 @@ public class CommonUtils
 		int steps = (int) Math.floor(distanceToTrace / stepMove);
 		Vec3d stepMoveVec = end.subtract(start);
 		if(steps > 0)
-			stepMoveVec.scale(1D / (double) steps);
+			stepMoveVec = stepMoveVec.scale(1D / (double) steps);
 
 		for(int i = 0; i < steps; i++)
 		{
 			if(i > 0)
-				movingBox.offset(stepMoveVec);
+				movingBox = movingBox.offset(stepMoveVec);
 			Set<Entity> entities = getEntitiesInArea(movingBox, allEntities);
 			for(Entity entity : entities)
 			{
-				RayTraceResult ray = entity.getEntityBoundingBox().calculateIntercept(start, end);
+				RayTraceResult ray = getBox(entity).calculateIntercept(start, end);
 				if(ray != null)
 				{
 					double distance = start.squareDistanceTo(ray.hitVec);

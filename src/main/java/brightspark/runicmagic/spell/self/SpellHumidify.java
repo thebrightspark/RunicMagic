@@ -82,11 +82,7 @@ public class SpellHumidify extends SpellSelfBase
 				if(count > 1)
 				{
 					for(int num = 1; num < count; num++)
-					{
-						ItemStack water = createWaterBucket();
-						if(!player.addItemStackToInventory(water))
-							player.entityDropItem(water, 0F);
-					}
+						givePlayerStack(player, createWaterBucket());
 				}
 				bucketsFound = true;
 			}

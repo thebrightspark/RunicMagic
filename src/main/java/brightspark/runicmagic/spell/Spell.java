@@ -18,6 +18,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 {
@@ -197,5 +198,29 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell>
 		double y = Math.sin(theta) * Math.sin(phi);
 		double z = Math.cos(theta);
 		return new Vec3d(x, y, z);
+	}
+
+	protected boolean playerHasStack(EntityPlayer player, ItemStack stack, boolean strict)
+	{
+		return playerHasStack(player, invStack -> OreDictionary.itemMatches(stack, invStack, strict));
+	}
+
+	protected boolean playerHasStack(EntityPlayer player, Predicate<ItemStack> predicate)
+	{
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++)
+			if(predicate.test(player.inventory.getStackInSlot(i)))
+				return true;
+		return false;
+	}
+
+	protected boolean playerHasSpace(EntityPlayer player)
+	{
+		return playerHasStack(player, ItemStack::isEmpty);
+	}
+
+	protected void givePlayerStack(EntityPlayer player, ItemStack stack)
+	{
+		if(!player.addItemStackToInventory(stack))
+			player.entityDropItem(stack, 0F);
 	}
 }

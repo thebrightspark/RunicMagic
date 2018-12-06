@@ -37,8 +37,7 @@ public class SpellTelekineticGrab extends Spell
 	@Override
 	public boolean canCast(EntityPlayer player)
 	{
-		//TODO: Check inventory space
-		return getEntityItemLookingAt(player) != null;
+		return getEntityItemLookingAt(player) != null && playerHasSpace(player);
 	}
 
 	@Override
@@ -77,9 +76,7 @@ public class SpellTelekineticGrab extends Spell
 		EntityItem entityItem = getEntityItemLookingAt(player);
 		if(entityItem == null)
 			return false;
-
-		//TODO: Logic to pickup item
-
-		return false;
+		entityItem.onCollideWithPlayer(player);
+		return true;
 	}
 }
