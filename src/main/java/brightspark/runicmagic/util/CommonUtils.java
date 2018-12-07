@@ -116,7 +116,7 @@ public class CommonUtils
 			return seconds + "." + millis + "s";
 	}
 
-	private static AxisAlignedBB getBox(Entity entity)
+	public static AxisAlignedBB getBox(Entity entity)
 	{
 		AxisAlignedBB box = entity.getEntityBoundingBox();
 		//We have to expand the box because the EntityItem box is only 0.25 x 0.25 x 0.25 (which is much smaller than the render)

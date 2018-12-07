@@ -28,7 +28,6 @@ public class SpellTelekineticGrab extends Spell
 
 	private EntityItem getEntityItemLookingAt(EntityPlayer player)
 	{
-		//TODO: This currently ignores blocks! Do I want to stop at blocks?
 		Vec3d start = player.getPositionEyes(1F);
 		Vec3d end = start.add(player.getLookVec().scale(10D));
 		return (EntityItem) CommonUtils.rayTraceEntities(player.world, start, end, entity -> entity instanceof EntityItem);
@@ -48,11 +47,10 @@ public class SpellTelekineticGrab extends Spell
 		{
 			//Particles along line from player to entity
 			Vec3d start = player.getPositionVector().add(0, player.getEyeHeight() * 0.85F, 0);
-			Vec3d end = entityItem.getEntityBoundingBox().getCenter();
+			Vec3d end = CommonUtils.getBox(entityItem).getCenter();
 			double distance = start.distanceTo(end);
 			int steps = (int) Math.floor(distance / particleSeparation);
 			Vec3d stepMoveVec = end.subtract(start).scale(1D / (double) steps);
-			//TODO: Test that this works
 			for(int i = 1; i < steps; i++)
 			{
 				Vec3d pos = start.add(stepMoveVec.scale(i + 1));
@@ -67,7 +65,7 @@ public class SpellTelekineticGrab extends Spell
 				//TODO: "pop" of particles at entity when spell completes
 			}
 		}
-		return entityItem != null;
+		return entityItem == null;
 	}
 
 	@Override
