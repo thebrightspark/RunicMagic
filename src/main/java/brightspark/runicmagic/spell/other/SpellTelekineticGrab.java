@@ -4,6 +4,7 @@ import brightspark.runicmagic.enums.RuneType;
 import brightspark.runicmagic.enums.SpellType;
 import brightspark.runicmagic.particle.ParticleMoving;
 import brightspark.runicmagic.spell.Spell;
+import brightspark.runicmagic.util.ClientUtils;
 import brightspark.runicmagic.util.CommonUtils;
 import brightspark.runicmagic.util.SpellCastData;
 import net.minecraft.entity.item.EntityItem;
@@ -16,6 +17,7 @@ import java.awt.*;
 public class SpellTelekineticGrab extends Spell
 {
 	private static final double particleSeparation = 0.2D;
+	private static final int particleStepSeparation = 4;
 
 	public SpellTelekineticGrab()
 	{
@@ -45,24 +47,47 @@ public class SpellTelekineticGrab extends Spell
 		EntityItem entityItem = getEntityItemLookingAt(player);
 		if(world.isRemote && entityItem != null)
 		{
-			//Particles along line from player to entity
-			Vec3d start = player.getPositionVector().add(0, player.getEyeHeight() * 0.85F, 0);
-			Vec3d end = CommonUtils.getBox(entityItem).getCenter();
-			double distance = start.distanceTo(end);
-			int steps = (int) Math.floor(distance / particleSeparation);
-			Vec3d stepMoveVec = end.subtract(start).scale(1D / (double) steps);
-			for(int i = 1; i < steps; i++)
+			if(progress >= 0)
 			{
-				Vec3d pos = start.add(stepMoveVec.scale(i + 1));
-				ParticleMoving particle = new ParticleMoving(world, pos, Color.CYAN, 0)
-					.setMotion(createRandVector(world.rand).scale(0.01D))
-					.setFadeOut();
-				particle.setMaxAge(3);
+				//Particles along line from player to entity
+				Vec3d start = player.getPositionVector().add(0, player.getEyeHeight() * 0.85F, 0);
+				Vec3d end = CommonUtils.getBox(entityItem).getCenter();
+				double distance = start.distanceTo(end);
+				int steps = (int) Math.floor(distance / particleSeparation);
+				Vec3d stepMoveVec = end.subtract(start).scale(1D / (double) steps);
+
+				//int i = steps - (progress % steps);
+				//TODO: Trying to get the particles "moving" towards the player
+				int stepOffset = progress % particleStepSeparation;
+				int numParticles = steps / particleStepSeparation;
+
+				//for(int i = 1; i < steps; i++)
+				for(int i = 1; i < numParticles; i++)
+				{
+					int stepI = (i + stepOffset) * particleStepSeparation;
+					if(stepI > steps)
+						break;
+					Vec3d pos = start.add(stepMoveVec.scale(i * particleStepSeparation));
+					ParticleMoving particle = new ParticleMoving(world, pos, Color.CYAN, 0)
+						.setMotion(createRandVector(world.rand).scale(0.02D))
+						.setFadeOut();
+					particle.setMaxAge(10);
+					ClientUtils.spawnParticle(particle);
+				}
 			}
 
 			if(progress == castTime)
 			{
-				//TODO: "pop" of particles at entity when spell completes
+				Vec3d end = CommonUtils.getBox(entityItem).getCenter();
+				for(int i = 0; i < 200; i++)
+				{
+					Vec3d dir = createRandVector(world.rand).scale(0.05D);
+					ParticleMoving particle = new ParticleMoving(world, end, Color.CYAN, 0)
+						.setMotion(dir)
+						.setFadeOut();
+					particle.setMaxAge(20);
+					ClientUtils.spawnParticle(particle);
+				}
 			}
 		}
 		return entityItem == null;
