@@ -41,6 +41,12 @@ public interface CapSpell extends RMCapability
 		return new RMCapabilityProvider<>(RMCapabilities.SPELL);
 	}
 
+	@Override
+	default RMCapability get(EntityPlayerMP player)
+	{
+		return RMCapabilities.getSpells(player);
+	}
+
 	/**
 	 * Gets the current selected spell
 	 */

@@ -48,23 +48,16 @@ public class CapabilityHandler
 		//Copy capability data over to the new player entity on death
 		if(event.isWasDeath() && event.getEntityPlayer() instanceof EntityPlayerMP)
 		{
-			EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+			EntityPlayer playerOld = event.getOriginal();
+			EntityPlayerMP playerNew = (EntityPlayerMP) event.getEntityPlayer();
 
-			CapSpell oldSpells = RMCapabilities.getSpells(event.getOriginal());
-			CapSpell newSpells = RMCapabilities.getSpells(player);
-			if(oldSpells != null && newSpells != null)
-			{
-				newSpells.deserializeNBT(oldSpells.serializeNBT());
-				newSpells.dataChanged(player);
-			}
+			CapSpell capSpells = RMCapabilities.getSpells(playerOld);
+			if(capSpells != null)
+				capSpells.copyDataToPlayerCap(playerNew);
 
-			CapLevel oldLevel = RMCapabilities.getLevel(event.getOriginal());
-			CapLevel newLevel = RMCapabilities.getLevel(player);
-			if(oldLevel != null && newLevel != null)
-			{
-				newLevel.deserializeNBT(oldLevel.serializeNBT());
-				newLevel.dataChanged(player);
-			}
+			CapLevel capLevel = RMCapabilities.getLevel(playerOld);
+			if(capLevel != null)
+				capLevel.copyDataToPlayerCap(playerNew);
 		}
 	}
 }

@@ -3,13 +3,12 @@ package brightspark.runicmagic.capability;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RMCapabilityProvider<C extends RMCapability> implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound>
+public class RMCapabilityProvider<C extends RMCapability> implements ICapabilitySerializable<NBTTagCompound>
 {
 	private Capability<C> capability;
 	private C instance;

@@ -20,6 +20,12 @@ public interface CapLevel extends RMCapability
 		return new RMCapabilityProvider<>(RMCapabilities.LEVEL);
 	}
 
+	@Override
+	default RMCapability get(EntityPlayerMP player)
+	{
+		return RMCapabilities.getLevel(player);
+	}
+
 	int getLevel();
 
 	void setLevel(EntityPlayerMP player, int level);
