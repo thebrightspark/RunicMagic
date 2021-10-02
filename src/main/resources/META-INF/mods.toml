@@ -1,0 +1,29 @@
+modLoader="kotlinforforge"
+loaderVersion="[1,)"
+issueTrackerURL="https://github.com/thebrightspark/RunicMagic/issues"
+license="All Rights Reserved"
+
+[[mods]]
+    modId="runicmagic"
+    version="${file.jarVersion}"
+    displayName="Runic Magic"
+    # displayURL="https://www.curseforge.com/minecraft/mc-mods/runic-magic"
+    # logoFile="logo.png"
+    authors="bright_spark"
+    description='''
+    A Minecraft mod that adds magic mechanics similar to that in RuneScape!
+    '''
+
+[[dependencies.runicmagic]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.runicmagic]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5]"
+    ordering="NONE"
+    side="BOTH"
