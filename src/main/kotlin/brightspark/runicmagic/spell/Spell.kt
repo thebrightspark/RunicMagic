@@ -14,10 +14,10 @@ import net.minecraft.util.math.vector.Vector3d
 import net.minecraft.util.text.StringTextComponent
 import net.minecraft.world.World
 import net.minecraftforge.registries.ForgeRegistryEntry
+import java.util.*
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.random.Random
 
 abstract class Spell(props: Properties) : ForgeRegistryEntry<Spell>() {
 	val iconRL: ResourceLocation by lazy {

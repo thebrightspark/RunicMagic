@@ -47,7 +47,9 @@ object RMSpells {
 		enchantSpell("enchant_6", 30, enchantProps(87).addRuneCost(COSMIC to 1, EARTH to 20, FIRE to 20)),
 		spell(
 			"bones_to_apples",
-			BonesToApplesSpell(alchemyProps(15).setCooldown(1200).addRuneCost(NATURE to 1, EARTH to 2, WATER to 2))
+			BonesToApplesSpell(
+				alchemyProps(15).setCastTime(40).setCooldown(1200).addRuneCost(NATURE to 1, EARTH to 2, WATER to 2)
+			)
 		),
 		spell(
 			"humidify",
