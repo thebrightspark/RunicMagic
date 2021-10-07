@@ -19,8 +19,7 @@ class HumidifySpell(props: Properties) : SelfBaseSpell(props) {
 		private val BUCKET = ItemStack(Items.BUCKET)
 	}
 
-	override fun canCast(player: PlayerEntity): Boolean =
-		!hasPlayerMoved(player) && playerHasItem(player, Items.BUCKET)
+	override fun canCast(player: PlayerEntity): Boolean = !hasPlayerMoved(player) && playerHasItem(player, Items.BUCKET)
 
 	override fun updateCasting(world: World, player: PlayerEntity, progress: Int): Boolean {
 		world.onClient {

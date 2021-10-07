@@ -41,7 +41,10 @@ inline infix fun <W : IWorldReader, R> W.onClient(op: W.() -> R): R? = if (this.
  */
 inline infix fun <W : IWorldReader, R> W.onServer(op: W.() -> R): R? = if (!this.isRemote) op(this) else null
 
-fun World.addParticle(particleType: ParticleType<out IParticleData>, pos: Vector3d, vel: Vector3d = Vector3d.ZERO) =
+fun World.addParticle(particleType: IParticleData, pos: Vector3d, vel: Vector3d = Vector3d.ZERO) =
+	this.addParticle(particleType, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z)
+
+fun World.addParticle(particleType: ParticleType<*>, pos: Vector3d, vel: Vector3d = Vector3d.ZERO) =
 	this.addParticle(particleType as BasicParticleType, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z)
 
 /*
