@@ -18,11 +18,12 @@ open class StaticParticle(world: ClientWorld, x: Double, y: Double, z: Double, c
 		val colourParts = when (getColourVariance()) {
 			ColourVariance.BRIGHTNESS -> randColourVary1(colour)
 			ColourVariance.COLOUR -> randColourVary2(colour)
-			ColourVariance.NONE -> colour.getRGBColorComponents(null)
+			ColourVariance.NONE -> colour.getRGBComponents(null)
 		}
 		particleRed = colourParts[0]
 		particleGreen = colourParts[1]
 		particleBlue = colourParts[2]
+		particleAlpha = colourParts[3]
 	}
 
 	override fun getRenderType(): IParticleRenderType = IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT
@@ -42,14 +43,16 @@ open class StaticParticle(world: ClientWorld, x: Double, y: Double, z: Double, c
 		return floatArrayOf(
 			colourIntToFloat(colour.red + randChange),
 			colourIntToFloat(colour.green + randChange),
-			colourIntToFloat(colour.blue + randChange)
+			colourIntToFloat(colour.blue + randChange),
+			colourIntToFloat(colour.alpha)
 		)
 	}
 
 	private fun randColourVary2(colour: Color): FloatArray = floatArrayOf(
 		randColourPartVary(colour.red),
 		randColourPartVary(colour.green),
-		randColourPartVary(colour.blue)
+		randColourPartVary(colour.blue),
+		colourIntToFloat(colour.alpha)
 	)
 
 	private fun randColourPartVary(colourComponent: Int): Float {

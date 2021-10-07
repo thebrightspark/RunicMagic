@@ -21,9 +21,9 @@ class BonesToApplesSpell(props: Properties) : SelfBaseSpell(props) {
 			val pos = player.positionVec.add(look.x, player.eyeHeight * 0.85, look.z)
 			val progressFloat = progress.toFloat() / castTime.toFloat()
 			val invProgressFloat = 1F - progressFloat
-			val colour = Color(1F, invProgressFloat, invProgressFloat)
+			val colour = Color(1F, invProgressFloat, invProgressFloat, 0.7F)
 
-			repeat(10) {
+			repeat(50) {
 				val vec = randVector(rand).scale(rand.nextFloat() * 0.5)
 				addParticle(ColouredParticleData(RMParticles.SINGLE_MOVING, colour), pos.add(vec))
 			}
