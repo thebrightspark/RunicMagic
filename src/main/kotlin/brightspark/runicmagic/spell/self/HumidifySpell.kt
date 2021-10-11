@@ -5,6 +5,7 @@ import brightspark.runicmagic.model.SpellCastData
 import brightspark.runicmagic.util.addParticle
 import brightspark.runicmagic.util.onClient
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
@@ -40,7 +41,7 @@ class HumidifySpell(props: Properties) : SelfBaseSpell(props) {
 		return hasPlayerMoved(player)
 	}
 
-	override fun execute(player: PlayerEntity, data: SpellCastData): Boolean {
+	override fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean {
 		var bucketsFound = false
 		val inv = player.inventory
 		repeat(inv.sizeInventory) {

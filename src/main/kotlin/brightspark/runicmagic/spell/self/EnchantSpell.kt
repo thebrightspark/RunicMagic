@@ -17,7 +17,7 @@ class EnchantSpell(private val enchantLevel: Int, props: Properties) : SelfBaseS
 	override fun canCast(player: PlayerEntity): Boolean =
 		player.heldItemMainhand.let { !it.isEmpty && it.isEnchantable }
 
-	override fun execute(player: PlayerEntity, data: SpellCastData): Boolean {
+	override fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean {
 		val stack = player.heldItemMainhand
 		if (stack.isEmpty || !stack.isEnchantable) return false
 
@@ -53,8 +53,7 @@ class EnchantSpell(private val enchantLevel: Int, props: Properties) : SelfBaseS
 				1F,
 				rand.nextFloat() * 0.1F + 0.9F
 			)
-			if (this is ServerPlayerEntity)
-				CriteriaTriggers.ENCHANTED_ITEM.trigger(this, resultStack, enchantLevel)
+			CriteriaTriggers.ENCHANTED_ITEM.trigger(this, resultStack, enchantLevel)
 		}
 		return true
 	}

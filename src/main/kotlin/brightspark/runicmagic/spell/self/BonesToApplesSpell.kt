@@ -6,6 +6,7 @@ import brightspark.runicmagic.particle.ColouredParticleData
 import brightspark.runicmagic.util.addParticle
 import brightspark.runicmagic.util.onClient
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.world.World
@@ -31,7 +32,7 @@ class BonesToApplesSpell(props: Properties) : SelfBaseSpell(props) {
 		return hasPlayerMoved(player)
 	}
 
-	override fun execute(player: PlayerEntity, data: SpellCastData): Boolean {
+	override fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean {
 		var success = false
 		player.inventory.mainInventory.let {
 			it.forEachIndexed { i, stack ->

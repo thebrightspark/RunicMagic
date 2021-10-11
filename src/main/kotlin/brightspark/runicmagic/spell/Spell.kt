@@ -7,6 +7,7 @@ import brightspark.runicmagic.util.RunicMagicException
 import brightspark.runicmagic.util.appendTranslation
 import brightspark.runicmagic.util.sendMessage
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -57,7 +58,7 @@ abstract class Spell(props: Properties) : ForgeRegistryEntry<Spell>() {
 	 * Executes this spell and returns true if successful
 	 * Will be called instantly for instant spells, or at the end of casting
 	 */
-	abstract fun execute(player: PlayerEntity, data: SpellCastData): Boolean
+	abstract fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean
 
 	/**
 	 * Called when a spell cast is cancelled
@@ -92,7 +93,6 @@ abstract class Spell(props: Properties) : ForgeRegistryEntry<Spell>() {
 	protected fun hasPlayerMoved(player: PlayerEntity): Boolean =
 		player.prevPosX != player.posX || player.prevPosY != player.posY || player.prevPosZ != player.posZ
 
-	// TODO: Add an extension function to KSparkLib for iterating through an inventory
 	protected fun countItemsInPlayerInv(player: PlayerEntity, stack: ItemStack): Int =
 		(0 until player.inventory.sizeInventory).sumBy {
 			val invStack = player.inventory.getStackInSlot(it)

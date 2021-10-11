@@ -6,6 +6,7 @@ import brightspark.runicmagic.item.RuneItem
 import brightspark.runicmagic.model.SpellCastData
 import brightspark.runicmagic.util.RMUtils
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
@@ -21,7 +22,7 @@ class ChargeOrbSpell(private val orbItem: RuneItem, props: Properties) : SelfBas
 
 	override fun updateCasting(world: World, player: PlayerEntity, progress: Int): Boolean = canCast(player)
 
-	override fun execute(player: PlayerEntity, data: SpellCastData): Boolean {
+	override fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean {
 		val held = RMUtils.findHeldItem(player, RMItems.ORB_NONE) ?: return false
 		if (!isLookingAtValidBlock(player)) return false
 		held.second.shrink(1)
