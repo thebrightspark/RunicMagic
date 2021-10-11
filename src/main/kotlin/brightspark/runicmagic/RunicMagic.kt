@@ -1,10 +1,10 @@
 package brightspark.runicmagic
 
 import brightspark.runicmagic.command.ExecuteSpellCommand
+import brightspark.runicmagic.command.SetLevelCommand
 import brightspark.runicmagic.handler.KeyBindHandler
 import brightspark.runicmagic.init.*
 import brightspark.runicmagic.message.*
-import brightspark.runicmagic.spell.Spell
 import brightspark.runicmagic.util.register
 import brightspark.runicmagic.util.registerMessage
 import net.minecraft.item.ItemGroup
@@ -20,7 +20,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.fml.network.NetworkRegistry
 import net.minecraftforge.fml.network.simple.SimpleChannel
-import net.minecraftforge.registries.RegistryBuilder
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
@@ -74,7 +73,7 @@ object RunicMagic {
 			addListener(RMCapabilities::playerLoggedIn)
 			addListener(RMCapabilities::playerRespawn)
 			addListener(RMCapabilities::playerDimChanged)
-			addListener<RegisterCommandsEvent> { it.dispatcher.register(ExecuteSpellCommand) }
+			addListener<RegisterCommandsEvent> { it.dispatcher.register(ExecuteSpellCommand, SetLevelCommand) }
 		}
 	}
 }

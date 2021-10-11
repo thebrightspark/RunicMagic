@@ -8,7 +8,7 @@ import kotlin.math.pow
 import kotlin.math.round
 
 object LevelManager {
-	private const val MAX_LEVEL = 99
+	const val MAX_LEVEL = 99
 
 	private val experience = Int2IntOpenHashMap(MAX_LEVEL).apply {
 		put(1, 0)

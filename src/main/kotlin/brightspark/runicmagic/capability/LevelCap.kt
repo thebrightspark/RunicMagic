@@ -25,6 +25,10 @@ interface LevelCap : RMCap {
 	fun addExperience(player: ServerPlayerEntity, experience: Int): Int
 
 	class Impl : LevelCap {
+		/*
+		Maybe try use inline classes for level and experience so we can have some util methods?
+		e.g. Level#getStartingXp(), Level#getXpToNextLevel(), Experience#getLevel()
+		 */
 		private var level: Int = 0
 		private var experience: Int = 0
 		private var levelMaxExp: Int = 0
@@ -34,7 +38,7 @@ interface LevelCap : RMCap {
 		override fun setLevel(player: ServerPlayerEntity, level: Int) {
 			if (this.level != level) {
 				this.level = level
-				calcLevel(true)
+				experience = LevelManager.getXpForLevel(level)
 				dataChanged(player)
 			}
 		}
@@ -66,20 +70,9 @@ interface LevelCap : RMCap {
 			RunicMagic.NETWORK.sendToPlayer(SyncLevelCapMessage(experience), player)
 
 		private fun calcLevel(force: Boolean) {
-			if (level > 0 && levelMaxExp > 0 && experience < levelMaxExp)
-				return
-			if (force) {
+			if (force || experience >= levelMaxExp) {
 				level = LevelManager.getLevelForXp(experience)
 				levelMaxExp = LevelManager.getXpForLevel(level + 1)
-			} else {
-				if (level <= 0)
-					level = LevelManager.getLevelForXp(experience)
-				if (levelMaxExp <= 0)
-					levelMaxExp = LevelManager.getXpForLevel(level + 1)
-				while (experience >= levelMaxExp) {
-					level++
-					levelMaxExp = LevelManager.getXpForLevel(level + 1)
-				}
 			}
 		}
 

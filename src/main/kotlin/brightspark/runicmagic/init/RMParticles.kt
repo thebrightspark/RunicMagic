@@ -39,7 +39,6 @@ object RMParticles {
 		factory(SINGLE_MOVING) { sprite, data, world, x, y, z, vx, vy, vz ->
 			MovingParticle(world, x, y, z, vx, vy, vz, (data as ColouredParticleData).colour).apply {
 				selectSpriteRandomly(sprite)
-				multiplyParticleScaleBy(0.5F)
 			}
 		}
 		factory(CLOUD) { sprite, _, world, x, y, z, _, _, _ ->
