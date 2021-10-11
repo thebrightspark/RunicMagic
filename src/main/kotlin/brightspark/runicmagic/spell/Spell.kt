@@ -57,6 +57,7 @@ abstract class Spell(props: Properties) : ForgeRegistryEntry<Spell>() {
 	/**
 	 * Executes this spell and returns true if successful
 	 * Will be called instantly for instant spells, or at the end of casting
+	 * @return true if spell cast successfully
 	 */
 	abstract fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean
 

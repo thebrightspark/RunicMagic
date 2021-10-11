@@ -9,6 +9,7 @@ import brightspark.runicmagic.spell.self.BonesToApplesSpell
 import brightspark.runicmagic.spell.self.ChargeOrbSpell
 import brightspark.runicmagic.spell.self.EnchantSpell
 import brightspark.runicmagic.spell.self.HumidifySpell
+import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
 import brightspark.runicmagic.util.setRegName
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
@@ -33,6 +34,7 @@ object RMSpells {
 
 	fun register(event: RegistryEvent.Register<Spell>) = event.registry.registerAll(
 		// Teleport
+		spell("home", HomeTeleportSpell(teleportProps(SpellType.TELESELF, 40))),
 
 		// Projectile Attack
 
@@ -64,6 +66,9 @@ object RMSpells {
 	)
 
 	private fun props(spellType: SpellType, level: Int): Spell.Properties = Spell.Properties(spellType, level)
+
+	private fun teleportProps(spellType: SpellType, level: Int): Spell.Properties =
+		props(spellType, level).setSelectable(false).setCooldown(600).setCastTime(200)
 
 	private fun selfProps(spellType: SpellType, level: Int): Spell.Properties =
 		props(spellType, level).setSelectable(false)
