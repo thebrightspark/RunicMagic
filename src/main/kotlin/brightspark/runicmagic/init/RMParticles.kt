@@ -2,8 +2,8 @@ package brightspark.runicmagic.init
 
 import brightspark.runicmagic.particle.ColouredParticleData
 import brightspark.runicmagic.particle.MovingParticle
+import brightspark.runicmagic.particle.RMParticle
 import brightspark.runicmagic.particle.RainParticle
-import brightspark.runicmagic.particle.StaticParticle
 import brightspark.runicmagic.util.setRegName
 import com.mojang.serialization.Codec
 import net.minecraft.client.Minecraft
@@ -36,11 +36,17 @@ object RMParticles {
 	)
 
 	fun registerFactories() {
-		factory(SINGLE_MOVING) { sprite, data, world, x, y, z, _, _, _ ->
-			MovingParticle(world, x, y, z, (data as ColouredParticleData).colour, sprite)
+		factory(SINGLE_MOVING) { sprite, data, world, x, y, z, vx, vy, vz ->
+			MovingParticle(world, x, y, z, vx, vy, vz, (data as ColouredParticleData).colour).apply {
+				selectSpriteRandomly(sprite)
+				multiplyParticleScaleBy(0.5F)
+			}
 		}
 		factory(CLOUD) { sprite, _, world, x, y, z, _, _, _ ->
-			StaticParticle(world, x, y, z, Color.WHITE, sprite).apply { maxAge *= 3 }
+			RMParticle(world, x, y, z, Color.WHITE).apply {
+				animatedSprite = sprite
+				maxAge *= 3
+			}
 		}
 		factory(RAIN) { sprite, _, world, x, y, z, _, _, _ ->
 			RainParticle(world, x, y, z).apply { selectSpriteRandomly(sprite) }
