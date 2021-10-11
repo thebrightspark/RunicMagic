@@ -34,7 +34,7 @@ object RMSpells {
 
 	fun register(event: RegistryEvent.Register<Spell>) = event.registry.registerAll(
 		// Teleport
-		spell("home", HomeTeleportSpell(teleportProps(SpellType.TELESELF, 40))),
+		spell("teleport_home", HomeTeleportSpell(teleportProps(SpellType.TELESELF, 40))),
 
 		// Projectile Attack
 

@@ -139,7 +139,7 @@ class SpellSelectScreen(private val player: PlayerEntity) : RMScreen("Spell Sele
 
 		override fun renderBg(matrixStack: MatrixStack, minecraft: Minecraft, mouseX: Int, mouseY: Int) {
 			minecraft.textureManager.bindTexture(spell.iconRL)
-			blit(matrixStack, x + 1, y + 1, 0, 0, 16, 16)
+			blit(matrixStack, x + 1, y + 1, 0F, 0F, 16, 16, 16, 16)
 		}
 	}
 }

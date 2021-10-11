@@ -8,14 +8,15 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.StringTextComponent
 
 open class RMScreen(
 	title: String,
 	imageName: String,
-	protected val guiWidth: Int,
-	protected val guiHeight: Int,
+	protected val guiWidth: Int = 256,
+	protected val guiHeight: Int = 256,
 	protected val imageWidth: Int = 256,
 	protected val imageHeight: Int = 256
 ) : Screen(StringTextComponent(title)) {
@@ -30,12 +31,15 @@ open class RMScreen(
 	}
 
 	override fun render(matrixStack: MatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
-		renderBackground(matrixStack)
 		RenderSystem.color3f(1F, 1F, 1F)
+		renderBackground(matrixStack)
 		minecraft!!.textureManager.bindTexture(imageResLoc)
-		blit(matrixStack, guiLeft, guiTop, guiWidth, guiHeight, imageWidth, imageHeight)
+		blit(matrixStack, guiLeft, guiTop, 0F, 0F, guiWidth, guiHeight, imageWidth, imageHeight)
+		renderAfterBackground(matrixStack, mouseX, mouseY, partialTicks)
 		super.render(matrixStack, mouseX, mouseY, partialTicks)
 	}
+
+	protected open fun renderAfterBackground(matrixStack: MatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {}
 
 	protected open inner class RMButton(
 		x: Int,
@@ -70,16 +74,16 @@ open class RMScreen(
 			renderBg(matrixStack, mc, mouseX, mouseY)
 
 			// Render text
-//			if (message != EmptyTextComponent) {
-//				drawCenteredString(
-//					matrixStack,
-//					mc.fontRenderer,
-//					message,
-//					x + this.width / 2,
-//					y + (this.height - 8) / 2,
-//					fgColor or MathHelper.ceil(alpha * 255.0f) shl 24
-//				)
-//			}
+			if (message != EmptyTextComponent) {
+				drawCenteredString(
+					matrixStack,
+					mc.fontRenderer,
+					message,
+					x + this.width / 2,
+					y + (this.height - 8) / 2,
+					fgColor or MathHelper.ceil(alpha * 255.0f) shl 24
+				)
+			}
 
 			// Render tooltip
 			if (isHovered()) this.renderToolTip(matrixStack, mouseX, mouseY)
