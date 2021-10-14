@@ -42,7 +42,7 @@ enum class RuneType {
 	val hasTalisman: Boolean
 	val needsPureEssence: Boolean
 	val subTypes: Array<out RuneType>
-	val unlocName: String = "item.rune.${name.toLowerCase(Locale.ROOT)}.name"
+	val unlocName: String = "item.runicmagic.rune_${name.toLowerCase(Locale.ROOT)}"
 
 	constructor(colour: Color, hasTalisman: Boolean, needsPureEssence: Boolean) {
 		this.colour = colour
