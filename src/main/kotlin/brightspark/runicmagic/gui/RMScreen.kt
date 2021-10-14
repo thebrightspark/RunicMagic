@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.button.Button
+import net.minecraft.client.gui.widget.button.Button.ITooltip
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.ITextComponent
@@ -41,6 +42,11 @@ open class RMScreen(
 
 	protected open fun renderAfterBackground(matrixStack: MatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {}
 
+	private fun renderOnTooltip(matrixStack: MatrixStack, mouseX: Int, mouseY: Int, tooltip: List<ITextComponent>) {
+		if (tooltip.isNotEmpty())
+			renderWrappedToolTip(matrixStack, tooltip, mouseX, mouseY, font)
+	}
+
 	protected open inner class RMButton(
 		x: Int,
 		y: Int,
@@ -50,8 +56,20 @@ open class RMScreen(
 		protected val iconY: Int,
 		onPress: (Button) -> Unit,
 		private val onTooltip: (Button) -> List<ITextComponent> = { emptyList() }
-	) : Button(guiLeft + x, guiTop + y, width, height, EmptyTextComponent, onPress) {
+	) : Button(
+		guiLeft + x,
+		guiTop + y,
+		width,
+		height,
+		EmptyTextComponent,
+		onPress,
+		ITooltip { button, matrixStack, mouseX, mouseY ->
+			renderOnTooltip(matrixStack, mouseX, mouseY, onTooltip(button))
+		}
+	) {
 		override fun render(matrixStack: MatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
+			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height
+
 			val mc = Minecraft.getInstance()
 			mc.textureManager.bindTexture(imageResLoc)
 			RenderSystem.color4f(1F, 1F, 1F, alpha)
@@ -79,28 +97,14 @@ open class RMScreen(
 					matrixStack,
 					mc.fontRenderer,
 					message,
-					x + this.width / 2,
-					y + (this.height - 8) / 2,
+					x + width / 2,
+					y + (height - 8) / 2,
 					fgColor or MathHelper.ceil(alpha * 255.0f) shl 24
 				)
 			}
 
 			// Render tooltip
-			if (isHovered()) this.renderToolTip(matrixStack, mouseX, mouseY)
-		}
-
-		override fun renderToolTip(matrixStack: MatrixStack, mouseX: Int, mouseY: Int) {
-			if (active) {
-				val tooltip = onTooltip(this)
-				if (tooltip.isEmpty()) return
-				val mc = Minecraft.getInstance()
-				this@RMScreen.renderTooltip(
-					matrixStack,
-					tooltip.flatMap { mc.fontRenderer.trimStringToWidth(it, getWidth()) },
-					mouseX,
-					mouseY
-				)
-			}
+			if (isHovered()) renderToolTip(matrixStack, mouseX, mouseY)
 		}
 	}
 }
