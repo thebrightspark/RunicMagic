@@ -82,11 +82,14 @@ class SpellSelectScreen(private val player: PlayerEntity) : RMScreen("Spell Sele
 		val spell = button.spell
 
 		val level = spell.level
-		val levelColour = if (levelCap.getLevel() >= level) TextFormatting.LIGHT_PURPLE else TextFormatting.DARK_PURPLE
+		val levelHighEnough = levelCap.getLevel() >= level
+		val levelColour = if (levelHighEnough) TextFormatting.LIGHT_PURPLE else TextFormatting.DARK_GRAY
 		add(
 			StringTextComponent("[$level] ").mergeStyle(levelColour)
 				.appendSibling(TranslationTextComponent(spell.unlocName).mergeStyle(spell.spellType.getMagicTypeColour()))
 		)
+		if (!levelHighEnough)
+			add(StringTextComponent("Insufficient level").mergeStyle(TextFormatting.DARK_RED))
 		add(TranslationTextComponent(spell.spellType.getTranslation()).mergeStyle(TextFormatting.GRAY))
 
 		if (!spell.selectable)
@@ -104,7 +107,7 @@ class SpellSelectScreen(private val player: PlayerEntity) : RMScreen("Spell Sele
 		val cost = spell.runeCost
 		if (cost.isEmpty())
 			add(StringTextComponent("${TAB}None"))
-		else
+		else {
 			cost.entries.sortedBy { it.key }.forEach { (runeType, amount) ->
 				val inInv = runesInInv.getOrDefault(runeType, 0)
 				add(
@@ -113,6 +116,7 @@ class SpellSelectScreen(private val player: PlayerEntity) : RMScreen("Spell Sele
 						.appendTranslation(runeType.unlocName)
 				)
 			}
+		}
 	}
 
 	fun onSpellCapChanged() {
