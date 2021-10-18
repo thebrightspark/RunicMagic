@@ -31,6 +31,7 @@ object SpellHandler {
 	fun onClientTick(event: TickEvent.ClientTickEvent) {
 		if (event.phase != TickEvent.Phase.END) return
 		val mc = Minecraft.getInstance()
+		if (mc.isGamePaused) return
 		val world = mc.world ?: return
 		val singlePlayer = mc.isSingleplayer
 		CASTS.entries.removeIf {
