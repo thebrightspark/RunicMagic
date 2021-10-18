@@ -76,7 +76,12 @@ class SpellSelectScreen(private val player: PlayerEntity) : RMScreen("Spell Sele
 	private fun hasRunes(spell: Spell): Boolean =
 		spell.runeCost.all { (type, amount) -> runesInInv[type]?.let { it < 0 || it >= amount } ?: false }
 
-	private fun selectSpell(button: SpellButton) = RunicMagic.NETWORK.sendToServer(SpellSelectMessage(button.spell))
+	private fun selectSpell(button: SpellButton) {
+		val spell = button.spell
+		RunicMagic.NETWORK.sendToServer(SpellSelectMessage(spell))
+		if (!spell.selectable)
+			closeScreen()
+	}
 
 	private fun spellTooltip(button: SpellButton): List<ITextComponent> = mutableListOf<ITextComponent>().apply {
 		val spell = button.spell
