@@ -25,6 +25,10 @@ import org.apache.logging.log4j.Logger
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
+/*
+Old 1.12.2 code:
+https://github.com/thebrightspark/RunicMagic/tree/442ba0d5c0a7e98b611ed6c01a113704e6be4730
+ */
 @Mod(RunicMagic.MOD_ID)
 object RunicMagic {
 	internal const val MOD_ID = "runicmagic"

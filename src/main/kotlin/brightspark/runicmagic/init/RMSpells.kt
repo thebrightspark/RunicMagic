@@ -5,10 +5,7 @@ import brightspark.runicmagic.item.RuneItem
 import brightspark.runicmagic.model.RuneType.*
 import brightspark.runicmagic.model.SpellType
 import brightspark.runicmagic.spell.Spell
-import brightspark.runicmagic.spell.self.BonesToApplesSpell
-import brightspark.runicmagic.spell.self.ChargeOrbSpell
-import brightspark.runicmagic.spell.self.EnchantSpell
-import brightspark.runicmagic.spell.self.HumidifySpell
+import brightspark.runicmagic.spell.self.*
 import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
 import brightspark.runicmagic.util.setRegName
 import net.minecraft.item.Item
@@ -56,6 +53,12 @@ object RMSpells {
 		spell(
 			"humidify",
 			HumidifySpell(alchemyProps(68).setCastTime(80).addRuneCost(ASTRAL to 1, FIRE to 1, WATER to 3))
+		),
+		spell(
+			"gatestone_create",
+			GatestoneCreateSpell(
+				selfProps(SpellType.OTHER, 32).setCastTime(60).setCooldown(600).addRuneCost(COSMIC to 3)
+			)
 		),
 
 		// Charge Orb

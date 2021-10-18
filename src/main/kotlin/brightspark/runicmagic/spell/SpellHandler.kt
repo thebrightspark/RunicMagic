@@ -36,7 +36,7 @@ object SpellHandler {
 		val singlePlayer = mc.isSingleplayer
 		CASTS.entries.removeIf {
 			val player = world.getPlayerByUuid(it.key)
-			return@removeIf player == null || it.value.update(world, player, singlePlayer)
+			return@removeIf player == null || (it.value.update(world, player, singlePlayer) && !singlePlayer)
 		}
 	}
 
