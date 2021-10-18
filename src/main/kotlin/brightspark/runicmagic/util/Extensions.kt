@@ -3,6 +3,7 @@ package brightspark.runicmagic.util
 import brightspark.runicmagic.RunicMagic
 import brightspark.runicmagic.command.AbstractCommand
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
@@ -11,6 +12,7 @@ import net.minecraft.command.CommandSource
 import net.minecraft.command.Commands
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.network.PacketBuffer
 import net.minecraft.particles.BasicParticleType
 import net.minecraft.particles.IParticleData
 import net.minecraft.particles.ParticleType
@@ -22,6 +24,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.network.PacketDistributor
 import net.minecraftforge.fml.network.simple.SimpleChannel
 import net.minecraftforge.registries.ForgeRegistryEntry
+import java.awt.Color
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
@@ -77,6 +80,11 @@ fun SimpleChannel.sendToPlayer(message: Message, player: ServerPlayerEntity): Un
  * Sends the [message] to all clients
  */
 fun SimpleChannel.sendToAll(message: Message): Unit = this.send(PacketDistributor.ALL.noArg(), message)
+
+fun PacketBuffer.readColor(): Color? {
+	val array = arrayOf(this.readInt(), this.readInt(), this.readInt(), this.readInt())
+	return if (array.any { it < 0 }) null else Color(array[0], array[1], array[2], array[3])
+}
 
 /*
  * -----------------
@@ -141,6 +149,17 @@ fun <T : ArgumentBuilder<CommandSource, T>, ARG> T.thenArgument(
 
 fun <T : ArgumentBuilder<CommandSource, T>> T.thenCommand(command: AbstractCommand, block: T.() -> Unit = {}): T =
 	this.then(command.builder).apply(block)
+
+fun StringReader.readColor(): Color? {
+	val r = this.readInt()
+	this.expect(' ')
+	val g = this.readInt()
+	this.expect(' ')
+	val b = this.readInt()
+	this.expect(' ')
+	val a = this.readInt()
+	return if (r < 0 || g < 0 || b < 0 || a < 0) null else Color(r, g, b, a)
+}
 
 /*
  * ------

@@ -18,6 +18,7 @@ open class RMParticle(world: ClientWorld, x: Double, y: Double, z: Double, colou
 			value?.let { selectSpriteWithAge(it) }
 		}
 	var colour2: FloatArray? = null
+		private set
 	var fadeOut: Boolean = false
 
 	init {
@@ -74,6 +75,10 @@ open class RMParticle(world: ClientWorld, x: Double, y: Double, z: Double, colou
 	}
 
 	override fun getBrightnessForRender(partialTick: Float): Int = 15728880
+
+	fun setColour2(colour: Color?) {
+		colour2 = colour?.getRGBComponents(null)
+	}
 
 	protected open fun getColourVariance(): ColourVariance = ColourVariance.BRIGHTNESS
 

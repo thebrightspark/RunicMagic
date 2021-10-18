@@ -37,8 +37,13 @@ object RMParticles {
 
 	fun registerFactories() {
 		factory(SINGLE_MOVING) { sprite, data, world, x, y, z, vx, vy, vz ->
-			MovingParticle(world, x, y, z, vx, vy, vz, (data as ColouredParticleData).colour).apply {
+			val particleData = data as ColouredParticleData
+			MovingParticle(world, x, y, z, vx, vy, vz, particleData.colour1).apply {
 				selectSpriteRandomly(sprite)
+				if (particleData.age > 0)
+					maxAge = particleData.age
+				setColour2(particleData.colour2)
+				fadeOut = particleData.fadeOut
 			}
 		}
 		factory(CLOUD) { sprite, _, world, x, y, z, _, _, _ ->
