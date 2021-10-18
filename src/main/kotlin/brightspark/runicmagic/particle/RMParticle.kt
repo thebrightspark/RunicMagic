@@ -62,8 +62,11 @@ open class RMParticle(world: ClientWorld, x: Double, y: Double, z: Double, colou
 			}
 		}
 
-		if (fadeOut)
-			setAlphaF(1F - (age.toFloat() / maxAge.toFloat()))
+		if (fadeOut) {
+			val halfMaxAge = maxAge / 2
+			if (age > halfMaxAge)
+				setAlphaF(1F - ((age - halfMaxAge).toFloat() / halfMaxAge.toFloat()))
+		}
 	}
 
 	override fun renderParticle(buffer: IVertexBuilder, renderInfo: ActiveRenderInfo, partialTicks: Float) {
