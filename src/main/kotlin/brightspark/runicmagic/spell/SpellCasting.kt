@@ -43,11 +43,6 @@ class SpellCasting : INBTSerializable<CompoundNBT> {
 				return true
 		}
 
-		// If on a single player world, the handler class is shared between client and server,
-		// so we only want to update progress once per tick
-		if (!isClientSideSinglePlayer)
-			progress++
-
 		if (shouldCancel) {
 			// Spell stopped casting
 			spell.onCastCancel(player)
@@ -66,10 +61,16 @@ class SpellCasting : INBTSerializable<CompoundNBT> {
 			}
 		}
 
-		// If cancelled, then update clients
-		if (shouldCancel) {
-			world.onServer {
-				RunicMagic.NETWORK.sendToAll(RemoveSpellCastingMessage(player))
+		// If on a single player world, the handler class is shared between client and server,
+		// so we only want to update progress once per tick
+		if (!isClientSideSinglePlayer) {
+			progress++
+
+			// If cancelled, then update clients
+			if (shouldCancel) {
+				world.onServer {
+					RunicMagic.NETWORK.sendToAll(RemoveSpellCastingMessage(player))
+				}
 			}
 		}
 
