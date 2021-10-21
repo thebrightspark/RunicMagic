@@ -6,6 +6,7 @@ import brightspark.runicmagic.model.RuneType.*
 import brightspark.runicmagic.model.SpellType
 import brightspark.runicmagic.spell.Spell
 import brightspark.runicmagic.spell.self.*
+import brightspark.runicmagic.spell.teleport.GatestoneTeleportSpell
 import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
 import brightspark.runicmagic.util.setRegName
 import net.minecraft.item.Item
@@ -32,6 +33,7 @@ object RMSpells {
 	fun register(event: RegistryEvent.Register<Spell>) = event.registry.registerAll(
 		// Teleport
 		spell("teleport_home", HomeTeleportSpell(teleportProps(SpellType.TELESELF, 40))),
+		spell("teleport_gatestone", GatestoneTeleportSpell(teleportProps(SpellType.TELESELF, 32))),
 
 		// Projectile Attack
 
