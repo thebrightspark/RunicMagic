@@ -91,6 +91,7 @@ abstract class Spell(props: Properties) : ForgeRegistryEntry<Spell>() {
 	}
 
 	// TODO: Change this so only explicit player movement counts? e.g. being pushed by water or another entity doesn't count
+	// FIXME: This doesn't work server side!?
 	protected fun hasPlayerMoved(player: PlayerEntity): Boolean =
 		player.prevPosX != player.posX || player.prevPosY != player.posY || player.prevPosZ != player.posZ
 

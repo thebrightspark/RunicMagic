@@ -2,8 +2,9 @@ package brightspark.runicmagic.event
 
 import brightspark.runicmagic.entity.SpellEntity
 import brightspark.runicmagic.spell.Spell
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.util.math.RayTraceResult
+import net.minecraftforge.event.entity.ProjectileImpactEvent
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.eventbus.api.Cancelable
 import net.minecraftforge.eventbus.api.Event
@@ -18,17 +19,16 @@ abstract class SpellEvent(val spell: Spell, player: PlayerEntity) : PlayerEvent(
  */
 abstract class SpellCastEvent(spell: Spell, player: PlayerEntity) : SpellEvent(spell, player) {
 	/**
-	 * Called just before the spell is about to be cast
+	 * Fired just before the spell is about to be cast
 	 * Cancel to prevent the spell from being cast
 	 */
 	@Cancelable
 	class Pre(spell: Spell, player: PlayerEntity) : SpellCastEvent(spell, player)
 
 	/**
-	 * Called just after the spell has been cast and provides the spell entity
+	 * Fired just after the spell has been cast and provides the spell entity
 	 */
-	// TODO: Change spellEntity to the appropriate type
-	class Post(spell: Spell, player: PlayerEntity, spellEntity: SpellEntity) : SpellCastEvent(spell, player)
+	class Post(spell: Spell, player: PlayerEntity, val spellEntity: SpellEntity) : SpellCastEvent(spell, player)
 }
 
 /**
@@ -40,4 +40,11 @@ abstract class SpellCastEvent(spell: Spell, player: PlayerEntity) : SpellEvent(s
  * Result.DENY -> Locks the spell
  */
 @Event.HasResult
-open class SpellUnlockedEvent(spell: Spell, player: PlayerEntity): SpellEvent(spell, player)
+open class SpellUnlockedEvent(spell: Spell, player: PlayerEntity) : SpellEvent(spell, player)
+
+/**
+ * Fired when a spell entity hits something
+ * Cancel to stop anything from happening on impact
+ */
+@Cancelable
+class SpellImpactEvent(entity: SpellEntity, ray: RayTraceResult) : ProjectileImpactEvent(entity, ray)

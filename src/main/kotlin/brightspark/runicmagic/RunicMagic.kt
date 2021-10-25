@@ -69,6 +69,7 @@ object RunicMagic {
 			addGenericListener(RMTileEntities::register)
 			addGenericListener(RMParticles::registerTypes)
 			addGenericListener(RMSpells::register)
+			addGenericListener(RMEntities::register)
 		}
 		FORGE_BUS.apply {
 			addListener<InputEvent.KeyInputEvent> { KeyBindHandler.onKey() }

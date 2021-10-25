@@ -5,6 +5,7 @@ import brightspark.runicmagic.item.RuneItem
 import brightspark.runicmagic.model.RuneType.*
 import brightspark.runicmagic.model.SpellType
 import brightspark.runicmagic.spell.Spell
+import brightspark.runicmagic.spell.projectile.ProjectileBaseSpell
 import brightspark.runicmagic.spell.self.*
 import brightspark.runicmagic.spell.teleport.GatestoneTeleportSpell
 import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
@@ -36,6 +37,8 @@ object RMSpells {
 		spell("teleport_gatestone", GatestoneTeleportSpell(teleportProps(SpellType.TELESELF, 32))),
 
 		// Projectile Attack
+		// FYI: Damage atm is calculated as Runescape spell damage / 20
+		elementalSpell("air_strike", 1, 2.4F),
 
 		// Projectile Effect
 
@@ -75,6 +78,12 @@ object RMSpells {
 	private fun teleportProps(spellType: SpellType, level: Int): Spell.Properties =
 		props(spellType, level).setSelectable(false).setCooldown(600).setCastTime(200)
 
+	// TODO: Add cast time to projectile spells for an animation
+	private fun projectileProps(spellType: SpellType, level: Int): Spell.Properties =
+		props(spellType, level).setSelectable(true).setCooldown(10)
+
+	private fun elementalProps(level: Int): Spell.Properties = projectileProps(SpellType.ELEMENTAL, level)
+
 	private fun selfProps(spellType: SpellType, level: Int): Spell.Properties =
 		props(spellType, level).setSelectable(false)
 
@@ -84,13 +93,16 @@ object RMSpells {
 
 	private fun spell(name: String, spell: Spell): Spell = spell.setRegName(name)
 
+	private fun elementalSpell(name: String, level: Int, damage: Float = 0F): Spell =
+		spell(name, ProjectileBaseSpell(elementalProps(level), RMEntities.SPELL, damage))
+
 	private fun enchantSpell(name: String, enchantLevel: Int, props: Spell.Properties): Spell =
-		EnchantSpell(enchantLevel, props).setRegName(name)
+		spell(name, EnchantSpell(enchantLevel, props))
 
 	private fun chargeOrbSpell(name: String, runeItem: Item, props: Spell.Properties): Spell =
-		ChargeOrbSpell(runeItem as RuneItem, props).setRegName(name)
+		spell(name, ChargeOrbSpell(runeItem as RuneItem, props))
 
-	fun get(name: String): Spell? = REGISTRY.getValue(ResourceLocation(RunicMagic.MOD_ID, name))
+	fun get(regName: String): Spell? = REGISTRY.getValue(ResourceLocation(regName))
 
 	fun get(regName: ResourceLocation): Spell? = REGISTRY.getValue(regName)
 

@@ -13,6 +13,8 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.text.StringTextComponent
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.util.INBTSerializable
 
@@ -55,7 +57,13 @@ class SpellCasting : INBTSerializable<CompoundNBT> {
 				world.onServer {
 					val spells = player.getCapability(RMCapabilities.SPELLS).resolve().get()
 					if (spells.onSpellExecuted(player as ServerPlayerEntity, spell, data)) {
-						return spell.execute(player, data)
+						if (!spell.execute(player, data)) {
+							player.sendStatusMessage(
+								StringTextComponent("Spell failed!").mergeStyle(TextFormatting.DARK_RED),
+								true
+							)
+						}
+						return true
 					}
 				}
 			}
