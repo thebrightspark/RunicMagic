@@ -33,7 +33,7 @@ https://github.com/thebrightspark/RunicMagic/tree/442ba0d5c0a7e98b611ed6c01a1137
 object RunicMagic {
 	internal const val MOD_ID = "runicmagic"
 
-	val LOG: Logger = LogManager.getLogger(RunicMagic::class)
+	val LOG: Logger = LogManager.getLogger(RunicMagic::class.java)
 
 	val GROUP = object : ItemGroup(MOD_ID) {
 		override fun createIcon(): ItemStack = ItemStack(Items.REDSTONE_TORCH)
@@ -57,11 +57,6 @@ object RunicMagic {
 
 	init {
 		MOD_BUS.apply {
-			addListener<FMLClientSetupEvent> {
-				RMBlocks.clientInit(it)
-				KeyBindHandler.register()
-			}
-			addListener<FMLCommonSetupEvent> { RMCapabilities.register() }
 			addListener<ParticleFactoryRegisterEvent> { RMParticles.registerFactories() }
 			addListener<RegistryEvent.NewRegistry> { RMSpells.createRegistry() }
 			addGenericListener(RMItems::register)
@@ -70,6 +65,19 @@ object RunicMagic {
 			addGenericListener(RMParticles::registerTypes)
 			addGenericListener(RMSpells::register)
 			addGenericListener(RMEntities::register)
+			addListener<FMLClientSetupEvent> {
+				// Even though Forge says it's fine to register renders in parallel, in reality it doesn't actually work
+				RMEntities.registerRenderers()
+				it.enqueueWork {
+					RMBlocks.clientInit()
+					KeyBindHandler.register()
+				}
+			}
+			addListener<FMLCommonSetupEvent> {
+				it.enqueueWork {
+					RMCapabilities.register()
+				}
+			}
 		}
 		FORGE_BUS.apply {
 			addListener<InputEvent.KeyInputEvent> { KeyBindHandler.onKey() }

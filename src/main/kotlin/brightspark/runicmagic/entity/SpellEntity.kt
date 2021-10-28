@@ -1,9 +1,12 @@
 package brightspark.runicmagic.entity
 
 import brightspark.runicmagic.event.SpellImpactEvent
+import brightspark.runicmagic.init.RMParticles
 import brightspark.runicmagic.init.RMSpells
+import brightspark.runicmagic.particle.ColouredParticleData
 import brightspark.runicmagic.spell.projectile.ProjectileBaseSpell
-import brightspark.runicmagic.util.DummyPacket
+import brightspark.runicmagic.util.addParticle
+import brightspark.runicmagic.util.onClient
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.player.PlayerEntity
@@ -19,7 +22,9 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.vector.Vector3d
 import net.minecraft.world.World
 import net.minecraft.world.server.ServerWorld
+import net.minecraftforge.fml.network.NetworkHooks
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
+import java.awt.Color
 import java.util.*
 
 class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, world) {
@@ -49,21 +54,17 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		EntityPredicates.NOT_SPECTATING.and(EntityPredicates.IS_ALIVE).and(EntityPredicates.pushableBy(this))
 
 	private fun setDirectionAndMotion(entity: Entity) {
-		val pitch = entity.rotationPitch
 		val yaw = entity.rotationYaw
-		val piF = Math.PI.toFloat()
-		val piMult180 = piF * 180F
+		val pitch = entity.rotationPitch
+		setRotation(yaw, pitch)
+
+		// FIXME: For some reason the motion is set incorrectly here
+		val piMult180 = Math.PI.toFloat() * 180F
 		val x = -MathHelper.sin(yaw * piMult180) * MathHelper.cos(pitch * piMult180)
 		val y = -MathHelper.sin(pitch * piMult180)
 		val z = MathHelper.cos(yaw * piMult180) * MathHelper.cos(pitch * piMult180)
-		val vec = Vector3d(x.toDouble(), y.toDouble(), z.toDouble()).normalize()
+		val vec = Vector3d(x.toDouble(), y.toDouble(), z.toDouble()).normalize().scale(0.1)
 		motion = vec
-
-		val sqrtHorizontalMag = MathHelper.sqrt(horizontalMag(vec)).toDouble()
-		rotationYaw = MathHelper.atan2(vec.x, vec.z).toFloat() * piMult180
-		rotationPitch = MathHelper.atan2(vec.y, sqrtHorizontalMag).toFloat() * piMult180
-		prevRotationYaw = rotationYaw
-		prevRotationPitch = rotationPitch
 	}
 
 	override fun registerData() = Unit
@@ -113,6 +114,11 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		// Move
 		setPosition(posNext.x, posNext.y, posNext.z)
 		doBlockCollisions()
+
+		// Particles
+		world.onClient {
+			addParticle(ColouredParticleData(RMParticles.SINGLE_MOVING, Color.WHITE), positionVec)
+		}
 	}
 
 	private fun onImpact(ray: RayTraceResult) {
@@ -129,6 +135,7 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 						entityHit.attackEntityFrom(it.createDamageSource(this, shooterEntity), damage)
 					it.affectEntityHit(this, shooterEntity, entityHit)
 				}
+				setDead()
 			}
 			else -> Unit
 		}
@@ -144,5 +151,5 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		nbt.putUniqueId("shooter", shooterUuid ?: Util.DUMMY_UUID)
 	}
 
-	override fun createSpawnPacket(): IPacket<*> = DummyPacket
+	override fun createSpawnPacket(): IPacket<*> = NetworkHooks.getEntitySpawningPacket(this)
 }

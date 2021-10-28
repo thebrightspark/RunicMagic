@@ -3,7 +3,6 @@ package brightspark.runicmagic.spell.projectile
 import brightspark.runicmagic.entity.SpellEntity
 import brightspark.runicmagic.model.SpellCastData
 import brightspark.runicmagic.spell.Spell
-import brightspark.runicmagic.util.onServer
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.player.PlayerEntity
@@ -19,13 +18,11 @@ open class ProjectileBaseSpell(
 	override fun canCast(player: PlayerEntity): Boolean = true
 
 	override fun execute(player: ServerPlayerEntity, data: SpellCastData): Boolean {
-		player.world.onServer {
-			// FIXME: This entity isn't spawning?
-			entityType.create(this)?.let {
-				it.spell = this@ProjectileBaseSpell
-				it.shooter = player
-				this.addEntity(it)
-			}
+		val world = player.world
+		entityType.create(world)?.let {
+			it.spell = this@ProjectileBaseSpell
+			it.shooter = player
+			world.addEntity(it)
 		}
 		return true
 	}

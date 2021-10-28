@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.ToolType
 import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import thedarkcolour.kotlinforforge.forge.objectHolder
 
 object RMBlocks {
@@ -29,10 +28,8 @@ object RMBlocks {
 	)
 
 	@OnlyIn(Dist.CLIENT)
-	fun clientInit(event: FMLClientSetupEvent) {
-		event.enqueueWork {
-			RenderTypeLookup.setRenderLayer(GATESTONE, RenderType.getCutout())
-		}
+	fun clientInit() {
+		RenderTypeLookup.setRenderLayer(GATESTONE, RenderType.getCutout())
 	}
 
 	private fun rockProps(
