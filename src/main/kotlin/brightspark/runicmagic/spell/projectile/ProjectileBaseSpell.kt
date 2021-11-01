@@ -9,10 +9,12 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.util.DamageSource
 import net.minecraft.util.IndirectEntityDamageSource
+import java.awt.Color
 
 open class ProjectileBaseSpell(
 	props: Properties,
 	private val entityType: EntityType<SpellEntity>,
+	val projectileColour: Color,
 	val baseDamage: Float
 ) : Spell(props) {
 	override fun canCast(player: PlayerEntity): Boolean = true

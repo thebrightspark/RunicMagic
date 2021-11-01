@@ -15,9 +15,13 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.registries.IForgeRegistry
 import net.minecraftforge.registries.RegistryBuilder
+import java.awt.Color
 
 // https://runescape.fandom.com/wiki/List_of_spells
 object RMSpells {
+	// TODO: Move this somewhere better?
+	private val EARTH_COLOUR: Color = Color(0x00BB00)
+
 	lateinit var REGISTRY: IForgeRegistry<Spell>
 
 	val REGISTRY_KEYS: Iterable<ResourceLocation> by lazy { REGISTRY.keys.sorted() }
@@ -37,8 +41,27 @@ object RMSpells {
 		spell("teleport_gatestone", GatestoneTeleportSpell(teleportProps(SpellType.TELESELF, 32))),
 
 		// Projectile Attack
-		// FYI: Damage atm is calculated as Runescape spell damage / 20
-		elementalSpell("air_strike", 1, 2.4F),
+		// FYI: Damage values are from Runescape - we scale it down in #elementalSpell
+		elementalSpell("strike_air", 1, AIR.colour, 48),
+		elementalSpell("strike_water", 5, WATER.colour, 48),
+		elementalSpell("strike_earth", 9, EARTH_COLOUR, 86),
+		elementalSpell("strike_fire", 13, FIRE.colour, 124),
+		elementalSpell("bolt_air", 17, AIR.colour, 163),
+		elementalSpell("bolt_water", 23, WATER.colour, 220),
+		elementalSpell("bolt_earth", 29, EARTH_COLOUR, 278),
+		elementalSpell("bolt_fire", 35, FIRE.colour, 336),
+		elementalSpell("blast_air", 41, AIR.colour, 393),
+		elementalSpell("blast_water", 47, WATER.colour, 451),
+		elementalSpell("blast_earth", 53, EARTH_COLOUR, 508),
+		elementalSpell("blast_fire", 59, FIRE.colour, 566),
+		elementalSpell("wave_air", 62, AIR.colour, 595),
+		elementalSpell("wave_water", 65, WATER.colour, 624),
+		elementalSpell("wave_earth", 70, EARTH_COLOUR, 672),
+		elementalSpell("wave_fire", 75, FIRE.colour, 720),
+		elementalSpell("surge_air", 81, AIR.colour, 777),
+		elementalSpell("surge_water", 85, WATER.colour, 816),
+		elementalSpell("surge_earth", 90, EARTH_COLOUR, 864),
+		elementalSpell("surge_fire", 95, FIRE.colour, 883),
 
 		// Projectile Effect
 
@@ -93,8 +116,9 @@ object RMSpells {
 
 	private fun spell(name: String, spell: Spell): Spell = spell.setRegName(name)
 
-	private fun elementalSpell(name: String, level: Int, damage: Float = 0F): Spell =
-		spell(name, ProjectileBaseSpell(elementalProps(level), RMEntities.SPELL, damage))
+	// FYI: Damage atm is calculated as Runescape spell damage / 25
+	private fun elementalSpell(name: String, level: Int, colour: Color, damage: Int): Spell =
+		spell(name, ProjectileBaseSpell(elementalProps(level), RMEntities.SPELL, colour, damage.toFloat() / 25F))
 
 	private fun enchantSpell(name: String, enchantLevel: Int, props: Spell.Properties): Spell =
 		spell(name, EnchantSpell(enchantLevel, props))

@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.ProjectileHelper
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.IPacket
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EntityPredicates
 import net.minecraft.util.Util
 import net.minecraft.util.math.EntityRayTraceResult
@@ -21,12 +22,13 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.vector.Vector3d
 import net.minecraft.world.World
 import net.minecraft.world.server.ServerWorld
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData
 import net.minecraftforge.fml.network.NetworkHooks
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import java.awt.Color
 import java.util.*
 
-class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, world) {
+class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, world), IEntityAdditionalSpawnData {
 	companion object {
 		private const val SPEED: Double = 0.5
 		private const val PARTICLE_AMOUNT = 10
@@ -117,7 +119,7 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		world.onClient {
 			repeat(PARTICLE_AMOUNT) {
 				addParticle(
-					ColouredParticleData(RMParticles.SINGLE_MOVING, Color.WHITE, age = 10),
+					ColouredParticleData(RMParticles.SINGLE_MOVING, spell?.projectileColour ?: Color.WHITE, age = 10),
 					positionVec,
 					Vector3d.fromPitchYaw(angleOffset(rotationPitch), angleOffset(rotationYaw)).scale(particleSpeed())
 				)
@@ -150,7 +152,7 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 	}
 
 	override fun readAdditional(nbt: CompoundNBT) {
-		spell = RMSpells.get(nbt.getString("spell")) as ProjectileBaseSpell
+		spell = RMSpells.get(nbt.getString("spell")) as ProjectileBaseSpell?
 		shooterUuid = nbt.getUniqueId("shooter")
 	}
 
@@ -160,4 +162,12 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 	}
 
 	override fun createSpawnPacket(): IPacket<*> = NetworkHooks.getEntitySpawningPacket(this)
+
+	override fun writeSpawnData(buffer: PacketBuffer) {
+		buffer.writeString(spell?.let { it.registryName.toString() } ?: "")
+	}
+
+	override fun readSpawnData(buffer: PacketBuffer) {
+		spell = RMSpells.get(buffer.readString()) as ProjectileBaseSpell?
+	}
 }
