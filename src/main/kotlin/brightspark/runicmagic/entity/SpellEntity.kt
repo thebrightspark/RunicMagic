@@ -16,7 +16,6 @@ import net.minecraft.network.IPacket
 import net.minecraft.util.EntityPredicates
 import net.minecraft.util.Util
 import net.minecraft.util.math.EntityRayTraceResult
-import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RayTraceContext
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.vector.Vector3d
@@ -57,14 +56,7 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		val yaw = entity.rotationYaw
 		val pitch = entity.rotationPitch
 		setRotation(yaw, pitch)
-
-		// FIXME: For some reason the motion is set incorrectly here
-		val piMult180 = Math.PI.toFloat() * 180F
-		val x = -MathHelper.sin(yaw * piMult180) * MathHelper.cos(pitch * piMult180)
-		val y = -MathHelper.sin(pitch * piMult180)
-		val z = MathHelper.cos(yaw * piMult180) * MathHelper.cos(pitch * piMult180)
-		val vec = Vector3d(x.toDouble(), y.toDouble(), z.toDouble()).normalize().scale(0.1)
-		motion = vec
+		motion = Vector3d.fromPitchYaw(pitch, yaw)
 	}
 
 	override fun registerData() = Unit
