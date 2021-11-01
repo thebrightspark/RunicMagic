@@ -27,6 +27,12 @@ import java.awt.Color
 import java.util.*
 
 class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, world) {
+	companion object {
+		private const val SPEED: Double = 0.5
+		private const val PARTICLE_AMOUNT = 10
+		private const val PARTICLE_SPREAD = 10
+	}
+
 	var spell: ProjectileBaseSpell? = null
 	private var shooterUuid: UUID? = shooter?.uniqueID
 	private var shooterId: Int? = shooter?.entityId
@@ -56,7 +62,7 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 		val yaw = entity.rotationYaw
 		val pitch = entity.rotationPitch
 		setRotation(yaw, pitch)
-		motion = Vector3d.fromPitchYaw(pitch, yaw)
+		motion = Vector3d.fromPitchYaw(pitch, yaw).scale(SPEED)
 	}
 
 	override fun registerData() = Unit
@@ -109,9 +115,19 @@ class SpellEntity(entityType: EntityType<*>, world: World) : Entity(entityType, 
 
 		// Particles
 		world.onClient {
-			addParticle(ColouredParticleData(RMParticles.SINGLE_MOVING, Color.WHITE), positionVec)
+			repeat(PARTICLE_AMOUNT) {
+				addParticle(
+					ColouredParticleData(RMParticles.SINGLE_MOVING, Color.WHITE, age = 10),
+					positionVec,
+					Vector3d.fromPitchYaw(angleOffset(rotationPitch), angleOffset(rotationYaw)).scale(particleSpeed())
+				)
+			}
 		}
 	}
+
+	private fun angleOffset(num: Float): Float = num + ((rand.nextFloat() * PARTICLE_SPREAD) - (PARTICLE_SPREAD / 2F))
+
+	private fun particleSpeed(): Double = SPEED * ((rand.nextDouble() * 0.4) + 0.45)
 
 	private fun onImpact(ray: RayTraceResult) {
 		when (ray.type) {
