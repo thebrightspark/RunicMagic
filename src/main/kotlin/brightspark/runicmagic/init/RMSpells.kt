@@ -6,6 +6,7 @@ import brightspark.runicmagic.model.RuneType.*
 import brightspark.runicmagic.model.SpellType
 import brightspark.runicmagic.spell.Spell
 import brightspark.runicmagic.spell.projectile.ProjectileBaseSpell
+import brightspark.runicmagic.spell.projectile.curse.WeakenSpell
 import brightspark.runicmagic.spell.self.*
 import brightspark.runicmagic.spell.teleport.GatestoneTeleportSpell
 import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
@@ -64,6 +65,7 @@ object RMSpells {
 		elementalSpell("surge_fire", 95, FIRE.colour, 883),
 
 		// Projectile Effect
+		spell("weaken", WeakenSpell(curseProps(3).addRuneCost(MIND to 1))),
 
 		// Self
 		enchantSpell("enchant_1", 5, enchantProps(7).addRuneCost(COSMIC to 1, WATER to 1)),
@@ -106,6 +108,8 @@ object RMSpells {
 		props(spellType, level).setSelectable(true).setCooldown(10)
 
 	private fun elementalProps(level: Int): Spell.Properties = projectileProps(SpellType.ELEMENTAL, level)
+
+	private fun curseProps(level: Int): Spell.Properties = projectileProps(SpellType.CURSES, level)
 
 	private fun selfProps(spellType: SpellType, level: Int): Spell.Properties =
 		props(spellType, level).setSelectable(false)
