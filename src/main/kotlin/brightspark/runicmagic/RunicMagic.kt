@@ -2,6 +2,7 @@ package brightspark.runicmagic
 
 import brightspark.runicmagic.command.ExecuteSpellCommand
 import brightspark.runicmagic.command.SetLevelCommand
+import brightspark.runicmagic.handler.EffectHandler
 import brightspark.runicmagic.handler.KeyBindHandler
 import brightspark.runicmagic.init.*
 import brightspark.runicmagic.message.*
@@ -65,6 +66,7 @@ object RunicMagic {
 			addGenericListener(RMParticles::registerTypes)
 			addGenericListener(RMSpells::register)
 			addGenericListener(RMEntities::register)
+			addGenericListener(RMEffects::register)
 			addListener<FMLClientSetupEvent> {
 				// Even though Forge says it's fine to register renders in parallel, in reality it doesn't actually work
 				RMEntities.registerRenderers()
@@ -87,6 +89,7 @@ object RunicMagic {
 			addListener(RMCapabilities::playerRespawn)
 			addListener(RMCapabilities::playerDimChanged)
 			addListener<RegisterCommandsEvent> { it.dispatcher.register(ExecuteSpellCommand, SetLevelCommand) }
+			addListener(EffectHandler::onEntityAttacked)
 		}
 	}
 }

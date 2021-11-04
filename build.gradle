@@ -91,6 +91,12 @@ repositories {
         name = 'kotlinforforge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
     }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -102,6 +108,7 @@ dependencies {
     implementation "thedarkcolour:kotlinforforge:${project.kotlinforforge_version}"
 //    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
+    compile fg.deobf('curse.maven:neat-238372:3182258')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"

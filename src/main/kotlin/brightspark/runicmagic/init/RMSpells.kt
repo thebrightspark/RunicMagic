@@ -6,12 +6,13 @@ import brightspark.runicmagic.model.RuneType.*
 import brightspark.runicmagic.model.SpellType
 import brightspark.runicmagic.spell.Spell
 import brightspark.runicmagic.spell.projectile.ProjectileBaseSpell
-import brightspark.runicmagic.spell.projectile.curse.WeakenSpell
+import brightspark.runicmagic.spell.projectile.curse.SimpleCurseSpell
 import brightspark.runicmagic.spell.self.*
 import brightspark.runicmagic.spell.teleport.GatestoneTeleportSpell
 import brightspark.runicmagic.spell.teleport.HomeTeleportSpell
 import brightspark.runicmagic.util.setRegName
 import net.minecraft.item.Item
+import net.minecraft.potion.Effects
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.registries.IForgeRegistry
@@ -65,7 +66,23 @@ object RMSpells {
 		elementalSpell("surge_fire", 95, FIRE.colour, 883),
 
 		// Projectile Effect
-		spell("weaken", WeakenSpell(curseProps(3).addRuneCost(MIND to 1))),
+		spell("confuse", SimpleCurseSpell(curseProps(3).addRuneCost(MIND to 1), Color.MAGENTA, RMEffects.CONFUSION)),
+		spell("weaken", SimpleCurseSpell(curseProps(11).addRuneCost(BODY to 1), Color.MAGENTA, Effects.WEAKNESS)),
+		spell(
+			"enfeeble", SimpleCurseSpell(
+				curseProps(73).addRuneCost(SOUL to 1, BODY to 1),
+				Color.MAGENTA,
+				Effects.WEAKNESS,
+				amplifier = 1
+			)
+		),
+		spell(
+			"stagger", SimpleCurseSpell(
+				curseProps(80).addRuneCost(SOUL to 1, MIND to 1),
+				Color.MAGENTA,
+				RMEffects.STAGGER
+			)
+		),
 
 		// Self
 		enchantSpell("enchant_1", 5, enchantProps(7).addRuneCost(COSMIC to 1, WATER to 1)),
